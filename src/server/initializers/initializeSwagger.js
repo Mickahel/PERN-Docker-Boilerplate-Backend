@@ -1,0 +1,60 @@
+const swaggerJsdoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
+const { isProduction } = require("../../auxiliaries/ServerAuxiliaries");
+const swaggerOptions = {
+  swaggerDefinition: {
+    // Like the one described here: https://swagger.io/specification/#infoObject
+    openapi: "3.0.1",
+    info: {
+      title: "PERN Docker Boilerplate",
+      version: "0.0.0",
+      description: "A boilerplate",
+      contact: {
+        name: "Michelangelo De Francesco",
+        url: "https://www.linkedin.com/in/michelangelodefrancesco",
+        email: "df.michelangelo@gmail.com",
+      },
+      license: {
+        name: "PROPRIETARY LICENSE",
+      },
+    },
+    host: process.env.BACKEND_URL,
+    basePath: "/",
+    components: {
+      securitySchemes: {
+        bearerAuthBasic: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+          description: "JWT required, Basic Role Required",
+        },
+        bearerAuthAdmin: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+          description: "JWT required, Admin Role Required",
+        },
+        basicAuth: {
+          type:   'http',
+          scheme: 'basic'
+        }
+      },
+    },
+    servers: [
+      {
+        url: process.env.BACKEND_URL,
+        description: "Main API Server",
+      },
+    ],
+  },
+  apis: ["./src/routes/*.js"],
+};
+
+const initializeSwagger = (app, router) => {
+  if (isProduction) return;
+
+  const specs = swaggerJsdoc(swaggerOptions);
+  router.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+};
+
+module.exports = initializeSwagger;

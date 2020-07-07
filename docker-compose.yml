@@ -1,0 +1,68 @@
+#version: "3"
+## docker-compose -f docker-compose.dev.yml up
+## docker-compose -f docker-compose.dev.yml -d up
+#services:
+#
+############################
+##       dev-frontend     #
+############################
+#  dev-frontend:
+#    #tty: true
+#    #stdin_open: true
+#    container_name: dev-react-frontend
+#    build:
+#      context: ./frontend
+#      dockerfile: dev.Dockerfile
+#    volumes:
+#      - './frontend:/app/frontend'
+#      - '/app/frontend/node_modules'
+#    ports:
+#      - 3001:3000
+#    environment:
+#      - CHOKIDAR_USEPOLLING=true
+#      - REACT_APP_ENDPOINT="PINGUINI"
+#
+############################
+##       dev-backend       #
+############################
+#  dev-backend:
+#    container_name: dev-node-backend
+#    environment:
+#      - BANANA="banana"
+#    build:
+#      context: ./backend
+#      dockerfile: dev.Dockerfile
+#    depends_on:
+#      - "database"
+#    volumes:
+#      - './backend:/app/backend'
+#      - '/app/backend/node_modules'
+#    ports:
+#      - 4001:4000
+###########################
+##       dev-database     #
+###########################
+#  dev-database:
+#    container_name: dev-postgres-database
+#    image: postgres
+#    restart: always
+#    ports:
+#      - 5432:5432
+#    volumes: 
+#      - ./pgdata:/var/lib/postgresql
+#    environment: 
+#      - POSTGRES_USER=postgres
+#      - POSTGRES_PASSWORD=password
+#      - PGDATA=/var/lib/postgresql/data
+#      - POSTGRES_DB=postgres
+###########################
+##       dev-nginx        #
+###########################
+#
+#  nginx:
+#    volumes: 
+#      - ./site.template:/etc/nginx/conf.d/site.template
+#    ports:
+#      - "8081:80"
+#    depends_on: 
+#      - dev-database
