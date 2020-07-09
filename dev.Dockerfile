@@ -18,5 +18,5 @@ RUN pnpm install --silent
 
 # Bundle app source
 COPY . ./
-
+EXPOSE 4000
 CMD [ "pnpm", "run", "dev"]   
