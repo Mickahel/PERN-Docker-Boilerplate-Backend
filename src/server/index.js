@@ -1,4 +1,5 @@
 const express = require("express");
+const compression = require('compression')
 const bodyParser = require("body-parser");
 const path = require("path");
 const errorHandler = require("errorhandler");
@@ -56,6 +57,9 @@ module.exports = function createServer() {
   // ? Add error handler middleware
   app.use(errorHandler());
 
+  // ? Add gzip compression
+  app.use(compression())
+  
   // ? Add middleware that allows override of REST methods
   app.use(methodOverride('_method'));
 
