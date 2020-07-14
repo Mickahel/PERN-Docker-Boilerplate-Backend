@@ -22,7 +22,7 @@ const initializeHttp = (app) =>{
     }
 
     server.listen(port, () =>{
-            logger.info(`App listening on http${isProduction ? ``:`s`}://${host}`)
+            logger.info(`App listening on http${isProduction ? ``:`s`}://${host}`) 
     })
     return server
 }
