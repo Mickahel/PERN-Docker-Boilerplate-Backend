@@ -25,3 +25,6 @@ yarn-error.log*
 log.log
 # certificates
 keys
+
+# docker volumes
+/docker/db/pgdata

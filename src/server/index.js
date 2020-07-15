@@ -14,6 +14,7 @@ const passport = require('passport');
 const  favicon = require('serve-favicon')
 const logger = new ModularLogger("Server Starter", "blue")
 const {publicFolder} = require("../auxiliaries/ServerAuxiliaries")
+const pgSessionConnection =require('connect-pg-simple')(expressSession)
 //loggerMod.silly({bar:"foo"});
 //loggerMod.silly("Questo è un winston silly ");
 //loggerMod.silly("Questo è un winston silly ",{bar:"foo"});
@@ -44,6 +45,8 @@ module.exports = function createServer() {
       secret: process.env.SESSION_SECRET,
       resave: false,
       saveUninitialized: false,
+      store: new pgSessionConnection(),
+      cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }  //? 30 days
     })
   );
 

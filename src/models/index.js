@@ -15,7 +15,7 @@ const databaseCredentials = {
   options: {
     host: isProduction ? "localhost" : "192.168.99.100",
     dialect: "postgres",
-    logging: config ? (msg) => logger.silly(msg) : false,
+    logging: config.databaseLogging ? (msg) => logger.silly(msg) : false,
   },
 };
 
