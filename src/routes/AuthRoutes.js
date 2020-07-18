@@ -23,6 +23,20 @@ router.post('/login', (req, res, next) => {
 })
 
 
+
+/**
+ * @swagger
+ * /api/v1/auth/activation/:activationCode:
+ *    post:
+ *      description: Activates the user using the activationCode
+ *      tags: [Auth]
+ */
+router.post('/activation/:activationCode', (req, res, next) => {
+
+
+})
+
+
 /**
   * @swagger
  * /v1/auth/lost-password-mail:
@@ -44,6 +58,5 @@ router.post('/lost-password-mail', async (req, res, next) => {
 router.post('/password-reset', async (req, res, next) => {
 
 })
-
 
 module.exports = router;

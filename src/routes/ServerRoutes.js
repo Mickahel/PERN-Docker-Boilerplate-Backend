@@ -6,7 +6,7 @@ const router = require('express').Router();
  *    get:
  *      summary: Healthcheck
  *      security:
- *          - bearerAuth: []
+ *          - bearerAuthBasic: []
  *      tags: [Server]
  */
 router.get('/healthcheck',   (req , res, next) => {
@@ -23,7 +23,7 @@ router.get('/healthcheck',   (req , res, next) => {
  *    get:
  *      summary: kills the process
  *      security:
- *          - basicAuth: []
+ *          - bearerAuthAdmin: []
  *      tags: [Server]
  */
 router.get("/killProcess", (req, res, next) => {

@@ -4,7 +4,7 @@ const { isProduction } = require("../auxiliaries/ServerAuxiliaries");
 const Logger = require("../services/Logger");
 const logger = new Logger("Database", "bgYellowBright");
 const createDataModel = require("./dataModel")
-const config = require('../../config.json');
+const {config} = require('../../config');
 
 const databaseCredentials = {
   database: isProduction ? process.env.DB_PROD_NAME : process.env.DB_TEST_NAME,
@@ -15,7 +15,7 @@ const databaseCredentials = {
   options: {
     host: isProduction ? "localhost" : "192.168.99.100",
     dialect: "postgres",
-    logging: config.databaseLogging ? (msg) => logger.silly(msg) : false,
+    logging: config.logging.databaseLogging ? (msg) => logger.silly(msg) : false,
   },
 };
 

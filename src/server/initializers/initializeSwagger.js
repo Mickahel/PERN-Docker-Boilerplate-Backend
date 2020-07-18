@@ -45,6 +45,7 @@ const swaggerOptions = {
         url: process.env.BACKEND_URL,
         description: "Main API Server",
       },
+
     ],
   },
   apis: ["./src/routes/*.js"],

@@ -1,5 +1,6 @@
 require('dotenv').config()
 const jwt = require('express-jwt')
+const {roles} = require("../../config")
 
 const getTokenFromHeaders = (req) => {
   const { headers: { authorization } } = req;
@@ -14,14 +15,14 @@ const getTokenFromHeaders = (req) => {
 const isAdmin = (req, res, next) =>{
     try{
       let role = _.get(req, 'user.role')
-      if(!role || role !== Roles.ADMIN) throw new HttpException(403, "Only admins")
+      if(!role || role !== roles.ADMIN) throw new HttpException(403, "Only admins")
       next()
     }catch(e){
       next(e)
     }
   }
 
-const requiredAuth = {
+const auth = {
   required: jwt({
     secret: process.env.SECRET,
     userProperty: 'user',
@@ -40,4 +41,4 @@ const requiredAuth = {
   }),
 };
 
-module.exports = requiredAuth;
+module.exports = auth;
