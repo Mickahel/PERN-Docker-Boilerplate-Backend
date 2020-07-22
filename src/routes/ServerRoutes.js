@@ -2,7 +2,7 @@ const router = require('express').Router();
 
 /**
  * @swagger
- * /healthcheck:
+ * /v1/server/healthcheck:
  *    get:
  *      summary: Healthcheck
  *      security:
@@ -19,7 +19,7 @@ router.get('/healthcheck',   (req , res, next) => {
 
 /**
  * @swagger
- * /killProcess:
+ * /v1/server/killProcess:
  *    get:
  *      summary: kills the process
  *      security:

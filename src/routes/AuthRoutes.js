@@ -26,7 +26,7 @@ router.post('/login', (req, res, next) => {
 
 /**
  * @swagger
- * /api/v1/auth/activation/:activationCode:
+ * /v1/auth/activation/:activationCode:
  *    post:
  *      description: Activates the user using the activationCode
  *      tags: [Auth]

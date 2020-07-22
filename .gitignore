@@ -26,3 +26,5 @@ log.log
 
 # certificates
 *.pem
+*.key
+*.crt

@@ -1,24 +1,22 @@
-const {isProduction} = require('../../auxiliaries/ServerAuxiliaries')
-
+const { isProduction } = require("../../auxiliaries/ServerAuxiliaries");
 
 const initializeRoutes = (router) => {
   //router.get('/', (req, res, next) => { // Echo route
   //res.redirect(301, process.env.FRONTEND_URL)
   //})
 
-
-
- 
+  router.get("/", (req, res, next) => {
+    // Echo route
+    res.send("<h1>PERN Boilerplate</h1>"); //TODO change name
+  });
 
   // ? Import Routes & Add Middlewares
   router.use("/v1/auth", require("../../routes/AuthRoutes"));
   router.use("/v1/server", require("../../routes/ServerRoutes"));
-  /*router.use('/api/v1/user', require('../../routes/UserRoutes'))
-      router.use('/api/v1/dashboard', require('../../routes/DashboardRoutes'))*/
-  
-      // ? Development routes
+
+  // ? Development routes
   if (!isProduction) {
-    //router.use('/api/v1/test', require('../../routes/TestRoutes'))
+    router.use("/v1/debug", require("../../routes/DebugRoutes"));
   }
 
   router.use("*", (req, res, next) => {
