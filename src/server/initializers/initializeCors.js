@@ -1,9 +1,11 @@
 require('dotenv').config();
 const cors = require('cors')
 const {isProduction,host} = require('../../auxiliaries/ServerAuxiliaries')
+
 const initializeCors = (app, router) =>{
     if(isProduction){
         const whitelist = [process.env.FRONTEND_URL, `https://${host}`]
+        
         const corsOptions = {
             origin: function (origin, callback) {
                 if(!origin){ //origin is undefined

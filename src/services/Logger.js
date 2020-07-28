@@ -75,107 +75,113 @@ const setBgColor = (bgColor) => {
         bgWhiteBright
     */
   if (!bgColor) return;
+  if (bgColor.startsWith("#")) return bgColor;
   if (!bgColor.startsWith("bg")) {
     bgColor = "bg" + bgColor.charAt(0).toUpperCase() + bgColor.slice(1);
   }
   return bgColor;
 };
 
-const ModularLogger = class ModularLogger {
-  constructor(module, bgColor, type, otherOptions) {
-    this.module = module;
-    this.type = type;
-    this.otherOptions = otherOptions;
+function ModularLogger(module, bgColor, type, otherOptions) {
+  if (!module) throw new Error("Module must Be Defined");
+
+  this.module = module;
+  this.type = type;
+  if (bgColor) {
     this.bgColor = setBgColor(bgColor);
-    if (!otherOptions) this.otherOptions = {};
+    this.bgColorType = this.bgColor.startsWith("#") ? "hex" : "text";
   }
+  if (!otherOptions) this.otherOptions = {};
+  else this.otherOptions = otherOptions;
+}
 
-  error(message, arg) {
-    //level 0
-    this.generic(message, arg, "error");
+ModularLogger.prototype.generic = function (message, arg, func) {
+  let moduleText = this.bgColor
+    ? this.bgColorType === "hex"
+      ? chalk.bold.black.bgHex(this.bgColor)(`[${this.module}]`)
+      : chalk.bold.black[this.bgColor](`[${this.module}]`)
+    : `[${this.module}]`;
+
+  if (typeof message === "object" && !arg) {
+    //message is an object and is the only param
+    const parsedMessage =
+      message instanceof Error ? message.stack : cj(message);
+    winstonCustomLogger[func](moduleText + " - " + parsedMessage, {
+      ...this.otherOptions,
+    });
+
+    let logToFile = {
+      object: arg,
+      ...this.otherOptions,
+    };
+
+    if (this.module) logToFile.module = this.module;
+    if (this.bgColor && this.bgColorType === "hex")
+      logToFile.bgColor = this.bgColor;
+    winstonFileLogger[func](parsedMessage, logToFile);
+  } else if (typeof message !== "object" && !arg) {
+    //message is not an object and is the only param
+
+    winstonCustomLogger[func](moduleText + " - " + message, {
+      ...this.otherOptions,
+    });
+    winstonFileLogger[func](message, {
+      object: arg,
+      module: this.module,
+      ...this.otherOptions,
+    });
+  } else if (typeof message !== "object" && typeof arg === "object") {
+    //message is not an object and there is arg
+
+    winstonCustomLogger[func](moduleText + " - " + message + " - " + cj(arg), {
+      ...this.otherOptions,
+    });
+    winstonFileLogger[func](message, {
+      object: arg,
+      module: this.module,
+      ...this.otherOptions,
+    });
+  } else {
+    winstonCustomLogger[func](moduleText + " - " + message.message, {
+      ...this.otherOptions,
+      stack: _.get(message, "stack", undefined),
+    });
+    winstonFileLogger[func](message, {
+      object: arg,
+      module: this.module,
+      ...this.otherOptions,
+    });
   }
+};
 
-  warn(message, arg) {
-    //level 1
-    this.generic(message, arg, "warn");
-  }
+ModularLogger.prototype.error = function (message, arg) {
+  //level 0
+  this.generic(message, arg, "error");
+};
 
-  info(message, arg) {
-    // level 2
-    this.generic(message, arg, "info");
-  }
+ModularLogger.prototype.warn = function (message, arg) {
+  //level 1
+  this.generic(message, arg, "warn");
+};
 
-  verbose(message, arg) {
-    // level 3
-    this.generic(message, arg, "verbose");
-  }
+ModularLogger.prototype.info = function (message, arg) {
+  // level 2
+  this.generic(message, arg, "info");
+};
 
-  debug(message, arg) {
-    //level 4
-    this.generic(message, arg, "debug");
-  }
+ModularLogger.prototype.verbose = function (message, arg) {
+  // level 3
+  this.generic(message, arg, "verbose");
+};
 
-  silly(message, arg) {
-    // level 5
-    this.generic(message, arg, "silly");
-  }
+ModularLogger.prototype.debug = function (message, arg) {
+  //level 4
+  this.generic(message, arg, "debug");
+};
 
-  generic(message, arg, func) {
-    //winstonFileLogger[func](message)
-
-    let moduleText = this.bgColor
-      ? chalk.bold.black[this.bgColor](`[${this.module}]`)
-      : `[${this.module}]`;
-
-    if (typeof message === "object" && !arg) {
-      //message is an object and is the only param
-      const parsedMessage = message instanceof Error ? message.stack : cj(message);
-      winstonCustomLogger[func](moduleText + " - " + parsedMessage, {
-        ...this.otherOptions,
-      });
-
-      winstonFileLogger[func](parsedMessage, {
-        object: arg,
-        module: this.module,
-        ...this.otherOptions,
-      });
-    } else if (typeof message !== "object" && !arg) {
-      //message is not an object and is the only param
-
-      winstonCustomLogger[func](moduleText + " - " + message, {
-        ...this.otherOptions,
-      });
-      winstonFileLogger[func](message, {
-        object: arg,
-        module: this.module,
-        ...this.otherOptions,
-      });
-    } else if (typeof message !== "object" && typeof arg === "object") {
-      //message is not an object and there is arg
-
-      winstonCustomLogger[func](
-        moduleText + " - " + message + " - " + cj(arg),
-        {
-          ...this.otherOptions,
-        }
-      );
-      winstonFileLogger[func](message, {
-        object: arg,
-        module: this.module,
-        ...this.otherOptions,
-      });
-    } else {
-      winstonCustomLogger[func](moduleText + " - " + message.message, {
-        ...this.otherOptions,
-        stack: _.get(message, "stack", undefined),
-      });
-      winstonFileLogger[func](message, {
-        object: arg,
-        module: this.module,
-        ...this.otherOptions,
-      });
-    }
-  }
+ModularLogger.prototype.silly = function (message, arg) {
+  // level 5
+  this.generic(message, arg, "silly");
 };
 
 module.exports = ModularLogger;

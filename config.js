@@ -1,12 +1,22 @@
-const config ={
+const { isProduction } = require("./src/auxiliaries/ServerAuxiliaries");
+const config = {
+  production: {
     logging: {
-        databaseLogging: false
+      databaseLogging: false,
     },
+  },
+  development: {
+    logging: {
+      databaseLogging: false,
+    },
+  },
+};
 
-}
+const roles = Object.freeze({
+  ADMIN: "ADMIN",
+  BASE: "BASE",
+});
 
-const roles = {
-    ADMIN: "ADMIN",
-    BASE: "BASE"
-}
-module.exports = {config, roles}
+module.exports = { 
+    config: isProduction ? config.production : config.development, 
+    roles };

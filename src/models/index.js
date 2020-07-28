@@ -1,9 +1,9 @@
-
+require("./pg-EnumFix")
 const  Sequelize = require('sequelize');
 const { isProduction } = require("../auxiliaries/ServerAuxiliaries");
 const Logger = require("../services/Logger");
 const logger = new Logger("Database", "bgYellowBright");
-const createDataModel = require("./dataModel")
+const createUserModel = require("./UserModel")
 const {config} = require('../../config');
 
 const databaseCredentials = {
@@ -30,7 +30,7 @@ const initializeDatabase = () => {
 
   
 models = {
-  dataModel: createDataModel(database)
+  userModel: createUserModel(database)
 };
 
   database.authenticate().then((response)=>{    
@@ -47,11 +47,18 @@ models = {
 
     models.sequelize = database;
     models.Sequelize = Sequelize;
-    if(isProduction){
-      database.sync({ alter: true }).then((response)=>{
-        logger.info("Synchronized successfully")
+    if(!isProduction){
+      database.sync({ alter: true })
+      .then((response)=>{
+        logger.info("Database synchronized successfully")
       })
+      .catch(e=>{logger.error(e)}) 
     }
+    /*else {
+      database.sync().then((response)=>{
+        logger.info("Database synchronized successfully")
+      }) 
+    }*/
 
 };
 

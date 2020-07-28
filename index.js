@@ -3,7 +3,7 @@ const cluster= require("cluster");
 const os = require("os");
 const createServer = require('./src/server')
 const Logger = require('./src/services/Logger');
-const logger = new Logger("Cluster", "magenta")
+const logger = new Logger("Cluster", "#F2FE")
 const {isProduction} = require('./src/auxiliaries/ServerAuxiliaries')
 const {initializeDatabase} = require('./src/models')
 logger.info("Environement: " + process.env.NODE_ENV);
