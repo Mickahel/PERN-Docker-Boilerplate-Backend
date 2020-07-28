@@ -19,4 +19,4 @@ const roles = Object.freeze({
 
 module.exports = { 
     config: isProduction ? config.production : config.development, 
-    roles };
+    roles }; 

@@ -1,4 +1,4 @@
-const { Sequelize, DataTypes } = require("sequelize");
+const {DataTypes } = require("sequelize");
 const crypto = require("crypto");
 const { v4: uuid } = require('uuid');
 const jwt = require("jsonwebtoken");
@@ -7,8 +7,8 @@ const { roles } = require("../../config");
 const Logger = require("../services/Logger");
 const logger = new Logger("User Model");
 
-const createModel = (sequelize) => {
-  const model = sequelize.define("user", {
+const createModel = (database) => {
+  const model = database.define("user", {
     id: {
       type: DataTypes.UUID,
       primaryKey: true,

@@ -57,7 +57,7 @@ async function start() {
       // await initializeExthernalServices();
     }
 
-    //Start server
+    // ? Start server
     if (process.env.CLUSTER === "true") {
       startCluster();
     } else {

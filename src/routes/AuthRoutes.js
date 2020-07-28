@@ -1,4 +1,9 @@
+const passport = require('passport')
 const router = require('express').Router();
+
+const Logger = require('../services/Logger')
+const logger = new Logger("Auth", "#aeaefe")
+
 /**
  * @swagger
  * /v1/auth/registration:

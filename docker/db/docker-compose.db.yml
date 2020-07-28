@@ -23,4 +23,5 @@ services:
 
 volumes:
   postgresql-volume:
-    external: true 
+    driver: local
+    #external: true 

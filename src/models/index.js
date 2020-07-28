@@ -1,10 +1,10 @@
-require("./pg-EnumFix")
-const  Sequelize = require('sequelize');
+require("./pg-EnumFix");
+const Sequelize = require("sequelize");
 const { isProduction } = require("../auxiliaries/ServerAuxiliaries");
 const Logger = require("../services/Logger");
 const logger = new Logger("Database", "bgYellowBright");
-const createUserModel = require("./UserModel")
-const {config} = require('../../config');
+const createUserModel = require("./User");
+const { config } = require("../../config");
 
 const databaseCredentials = {
   database: isProduction ? process.env.DB_PROD_NAME : process.env.DB_TEST_NAME,
@@ -15,51 +15,45 @@ const databaseCredentials = {
   options: {
     host: isProduction ? "localhost" : "192.168.99.100",
     dialect: "postgres",
-    logging: config.logging.databaseLogging ? (msg) => logger.silly(msg) : false,
+    query: {
+      raw: true,
+    },
+    logging: config.logging.databaseLogging
+      ? (msg) => logger.silly(msg)
+      : false,
   },
 };
 
-let models = {}
-const initializeDatabase = () => {
-  const database = new Sequelize(
-    databaseCredentials.database,
-    databaseCredentials.user,
-    databaseCredentials.password,
-    databaseCredentials.options
-  );
-
-  
-models = {
-  userModel: createUserModel(database)
-};
-
-  database.authenticate().then((response)=>{    
+const database = new Sequelize(
+  databaseCredentials.database,
+  databaseCredentials.user,
+  databaseCredentials.password,
+  databaseCredentials.options
+);
+const initializeDatabase = async () => {
+  try {
+    logger.info("Connecting to database");
+    await database.authenticate();
     logger.info("Connection to database has been established successfully.");
-  }).catch((error)=>{
-    logger.error("Unable to connect to the database:", error)})
-  
 
-    Object.keys(models).forEach((modelName) => {
-      if ("associate" in models[modelName]) {
-        models[modelName].associate(models);
-      }
-    });
+    //--------- Model initialization ------
+    const User = createUserModel(database);
 
-    models.sequelize = database;
-    models.Sequelize = Sequelize;
-    if(!isProduction){
-      database.sync({ alter: true })
-      .then((response)=>{
-        logger.info("Database synchronized successfully")
-      })
-      .catch(e=>{logger.error(e)}) 
+    if (!isProduction) {
+      await database.sync({ alter: true });
+      logger.info("Database synchronized successfully");
     }
+
     /*else {
       database.sync().then((response)=>{
         logger.info("Database synchronized successfully")
       }) 
     }*/
-
+  } catch (error) {
+    logger.error("Unable to connect to the database:", error);
+    logger.error("Closing app")
+    process.exit(1)
+  }
 };
 
-module.exports = {models, initializeDatabase};
+module.exports = { database, initializeDatabase };
