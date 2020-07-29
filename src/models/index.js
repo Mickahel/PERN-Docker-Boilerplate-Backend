@@ -6,29 +6,13 @@ const logger = new Logger("Database", "bgYellowBright");
 const createUserModel = require("./User");
 const { config } = require("../../config");
 
-const databaseCredentials = {
-  database: isProduction ? process.env.DB_PROD_NAME : process.env.DB_TEST_NAME,
-  user: isProduction ? process.env.DB_PROD_USER : process.env.DB_TEST_USER,
-  password: isProduction
-    ? process.env.DB_PROD_PASSWORD
-    : process.env.DB_TEST_PASSWORD,
-  options: {
-    host: isProduction ? "localhost" : "192.168.99.100",
-    dialect: "postgres",
-    query: {
-      raw: true,
-    },
-    logging: config.logging.databaseLogging
-      ? (msg) => logger.silly(msg)
-      : false,
-  },
-};
+
 
 const database = new Sequelize(
-  databaseCredentials.database,
-  databaseCredentials.user,
-  databaseCredentials.password,
-  databaseCredentials.options
+  config.databaseConfig.database,
+  config.databaseConfig.user,
+  config.databaseConfig.password,
+  config.databaseConfig.options
 );
 const initializeDatabase = async () => {
   try {
@@ -43,12 +27,6 @@ const initializeDatabase = async () => {
       await database.sync({ alter: true });
       logger.info("Database synchronized successfully");
     }
-
-    /*else {
-      database.sync().then((response)=>{
-        logger.info("Database synchronized successfully")
-      }) 
-    }*/
   } catch (error) {
     logger.error("Unable to connect to the database:", error);
     logger.error("Closing app")

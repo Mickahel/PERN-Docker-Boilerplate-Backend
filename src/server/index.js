@@ -116,5 +116,5 @@ module.exports = function createServer() {
     logger.error(err)
     res.status(status).send(errorMessage);
   }); 
-  const server = initializeHttp(app)
+  initializeHttp(app)
 };
