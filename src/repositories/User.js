@@ -48,12 +48,12 @@ const UserRepository = class UserRepository {
     })
   }
 
-  // TODO CAMBIARE
+  // TODO provare
   async createUser(user, generateActivationCode=true){
     try{
-      const newUser = await database.models.user.create(user)
-      if(user.password) newUser.setPassword(user.password)
-      if(generateActivationCode) newUser.setActivationCode()
+      if(user.password) user.setPassword(user.password)
+      if(generateActivationCode) user.setActivationCode()
+      const newUser = database.models.user.build(user)
       return await newUser.save()
     }catch(e){
       throw e;

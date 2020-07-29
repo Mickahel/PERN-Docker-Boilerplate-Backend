@@ -19,14 +19,14 @@ router.get('/healthcheck',   (req , res, next) => {
 
 /**
  * @swagger
- * /v1/server/killProcess:
- *    get:
+ * /v1/server/kill-process:
+ *    delete:
  *      summary: kills the process
  *      security:
  *          - bearerAuthAdmin: []
  *      tags: [Server]
  */
-router.get("/killProcess", (req, res, next) => {
+router.delete("/kill-process", (req, res, next) => {
     console.log("killing ", process.pid);
     res.send("killing " + process.pid);
     process.exit();

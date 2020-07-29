@@ -16,20 +16,20 @@ const createModel = (database) => {
     },
     email: { 
         type: DataTypes.STRING, 
-        unique: "emailUnique",
+        unique: true,
         allowNull: false },
     salt: {
-        type: DataTypes.STRING(255),
+        type: DataTypes.STRING,
         allowNull: false
     },
     hash: { 
-        type: DataTypes.STRING(255),
+        type: DataTypes.STRING,
         allowNull: false
     },
-    firstname: DataTypes.STRING(255),
-    lastname: DataTypes.STRING(255),
+    firstname: DataTypes.STRING,
+    lastname: DataTypes.STRING,
     activationCode: DataTypes.UUID,
-    profileImageUrl: DataTypes.STRING(255),
+    profileImageUrl: DataTypes.STRING,
     role: {
       type: DataTypes.ENUM(Object.values(roles)),
       defaultValue: roles.BASE,

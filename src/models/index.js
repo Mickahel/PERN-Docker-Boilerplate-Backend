@@ -20,13 +20,17 @@ const initializeDatabase = async () => {
     await database.authenticate();
     logger.info("Connection to database has been established successfully.");
 
-    //--------- Model initialization ------
+    // ? --------- Model initialization ------
     const User = createUserModel(database);
 
     if (!isProduction) {
       await database.sync({ alter: true });
       logger.info("Database synchronized successfully");
+    } else{
+      await database.sync();
+      logger.info("Database synchronized successfully");
     }
+
   } catch (error) {
     logger.error("Unable to connect to the database:", error);
     logger.error("Closing app")

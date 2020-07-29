@@ -1,19 +1,29 @@
 require("dotenv").config();
+const Logger = require("./src/services/Logger");
+const crashLogger = new Logger("CRASH", "#ff0000");
+
+process.on("unhandledRejection", (error) => {
+  crashLogger.error("unhandledRejection", error);
+});
+
+process.on("uncaughtException", (error) => {
+  crashLogger.error("uncaughtException", error);
+});
+
 const cluster = require("cluster");
 const os = require("os");
 const createServer = require("./src/server");
-const Logger = require("./src/services/Logger");
 const logger = new Logger("Cluster", "#F2FE");
 const { isProduction } = require("./src/auxiliaries/ServerAuxiliaries");
 const { initializeDatabase } = require("./src/models");
-const test = require("./testServices");
-const crashLogger = new Logger("CRASH", "#ff0000");
+
+
 logger.info("Environement: " + process.env.NODE_ENV);
 
 const startCluster = () => {
-  // Check if current process is master.
+  // ? Check if current process is master.
   if (cluster.isMaster) {
-    logger.info("MASTER [" + process.pid + "]");
+    logger.info("Master Cluster [" + process.pid + "]");
 
     // Get total CPU cores.
     os.cpus().forEach((cpu) => cluster.fork());
@@ -31,7 +41,7 @@ const startCluster = () => {
       cluster.fork();
     });
   } else {
-    logger.info("CHILD [" + process.pid + "]");
+    logger.info("Spawn Child [" + process.pid + "]");
     // This is not the master process, so we spawn the express server.
     startSingle();
   }
@@ -44,13 +54,7 @@ function startSingle() {
 async function start() {
   logger.info("Starting PERN Docker Boilerplate");
 
-  process.on("unhandledRejection", (error) => {
-    crashLogger.error("unhandledRejection", error);
-  });
 
-  process.on("uncaughtException", (error) => {
-    crashLogger.error("uncaughtException", error);
-  });
 
   // ? Start services
   try {
@@ -68,18 +72,16 @@ async function start() {
     }*/
 
     await initializeDatabase();
-
+ 
     // ? Start server
     if (process.env.CLUSTER === "true") {
       startCluster();
     } else {
       startSingle();
     }
-
   } catch (e) {
     logger.error(e);
   }
 }
 
 start(); 
-test(); 

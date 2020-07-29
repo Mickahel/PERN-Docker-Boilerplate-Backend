@@ -15,7 +15,9 @@ dependencies:
   lodash: 4.17.19
   method-override: 3.0.0
   morgan: 1.10.0
+  nodemailer: 6.4.11
   nodemon: 2.0.4
+  nunjucks: 3.2.2
   passport: 0.4.1
   passport-local: 1.0.0
   pg: 8.2.1_pg@8.2.1
@@ -83,6 +85,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-syUgf67ZQpaJj01/tRTknkMNoBBLWJOBODF0Zm4NrXmiSuxjymFrxnTu1QVYRubhVkRcZLYZG8STTwJRdVm/WQ==
+  /a-sync-waterfall/1.0.1:
+    dev: false
+    resolution:
+      integrity: sha512-RYTOHHdWipFUliRFMCS4X2Yn2X8M87V/OpSqWzKKOGhzqyUxzyVmhHDH9sAvG+ZuQf/TAOFsLCpMw09I1ufUnA==
   /abbrev/1.1.1:
     dev: false
     resolution:
@@ -146,6 +152,10 @@ packages:
     dev: false
     resolution:
       integrity: sha1-ml9pkFGx5wczKPKgCJaLZOopVdI=
+  /asap/2.0.6:
+    dev: false
+    resolution:
+      integrity: sha1-5QNHYR1+aQlDIIu9r+vLwvuGbUY=
   /async/2.6.3:
     dependencies:
       lodash: 4.17.15
@@ -164,12 +174,12 @@ packages:
       node: '>= 0.8'
     resolution:
       integrity: sha512-NF+epuEdnUYVlGuhaxbbq+dvJttwLnGY+YixlXlME5KpQ5W3CnXA5cVTneY3SPbPDRkcjMbifrwmFYcClgOZeg==
-  /binary-extensions/2.0.0:
+  /binary-extensions/2.1.0:
     dev: false
     engines:
       node: '>=8'
     resolution:
-      integrity: sha512-Phlt0plgpIIBOGTT/ehfFnbNlfsDEiqmzE2KRXoX1bLIlir4X/MR+zSyBEkL05ffWgnRSf/DXv+WrUAVr93/ow==
+      integrity: sha512-1Yj8h9Q+QDF5FzhMs/c9+6UntbD5MkRfRwac8DoEm9ZfUBZ7tZ55YcGVAzEe4bXsdQHEk+s9S5wsOKVdZrw0tQ==
   /body-parser/1.19.0:
     dependencies:
       bytes: 3.1.0
@@ -305,6 +315,23 @@ packages:
       fsevents: 2.1.3
     resolution:
       integrity: sha512-aXAaho2VJtisB/1fg1+3nlLJqGOuewTzQpd/Tz0yTg2R0e4IGtshYvtjowyEumcBv2z+y4+kc75Mz7j5xJskcQ==
+  /chokidar/3.4.1:
+    dependencies:
+      anymatch: 3.1.1
+      braces: 3.0.2
+      glob-parent: 5.1.1
+      is-binary-path: 2.1.0
+      is-glob: 4.0.1
+      normalize-path: 3.0.0
+      readdirp: 3.4.0
+    dev: false
+    engines:
+      node: '>= 8.10.0'
+    optional: true
+    optionalDependencies:
+      fsevents: 2.1.3
+    resolution:
+      integrity: sha512-TQTJyr2stihpC4Sya9hs2Xh+O2wf+igjL36Y75xx2WdHuiICcn/XJza46Jwt0eT5hVpQOzo3FpY3cj3RVYLX0g==
   /ci-info/2.0.0:
     dev: false
     resolution:
@@ -389,6 +416,12 @@ packages:
       node: '>= 6'
     resolution:
       integrity: sha512-JrDGPAKjMGSP1G0DUoaceEJ3DZgAfr/q6X7FVk4+U5KxUSKviYGM2k6zWkfyyBHy5rAtzgYJFa1ro2O9PtoxwQ==
+  /commander/5.1.0:
+    dev: false
+    engines:
+      node: '>= 6'
+    resolution:
+      integrity: sha512-P0CysNDQ7rtVw4QIQtm+MRxV66vKFSvlsQvGYXZWR3qFU0jlMKHZZZgw8e+8DSah4UDKMqnknRDQz+xuQXQ/Zg==
   /compressible/2.0.18:
     dependencies:
       mime-db: 1.44.0
@@ -1039,7 +1072,7 @@ packages:
       integrity: sha512-eVRqCvVlZbuw3GrM63ovNSNAeA1K16kaR/LRY/92w0zxQ5/1YzwblUX652i4Xs9RwAGjW9d9y6X88t8OaAJfWQ==
   /is-binary-path/2.1.0:
     dependencies:
-      binary-extensions: 2.0.0
+      binary-extensions: 2.1.0
     dev: false
     engines:
       node: '>=8'
@@ -1378,6 +1411,13 @@ packages:
       node: '>=4.0.0'
     resolution:
       integrity: sha512-0L9FvHG3nfnnmaEQPjT9xhfN4ISk0A8/2j4M37Np4mcDesJjHgEUfgPhdCyZuFI954tjokaIj/A3NdpFNdEh4Q==
+  /nodemailer/6.4.11:
+    dev: false
+    engines:
+      node: '>=6.0.0'
+    requiresBuild: true
+    resolution:
+      integrity: sha512-BVZBDi+aJV4O38rxsUh164Dk1NCqgh6Cm0rQSb9SK/DHGll/DrCMnycVDD7msJgZCnmVa8ASo8EZzR7jsgTukQ==
   /nodemon/2.0.4:
     dependencies:
       chokidar: 3.4.0
@@ -1416,6 +1456,19 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-2s47yzUxdexf1OhyRi4Em83iQk0aPvwTddtFz4hnSSw9dCEsLEGf6SwIO8ss/19S9iBb5sJaOuTvTGDeZI00BQ==
+  /nunjucks/3.2.2:
+    dependencies:
+      a-sync-waterfall: 1.0.1
+      asap: 2.0.6
+      commander: 5.1.0
+    dev: false
+    engines:
+      node: '>= 6.9.0'
+    hasBin: true
+    optionalDependencies:
+      chokidar: 3.4.1
+    resolution:
+      integrity: sha512-KUi85OoF2NMygwODAy28Lh9qHmq5hO3rBlbkYoC8v377h4l8Pt5qFjILl0LWpMbOrZ18CzfVVUvIHUIrtED3sA==
   /object-assign/4.1.1:
     dev: false
     engines:
@@ -2295,7 +2348,9 @@ specifiers:
   lodash: ^4.17.19
   method-override: ^3.0.0
   morgan: ^1.10.0
+  nodemailer: ^6.4.11
   nodemon: ^2.0.4
+  nunjucks: ^3.2.2
   passport: ^0.4.1
   passport-local: ^1.0.0
   pg: ^8.2.1

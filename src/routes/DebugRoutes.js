@@ -17,9 +17,6 @@ router.get('/status/:status',   (req , res, next) => {
            anotherThing: "do",
        }
    })
-    /* res.status(req.query.status).send({
-        value: "hello"
-      });*/
 })
 
 module.exports = router;

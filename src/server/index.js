@@ -27,7 +27,8 @@ const initializeAuthentication = require('./initializers/initializeAuthenticatio
 const initializeSwagger = require('./initializers/initializeSwagger')
 const initializeCors = require('./initializers/initializeCors')
 const initializeRoutes = require('./initializers/initializeRoutes')
-const initializeHttp = require('./initializers/initializeHttp')
+const initializeHttp = require('./initializers/initializeHttp');
+const { type } = require("os");
 //const initializePassport = require('./initializers/initializePassport')
 //const initializeWebSocket = require('./initializers/initializeWebSocket')
 
@@ -107,7 +108,7 @@ module.exports = function createServer() {
   app.use((err, req, res, next) => {
     let status = err.status ? err.status : 500;
     let errorMessage = {
-      res: "error",
+      response: "error",
       message: err.message,
       errors: err.errors,
       status,

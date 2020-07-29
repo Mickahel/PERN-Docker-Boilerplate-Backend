@@ -6,7 +6,7 @@ const chalk = require("chalk");
 
 const consoleFromat = {
   format: winston.format.combine(
-    winston.format.timestamp(standardTimestampData),
+    //winston.format.timestamp(standardTimestampData),
     winston.format.splat(),
     winston.format.colorize(),
     winston.format.simple()
