@@ -114,7 +114,7 @@ module.exports = function createServer() {
       status,
       stack: _.get(err, "stack"),
     };
-    logger.error(err)
+    //logger.error(err)
     res.status(status).send(errorMessage);
   }); 
   initializeHttp(app)

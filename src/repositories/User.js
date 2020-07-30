@@ -1,4 +1,4 @@
-const { database } = require("../models/Database");
+const { database } = require("../models");
 const Sequelize = require("sequelize");
 const _ = require("lodash");
 
@@ -47,14 +47,13 @@ const UserRepository = class UserRepository {
       }
     })
   }
-
-  // TODO provare
   async createUser(user, generateActivationCode=true){
     try{
-      if(user.password) user.setPassword(user.password)
-      if(generateActivationCode) user.setActivationCode()
+
       const newUser = database.models.user.build(user)
-      return await newUser.save()
+      if(user.password) newUser.setPassword(user.password)
+      if(generateActivationCode) newUser.setActivationCode()
+      return await newUser.save() 
     }catch(e){
       throw e;
     }

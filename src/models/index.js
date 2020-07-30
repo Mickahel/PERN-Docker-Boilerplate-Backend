@@ -13,7 +13,7 @@ const database = new Sequelize(
   config.databaseConfig.user,
   config.databaseConfig.password,
   config.databaseConfig.options
-);
+);  
 const initializeDatabase = async () => {
   try {
     logger.info("Connecting to database");
@@ -23,18 +23,14 @@ const initializeDatabase = async () => {
     // ? --------- Model initialization ------
     const User = createUserModel(database);
 
-    if (!isProduction) {
-      await database.sync({ alter: true });
-      logger.info("Database synchronized successfully");
-    } else{
-      await database.sync();
-      logger.info("Database synchronized successfully");
-    }
-
+    if (!isProduction) await database.sync({ alter: true}); 
+    else await database.sync();
+    
+    logger.info("Database synchronized successfully");
   } catch (error) {
     logger.error("Unable to connect to the database:", error);
     logger.error("Closing app")
-    process.exit(1)
+    process.exit(1)  
   }
 };
 

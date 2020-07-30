@@ -80,7 +80,7 @@ async function start() {
       startSingle();
     }
   } catch (e) {
-    logger.error(e);
+    crashLogger.error(e);
   }
 }
 

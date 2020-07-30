@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const _ = require("lodash");
 const { roles } = require("../../config");
 const Logger = require("../services/Logger");
-const logger = new Logger("User Model");
+const logger = new Logger("User Model", "#facafa");
 
 const createModel = (database) => {
   const model = database.define("user", {
@@ -16,12 +16,12 @@ const createModel = (database) => {
     },
     email: { 
         type: DataTypes.STRING, 
-        unique: true,
+        unique: "emailUnique",
         allowNull: false },
     salt: {
         type: DataTypes.STRING,
         allowNull: false
-    },
+    }, 
     hash: { 
         type: DataTypes.STRING,
         allowNull: false
@@ -39,7 +39,7 @@ const createModel = (database) => {
       type: DataTypes.INTEGER, //? 1=Activated, 0=Activation pending, -1=Trashed
       defaultValue: 0,
       allowNull: false
-    },
+    }, 
   });
 
   model.prototype.setStatus = function (status) {
@@ -58,9 +58,11 @@ const createModel = (database) => {
   };
 
   model.prototype.setPassword = function (password) {
+
     this.salt = crypto.randomBytes(16).toString("hex");
+
     this.hash = crypto
-      .pbkdf2Sync(password, this.salt, 10000, 128, "sha512")
+      .pbkdf2Sync(password, this.salt, 10, 64, "sha512")
       .toString("hex");
   };
 
@@ -74,7 +76,7 @@ const createModel = (database) => {
  
   model.prototype.validatePassword = function (password) {
     const hash = crypto
-      .pbkdf2Sync(password, this.salt, 10000, 128, "sha512")
+      .pbkdf2Sync(password, this.salt, 10, 64, "sha512")
       .toString("hex");
     return this.hash === hash;
   };

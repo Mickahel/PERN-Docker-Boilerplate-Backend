@@ -9,9 +9,6 @@ const config = {
         host: "localhost",
         dialect: "postgres",
         logging: (msg) => logger.silly(msg),
-        query: {
-          raw: true,
-        },
       }
     }
   },
@@ -24,9 +21,6 @@ const config = {
         host: "192.168.99.100",
         dialect: "postgres",
         logging: false,
-        query: {
-          raw: true,
-        },
       }
     }
   },
