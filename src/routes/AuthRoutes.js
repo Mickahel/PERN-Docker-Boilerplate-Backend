@@ -7,7 +7,7 @@ const _ = require('lodash')
 const { database } = require('../models')
 const UserService = require('../services/User')
 const UserRepository = require('../repositories/User')
-
+const AuthValidator = require("../validators/auth")
 /**
  * @swagger
  * /v1/auth/registration:
@@ -15,8 +15,8 @@ const UserRepository = require('../repositories/User')
  *      summary: Registration endpoint
  *      tags: [Auth]
  */
-router.post('/signup', async (req, res, next) => {
-  const { body: user } = req
+router.post('/signup', AuthValidator.signup,async (req, res, next) => {
+  let { body: user } = req
   try {
     user.email = user.email.trim();
     const isIn = await UserService.isUserRegistrated(user.email);
@@ -24,9 +24,7 @@ router.post('/signup', async (req, res, next) => {
     else {
       let userInDB = await UserRepository.createUser(user)
       //sendNewUserActivationMail(userInDB) //userInDB.datavalues //TODO
-      res.status(201).send({
-        message: "ok"
-      })
+      res.status(201).send({ message: "ok" })
     }
   } catch (e) {
     next(e)
@@ -42,7 +40,7 @@ router.post('/signup', async (req, res, next) => {
 *      tags: [Auth]
 */
 router.post('/login', (req, res, next) => {
-  const { body: user } = req;
+  let { body: user } = req;
   try {
     user.email = user.email.trim();
 
@@ -76,9 +74,22 @@ router.post('/login', (req, res, next) => {
  *      summary: Activates the user using the activationCode
  *      tags: [Auth]
  */
-router.post('/activation/:activationCode', (req, res, next) => {
-  next({ message: "not implemented yet" })
-
+router.post('/activation/:activationCode', async (req, res, next) => {
+  const { activationCode } = req.params
+  try {
+    let user = await UserRepository.getUserByActivationCode(activationCode)
+    if (user) {
+      user.status = 1
+      user.activationCode = null
+      user.save()
+      //sendUserActivatedMail(user) //TODO
+      res.send({ message: "ok" })
+    } else {
+      next({ message: "User not found", status: 404 })
+    }
+  } catch (e) {
+    next(e)
+  }
 })
 
 
@@ -90,7 +101,22 @@ router.post('/activation/:activationCode', (req, res, next) => {
  *      tags: [Auth]
  */
 router.post('/lost-password-mail', async (req, res, next) => {
-  next({ message: "not implemented yet" })
+  let email = req.body.email.trim()
+  try {
+    let user = await UserRepository.getUserByMail(email)
+    if (user) {
+      user.setActivationCode()
+      await user.save()
+      //sendResetPasswordMail(user.dataValues)  //TODO
+      res.send({ message: "ok" })
+    } else {
+      next({ message: "User not found", status: 404 })
+    }
+  } catch (e) {
+    next(e)
+
+  }
+
 })
 
 /**
@@ -101,7 +127,20 @@ router.post('/lost-password-mail', async (req, res, next) => {
  *      tags: [Auth]
  */
 router.post('/password-reset', async (req, res, next) => {
-  next({ message: "not implemented yet" })
+  const { activationCode, password } = req.body
+  try {
+    const user = await UserRepository.getUserByActivationCode(activationCode)
+    if (user) {
+      user.setPassword(password)
+      user.activationCode = null
+      await user.save()
+      res.send({ message: "ok" })
+    } else {
+      next({ message: "User not found", status: 404 })
+    }
+  } catch (e) {
+    next(e)
+  }
 })
 
 module.exports = router;

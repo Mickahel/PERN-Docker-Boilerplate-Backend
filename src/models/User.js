@@ -58,9 +58,7 @@ const createModel = (database) => {
   };
 
   model.prototype.setPassword = function (password) {
-
     this.salt = crypto.randomBytes(16).toString("hex");
-
     this.hash = crypto
       .pbkdf2Sync(password, this.salt, 10, 64, "sha512")
       .toString("hex");
@@ -97,13 +95,6 @@ const createModel = (database) => {
     return { token, tokenExpirationDate: expirationDate.getTime() };
   };
 
-  model.prototype.toAuthJSON = function (data) {
-    return {
-      id: this.id,
-      email: this.email,
-      token: this.generateJWT(data),
-    };
-  };
 
   model.prototype.toJSON = function () {
     var values = Object.assign({}, this.get());
