@@ -15,7 +15,7 @@ const AuthValidator = require("../validators/auth")
  *      summary: Registration endpoint
  *      tags: [Auth]
  */
-router.post('/signup', AuthValidator.signup,async (req, res, next) => {
+router.post('/signup', AuthValidator.signup, async (req, res, next) => {
   let { body: user } = req
   try {
     user.email = user.email.trim();
@@ -39,7 +39,7 @@ router.post('/signup', AuthValidator.signup,async (req, res, next) => {
 *      summary: Login endpoint
 *      tags: [Auth]
 */
-router.post('/login', (req, res, next) => {
+router.post('/login', AuthValidator.login, (req, res, next) => {
   let { body: user } = req;
   try {
     user.email = user.email.trim();
@@ -73,7 +73,7 @@ router.post('/login', (req, res, next) => {
  *      summary: Activates the user using the activationCode
  *      tags: [Auth]
  */
-router.post('/activation/:activationCode', async (req, res, next) => {
+router.post('/activation/:activationCode',AuthValidator.activation, async (req, res, next) => {
   const { activationCode } = req.params
   try {
     let user = await UserRepository.getUserByActivationCode(activationCode)
@@ -99,7 +99,7 @@ router.post('/activation/:activationCode', async (req, res, next) => {
  *      summary: Send lost password email
  *      tags: [Auth]
  */
-router.post('/lost-password-mail', async (req, res, next) => {
+router.post('/lost-password-mail',AuthValidator.lostPasswordMail, async (req, res, next) => {
   let email = req.body.email.trim()
   try {
     let user = await UserRepository.getUserByMail(email)
@@ -113,9 +113,7 @@ router.post('/lost-password-mail', async (req, res, next) => {
     }
   } catch (e) {
     next(e)
-
   }
-
 })
 
 /**
@@ -125,7 +123,7 @@ router.post('/lost-password-mail', async (req, res, next) => {
  *      summary : Resets the password
  *      tags: [Auth]
  */
-router.post('/password-reset', async (req, res, next) => {
+router.post('/password-reset',AuthValidator.passwordReset, async (req, res, next) => {
   const { activationCode, password } = req.body
   try {
     const user = await UserRepository.getUserByActivationCode(activationCode)
