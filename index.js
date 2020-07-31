@@ -1,4 +1,5 @@
 require("dotenv").config();
+const {config} = require("./config")
 const Logger = require("./src/services/Logger");
 const crashLogger = new Logger("CRASH", "#ff0000");
 
@@ -52,7 +53,7 @@ function startSingle() {
 } 
 
 async function start() {
-  logger.info("Starting PERN Docker Boilerplate");
+  logger.info(`Starting ${config.title}`);
 
 
 

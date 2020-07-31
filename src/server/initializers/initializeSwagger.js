@@ -1,14 +1,15 @@
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const { isProduction } = require("../../auxiliaries/ServerAuxiliaries");
+const {config} = require("../../../config")
 const swaggerOptions = {
   swaggerDefinition: {
     // Like the one described here: https://swagger.io/specification/#infoObject
     openapi: "3.0.1",
     info: {
-      title: "PERN Docker Boilerplate",
+      title: config.title,
       version: "0.0.0",
-      description: "A boilerplate",
+      description: config.description,
       contact: {
         name: "Michelangelo De Francesco",
         url: "https://www.linkedin.com/in/michelangelodefrancesco",
@@ -17,9 +18,10 @@ const swaggerOptions = {
       license: {
         name: "PROPRIETARY LICENSE",
       },
+
     },
+
     host: process.env.BACKEND_URL,
-    basePath: "/",
     components: {
       securitySchemes: {
         bearerAuthBasic: {

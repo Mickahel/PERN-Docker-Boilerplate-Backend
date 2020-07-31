@@ -1,5 +1,9 @@
 const { isProduction } = require("./src/auxiliaries/ServerAuxiliaries");
 const config = {
+  base:{
+    title:"PERN Boilerplate",
+    date:"a PERN boilerplate"
+  },
   production: {
     databaseConfig:{
       database: process.env.DB_PROD_NAME,
@@ -32,5 +36,8 @@ const roles = Object.freeze({
 });
 
 module.exports = { 
-    config: isProduction ? config.production : config.development, 
+    config: {
+      ...(isProduction ? config.production : config.development),
+      ...config.base
+    }, 
     roles }; 

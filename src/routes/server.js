@@ -1,5 +1,5 @@
 const router = require('express').Router();
-
+const cluster = require("cluster");
 /**
  * @swagger
  * /v1/server/healthcheck:
@@ -9,12 +9,12 @@ const router = require('express').Router();
  *          - bearerAuthBasic: []
  *      tags: [Server]
  */
-router.get('/healthcheck',   (req , res, next) => {
-    res.send({
-        pid: process.pid,
-        uptime: Math.floor(process.uptime())+ " Seconds",
-        timestamp: Date.now()
-      });
+router.get('/healthcheck', (req, res, next) => {
+  res.send({
+    pid: process.pid,
+    uptime: Math.floor(process.uptime()) + " Seconds",
+    timestamp: Date.now()
+  });
 })
 
 /**
@@ -27,9 +27,9 @@ router.get('/healthcheck',   (req , res, next) => {
  *      tags: [Server]
  */
 router.delete("/kill-process", (req, res, next) => {
-    console.log("killing ", process.pid);
-    res.send("killing " + process.pid);
-    process.exit();
-  });
+  console.log("killing ", process.pid);
+  res.send("killing " + process.pid);
+  process.exit();
+});
 
 module.exports = router;

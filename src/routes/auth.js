@@ -8,12 +8,27 @@ const { database } = require('../models')
 const UserService = require('../services/User')
 const UserRepository = require('../repositories/User')
 const AuthValidator = require("../validators/auth")
+
 /**
  * @swagger
  * /v1/auth/registration:
  *    post:
  *      summary: Registration endpoint
  *      tags: [Auth]
+ *      parameters:
+ *      - in: "body"
+ *        name: "email"
+ *        description: "registration email"
+ *        required: true
+ *      - in: "body"
+ *        name: "password"
+ *        description: "password chosen"
+ *        required: true
+ *      responses:
+ *        "409":
+ *          description: "User is registered"
+ *        "406":
+ *          description: "User is not activated / User is deleted"
  */
 router.post('/signup', AuthValidator.signup, async (req, res, next) => {
   let { body: user } = req
@@ -31,12 +46,27 @@ router.post('/signup', AuthValidator.signup, async (req, res, next) => {
   }
 })
 
-
 /**
 * @swagger
 * /v1/auth/login:
 *    post:
 *      summary: Login endpoint
+*      parameters:
+*      - in: "body"
+*        name: "email"
+*        description: "registration email"
+*        required: true
+*      - in: "body"
+*        name: "password"
+*        description: "password chosen"
+*        required: true
+*      responses:
+*        "404":
+*          description: "user doesn't exist"
+*        "401":
+*          description: "user is deleted / user is not activated"
+*        "403":
+*          description: "email or password is invalid"
 *      tags: [Auth]
 */
 router.post('/login', AuthValidator.login, (req, res, next) => {
@@ -63,8 +93,6 @@ router.post('/login', AuthValidator.login, (req, res, next) => {
     next(e)
   }
 })
-
-
 
 /**
  * @swagger
