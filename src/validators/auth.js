@@ -10,7 +10,7 @@ const AuthValidator = class AuthValidator {
             required: ["email", "password"],
             properties: {
               email: { type: "string" },
-              password: { type: "string", "minLength":8 }
+              password: { type: "string", minLength:8 }
             }
         }
         var valid = ajv.validate(schema, user);

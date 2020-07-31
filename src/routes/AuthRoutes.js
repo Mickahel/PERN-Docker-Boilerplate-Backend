@@ -45,10 +45,9 @@ router.post('/login', (req, res, next) => {
     user.email = user.email.trim();
 
     passport.authenticate('local', { session: false }, (err, passportUser, info) => {
-      console.log(passportUser)
       if (err) return next(err);
       try {
-        if (!passportUser) return next({ status: 401, message: 'Username or password incorrect' })
+        if (!passportUser && info) return next(info)
 
         const token = passportUser.generateJWT()
         res.send({

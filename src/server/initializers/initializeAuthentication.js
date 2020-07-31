@@ -11,9 +11,9 @@ module.exports = function initializeAuthentication() {
     }, function (email, password, done) {
 
         UserRepository.getUserByMail(email).then(user => {
-            console.log(user)
-            if (!user) return done(null, false, { errors: { 'user': ' user doesn\'t exist' } });
-            if (!user.validatePassword(password)) return done(null, false, { errors: { 'email or password': 'is invalid' } });
+            if (!user) return done(null, false, { message: 'user doesn\'t exist', status: 404 });
+            else if (user.status==0) return done(null, false, { message: ' user is not activated', status:401 });
+            else if (!user.validatePassword(password)) return done(null, false, { message: ' email or password is invalid', status:403});
             return done(null, user);
         }).catch(e => {
             done(null, false, e)
