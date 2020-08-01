@@ -34,7 +34,7 @@ By creating a PERN boilerplate that will be used to start projects.
 * 📝 Create private/public routes for authenticated users
 * 📝 Create private routes for Admin/base users
 * 📝 Create emails
-* 📝 Create upload files
+* 📝 Create upload files API
 * 📝 Create Subscriptions API
 * 📝 Create General Settings API
 * 📝 Create Profile API
@@ -44,8 +44,8 @@ By creating a PERN boilerplate that will be used to start projects.
 * 📝 Log rotation
 
 ### 🖼️ App Development
-* ✔️ Added caching strategy (TODO: Add google fonts caching)
-* ✔️ Add MUI Drawer
+* ✔️ Added caching strategy workbox (TODO: Add google fonts caching)
+* 📝 Add MUI Drawer
 * 📝 Connect to API depending on REACT_APP_NODE_ENV
 * 📝 Add Axios Fetcher
 * 📝 Add ThemeContext
@@ -74,5 +74,13 @@ By creating a PERN boilerplate that will be used to start projects.
 * 📝 Add pm2 to frontend in order to set the go-prod
 
 ### 🐘 DB Administration & Usage
-
 * 📝 Setup a user for backend app with permission restrictions
+
+
+### 🖼️ Documentation
+* 📝 Getting Started
+* 📝 Deploy
+* 📝 Change Configs
+* 📝 Development
+* 📝 [Backend] how to use logger
+* 📝 [Frontend] how to use fetcher
