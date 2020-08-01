@@ -29,18 +29,15 @@ const config = {
     }
   },
 };
+  
 
 const roles = Object.freeze({
-  SUPERADMIN: "SUPERADMIN",
-  ADMIN:      "ADMIN",
-  BASE:       "BASE",
-});
-
-/*const roles = Object.freeze({
   SUPERADMIN: {name: "SUPERADMIN",  permissionLevel: 2},
   ADMIN:      {name: "ADMIN",       permissionLevel: 1},
   BASE:       {name: "BASE",        permissionLevel: 0}
-});*/
+});
+
+
 module.exports = { 
     config: {
       ...(isProduction ? config.production : config.development),

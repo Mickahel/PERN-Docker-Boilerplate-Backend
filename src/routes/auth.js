@@ -70,28 +70,26 @@ router.post('/signup', AuthValidator.signup, async (req, res, next) => {
 *          description: "email or password is invalid"
 *      tags: [Auth]
 */
-router.post('/login', AuthValidator.login, (req, res, next) => {
+router.post('/login', AuthValidator.login,  (req, res, next) => {
   let { body: user } = req;
   try {
     user.email = user.email.trim();
 
-    passport.authenticate('local', { session: false }, (err, passportUser, info) => {
+    passport.authenticate('local', { session: false }, async(err, passportUser, info) => {
       if (err) return next(err);
-      try {
         if (!passportUser && info) return next(info)
         else {
-          const accessToken = UserService.generateAccessToken(passportUser.id)
-          const refreshToken = UserService.generateRefreshToken(passportUser.id)
+          const accessToken   = UserService.generateAccessToken(passportUser.id, passportUser.role)
+          const refreshToken  = UserService.generateRefreshToken(passportUser.id, passportUser.role)
+          await UserRepository.setRefreshToken(passportUser, refreshToken)
           res.send({
             accessToken,
             refreshToken,
             user: passportUser,
           })
         }
-      } catch (e) {
-        next({ message: 'Internal error'})
       }
-    })(req, res, next)
+    )(req, res, next)
   } catch (e) {
     next(e)
   }
@@ -113,7 +111,7 @@ router.post('/activation/:activationCode', AuthValidator.activation, async (req,
       user.activationCode = null
       user.save()
       //sendUserActivatedMail(user) //TODO
-      res.send({ message: "ok" })
+      res.send({ message: "ok" }) 
     } else {
       next({ message: "User not found", status: 404 })
     }
@@ -172,27 +170,28 @@ router.post('/password-reset', AuthValidator.passwordReset, async (req, res, nex
 })
 
 
-router.post("/token",(req,res,next)=>{
+router.post("/token", async(req,res,next)=>{
   let refreshToken = req.body.token
-  // TODO check refresh token
-  //let refreshTokenDB= UserRepository.getRefreshToken()
-  //if(refreshTokenDB){
-    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, id)=>{
+  let refreshTokenDB= await UserRepository.getRefreshToken(refreshToken)
+  if(refreshTokenDB){
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, data)=>{
         if(err) return next({message: "Error in RefreshToken", status:403})
-        const accessToken = UserService.generateAccessToken()
+        const accessToken = UserService.generateAccessToken(data.id, data.role)
         res.send({accessToken})
     })
-  //} else next({message: "RefreshToken Not Found", status:403})
+  } else next({message: "RefreshToken Not Found", status:403})
 })
 
 
-router.delete("/logout",(req,res,next)=>{
+router.delete("/logout",async (req,res,next)=>{
   let refreshToken = req.body.token
-  // TODO check refresh token
-  //try
-  //UserRepository.deleteRefreshToken(refreshToken)
-  //res.send(204)
-  //} else next({message: "RefreshToken Not Found", status:403})
+  try{
+  let deleted = await UserRepository.deleteRefreshToken(refreshToken)
+  if(deleted[0]==1) res.sendStatus(204)
+  else next({message: "RefreshToken Not Found", status:403})
+  } catch(e){
+    next({message: "Error in Logout", status:403})
+  }
 })
 
 

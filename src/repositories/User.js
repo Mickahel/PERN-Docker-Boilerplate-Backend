@@ -2,9 +2,6 @@ const { database } = require("../models");
 const Sequelize = require("sequelize");
 const _ = require("lodash");
 
-const Logger = require("../services/Logger");
-const logger = new Logger("User Repository", "#a1e1a1");
-
 const UserRepository = class UserRepository {
   getTotal() {
     return models.user.count({
@@ -47,18 +44,40 @@ const UserRepository = class UserRepository {
       }
     })
   }
-  async createUser(user, generateActivationCode=true){
-    try{
 
+  getRefreshToken(refreshToken){
+    return database.models.user.findOne({
+      attributes: ["refreshToken"],
+      where:{
+        refreshToken
+      }
+    })
+  }
+
+  async createUser(user, generateActivationCode=true){
       const newUser = database.models.user.build(user)
       if(user.password) newUser.setPassword(user.password)
       if(generateActivationCode) newUser.setActivationCode()
       return await newUser.save() 
-    }catch(e){
-      throw e;
-    }
   }
   
+  async setRefreshToken(user,refreshToken){
+      user.setRefreshToken(refreshToken)
+      await user.save() 
+  }
+  
+  deleteRefreshToken(refreshToken){
+    return database.models.user.update(
+      {
+        refreshToken:null
+      },
+      {
+        where: {
+          refreshToken
+        }
+      }) 
+  }
+
   delete(user){
     if(!user) return
 

@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const authRequired = require('../middlewares/AuthMiddleware')
+const {roles} = require("../../config")
 /**
  * @swagger
  * /v1/server/healthcheck:
@@ -9,7 +10,7 @@ const authRequired = require('../middlewares/AuthMiddleware')
  *          - bearerAuthBasic: []
  *      tags: [Server]
  */
-router.get('/healthcheck',authRequired("lol"), (req, res, next) => {
+router.get('/healthcheck',authRequired(roles.SUPERADMIN), (req, res, next) => {
   res.send({
     pid: process.pid,
     uptime: Math.floor(process.uptime()) + " Seconds",

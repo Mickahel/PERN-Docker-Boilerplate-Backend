@@ -22,7 +22,7 @@ const createModel = (database) => {
         type: DataTypes.STRING,
         allowNull: false
     }, 
-    hash: { 
+    hash: {
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -31,8 +31,8 @@ const createModel = (database) => {
     activationCode: DataTypes.UUID,
     profileImageUrl: DataTypes.STRING,
     role: {
-      type: DataTypes.ENUM(Object.values(roles)),
-      defaultValue: roles.BASE,
+      type: DataTypes.ENUM(Object.values(roles).map((role)=>role.name)),
+      defaultValue: roles.BASE.name,
       allowNull:false
     },
     status: {
@@ -40,6 +40,7 @@ const createModel = (database) => {
       defaultValue: 0,
       allowNull: false
     }, 
+    refreshToken: DataTypes.STRING
   });
 
   model.prototype.setStatus = function (status) {
@@ -55,6 +56,10 @@ const createModel = (database) => {
 
   model.prototype.setLastname = function (lastname) {
     return (this.lastname = lastname);
+  };
+
+  model.prototype.setRefreshToken = function (refreshToken) {
+    return (this.refreshToken = refreshToken);
   };
 
   model.prototype.setPassword = function (password) {
