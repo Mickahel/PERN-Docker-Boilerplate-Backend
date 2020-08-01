@@ -2,6 +2,7 @@
 const UserRepository = require('../repositories/User')
 const _ = require('lodash')
 const path = require('path')
+const jwt = require('jsonwebtoken');
 
 const UserService = class UserService {
 
@@ -14,6 +15,20 @@ const UserService = class UserService {
             else if(user.status === 0)  return { status: 406, message: 'User is not activated'  }
             else if(user.status === -1) return { status: 406, message: 'User is deleted'        }
     }
+
+    generateRefreshToken(id) {
+        return jwt.sign({id},process.env.REFRESH_TOKEN_SECRET)
+    }
+
+    generateAccessToken(id) {
+        return jwt.sign(
+          {id},
+          process.env.ACCESS_TOKEN_SECRET,
+          {expiresIn:"15s"}
+        );
+      };
+    
+
 
 }
 

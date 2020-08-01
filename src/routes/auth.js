@@ -8,6 +8,7 @@ const { database } = require('../models')
 const UserService = require('../services/User')
 const UserRepository = require('../repositories/User')
 const AuthValidator = require("../validators/auth")
+const jwt = require('jsonwebtoken')
 
 /**
  * @swagger
@@ -78,15 +79,17 @@ router.post('/login', AuthValidator.login, (req, res, next) => {
       if (err) return next(err);
       try {
         if (!passportUser && info) return next(info)
-
-        const token = passportUser.generateJWT()
-        res.send({
-          ...token,
-          user: passportUser,
-        })
-
+        else {
+          const accessToken = UserService.generateAccessToken(passportUser.id)
+          const refreshToken = UserService.generateRefreshToken(passportUser.id)
+          res.send({
+            accessToken,
+            refreshToken,
+            user: passportUser,
+          })
+        }
       } catch (e) {
-        next({ message: 'Internal error' })
+        next({ message: 'Internal error'})
       }
     })(req, res, next)
   } catch (e) {
@@ -101,7 +104,7 @@ router.post('/login', AuthValidator.login, (req, res, next) => {
  *      summary: Activates the user using the activationCode
  *      tags: [Auth]
  */
-router.post('/activation/:activationCode',AuthValidator.activation, async (req, res, next) => {
+router.post('/activation/:activationCode', AuthValidator.activation, async (req, res, next) => {
   const { activationCode } = req.params
   try {
     let user = await UserRepository.getUserByActivationCode(activationCode)
@@ -127,7 +130,7 @@ router.post('/activation/:activationCode',AuthValidator.activation, async (req, 
  *      summary: Send lost password email
  *      tags: [Auth]
  */
-router.post('/lost-password-mail',AuthValidator.lostPasswordMail, async (req, res, next) => {
+router.post('/lost-password-mail', AuthValidator.lostPasswordMail, async (req, res, next) => {
   let email = req.body.email.trim()
   try {
     let user = await UserRepository.getUserByMail(email)
@@ -151,7 +154,7 @@ router.post('/lost-password-mail',AuthValidator.lostPasswordMail, async (req, re
  *      summary : Resets the password
  *      tags: [Auth]
  */
-router.post('/password-reset',AuthValidator.passwordReset, async (req, res, next) => {
+router.post('/password-reset', AuthValidator.passwordReset, async (req, res, next) => {
   const { activationCode, password } = req.body
   try {
     const user = await UserRepository.getUserByActivationCode(activationCode)
@@ -167,5 +170,30 @@ router.post('/password-reset',AuthValidator.passwordReset, async (req, res, next
     next(e)
   }
 })
+
+
+router.post("/token",(req,res,next)=>{
+  let refreshToken = req.body.token
+  // TODO check refresh token
+  //let refreshTokenDB= UserRepository.getRefreshToken()
+  //if(refreshTokenDB){
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, id)=>{
+        if(err) return next({message: "Error in RefreshToken", status:403})
+        const accessToken = UserService.generateAccessToken()
+        res.send({accessToken})
+    })
+  //} else next({message: "RefreshToken Not Found", status:403})
+})
+
+
+router.delete("/logout",(req,res,next)=>{
+  let refreshToken = req.body.token
+  // TODO check refresh token
+  //try
+  //UserRepository.deleteRefreshToken(refreshToken)
+  //res.send(204)
+  //} else next({message: "RefreshToken Not Found", status:403})
+})
+
 
 module.exports = router;

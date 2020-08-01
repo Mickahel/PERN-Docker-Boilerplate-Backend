@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const cluster = require("cluster");
+const authRequired = require('../middlewares/AuthMiddleware')
 /**
  * @swagger
  * /v1/server/healthcheck:
@@ -9,7 +9,7 @@ const cluster = require("cluster");
  *          - bearerAuthBasic: []
  *      tags: [Server]
  */
-router.get('/healthcheck', (req, res, next) => {
+router.get('/healthcheck',authRequired("lol"), (req, res, next) => {
   res.send({
     pid: process.pid,
     uptime: Math.floor(process.uptime()) + " Seconds",

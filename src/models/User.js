@@ -79,23 +79,7 @@ const createModel = (database) => {
     return this.hash === hash;
   };
 
-  model.prototype.generateJWT = function (data) {
-    const today = new Date();
-    const expirationDate = new Date(today);
-    expirationDate.setDate(
-      today.getDate() + _.get(process.env, "EXPIRATION_DAYS", 60)
-    );
-    const token = jwt.sign(
-      {
-        id: this.id,
-        exp: parseInt(expirationDate.getTime() / 1000, 10),
-      },
-      process.env.SECRET
-    );
-    return { token, tokenExpirationDate: expirationDate.getTime() };
-  };
-
-
+  
   model.prototype.toJSON = function () {
     var values = Object.assign({}, this.get());
 

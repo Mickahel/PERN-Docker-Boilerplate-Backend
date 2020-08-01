@@ -1,6 +1,5 @@
 const express = require("express");
 const compression = require('compression')
-const bodyParser = require("body-parser");
 const path = require("path");
 const errorHandler = require("errorhandler");
 const morgan = require("morgan");
@@ -9,10 +8,8 @@ const expressSession = require("express-session");
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 const _ = require("lodash");
-const ModularLogger = require('../services/Logger');
 const passport = require('passport');
 const  favicon = require('serve-favicon')
-const logger = new ModularLogger("Server Starter", "blue")
 const {publicFolder} = require("../auxiliaries/ServerAuxiliaries")
 const pgSessionConnection =require('connect-pg-simple')(expressSession)
 //loggerMod.silly({bar:"foo"});
@@ -68,8 +65,8 @@ module.exports = function createServer() {
   app.use(methodOverride('_method'));
 
   // ? add parser middleware
-  app.use(bodyParser.urlencoded({ extended: false }));
-  app.use(bodyParser.json(/*{ limit: '20kb' }*/ ));
+  app.use(express.urlencoded({ extended: false }));
+  app.use(express.json(/*{ limit: '20kb' }*/ ));
 
   // ? Initialize CORS
   initializeCors(app, router);
