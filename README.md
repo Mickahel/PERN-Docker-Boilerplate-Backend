@@ -1,15 +1,20 @@
 # PERN Docker Boilerplate
 a PERN(Postgres, Express, React, Node) Boilerplate for developing and go-prod with Docker
 
-## Target of the project
-This project aims to consolidate some key concepts of 
-* 🖥️ Backend Development - _Node_
-* 🖼️ Frontend Development - _React_
-* 🔄 CD/CI - _GitHub Actions_
-* ⚒️ DevOps - _Docker, Nginx, PM2_
-* 🐘 DB Administration & Usage - _PostgresSQL (optional:mySQL)_
+## Technologies
+* 🖥️ Node
+* 🖼️ React
+* 🔄 GitHub Actions
+* 🐋 Docker
+* 🤹 Nginx 
+* 📊 PM2
+* 🐘 PostgreSQL / mySQL
 
-By creating a PERN boilerplate that will be used to start projects.
+## Platforms
+* 🖥️ Backend
+* 🖼️ Webapp/App/PWA - Client Side
+* 🎛️ Admin - Admin Side
+
 
 ## Roadmap
 
@@ -27,34 +32,67 @@ By creating a PERN boilerplate that will be used to start projects.
 * ✔️ Custom Logger
 * ✔️ Authentication with passport-local
 * ✔️ Add validators
-* ✔️ Create Server API (TODO: Protect Them)
-* ✔️ Create Debug API (TODO: Protect Them)
+* ✔️ Create Server API
+* ✔️ Create Debug API
 * ✔️ Connect to postgres database depending on NODE_ENV
-* 📝 Authentication with facebook and google
-* 📝 Create private/public routes for authenticated users
-* 📝 Create private routes for Admin/base users
+* ✔️ Create auth middleware for authenticated users
+* 📝 Authentication with facebook and google API
+    * 📝 Validator
+    * 📝 Swagger Documentation
 * 📝 Create emails
 * 📝 Create upload files API
+    * 📝 Validator
+    * 📝 Swagger Documentation
 * 📝 Create Subscriptions API
+    * 📝 Validator
+    * 📝 Swagger Documentation
+    * 📝 Models 
+    * 📝 Repository 
 * 📝 Create General Settings API
+    * 📝 Validator
+    * 📝 Swagger Documentation
+    * 📝 Models 
+    * 📝 Repository
 * 📝 Create Profile API
+    * 📝 Validator
+    * 📝 Swagger Documentation 
+    * 📝 Repository
 * 📝 Create file upload API
+    * 📝 Validator
+    * 📝 Swagger Documentation
+    * 📝 Models 
+    * 📝 Repository
 * 📝 Create TOS API
+    * 📝 Validator
+    * 📝 Swagger Documentation
+    * 📝 Models 
+    * 📝 Repository
 * 📝 Add notifications
 * 📝 Log rotation
+* 📝 Create pagination Middleware
 
 ### 🖼️ App Development
-* ✔️ Added caching strategy workbox (TODO: Add google fonts caching)
-* 📝 Add MUI Drawer
+* ✔️ Added caching strategy workbox
+* 📝 [Add google fonts caching](https://developers.google.com/web/tools/workbox/guides/common-recipes#google_fonts)
+* 📝 [Add UX dialog to SW](https://developers.google.com/web/tools/workbox/guides/advanced-recipes)
+* 📝 [Add MUI Drawer](https://material-ui.com/components/drawers/#mini-variant-drawer)
 * 📝 Connect to API depending on REACT_APP_NODE_ENV
 * 📝 Add Axios Fetcher
 * 📝 Add ThemeContext
 * 📝 Add notifications
 * 📝 Add UserContext
 * 📝 Add Public/Private Routes
+* 📝 Try React Query
 
 ### 🏗️ Admin Development
 🚧 To Be Defined
+* 👀 Views
+    * 📝 Dashboard
+    * 📝 TOS Editor
+    * 📝 Users
+        * 📝 Single User
+    * 📝 Subscriptions
+    * 📝 Logs
 
 ### 🔄 CD/CI
 * 📝 Create a pipeline that creates a docker image with the  backend and publish it to dockerhub
