@@ -3,30 +3,18 @@ const compression = require('compression')
 const path = require("path");
 const errorHandler = require("errorhandler");
 const morgan = require("morgan");
-const methodOverride = require("method-override");
-const expressSession = require("express-session");
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 const _ = require("lodash");
 const passport = require('passport');
 const  favicon = require('serve-favicon')
 const {publicFolder} = require("../auxiliaries/ServerAuxiliaries")
-const pgSessionConnection =require('connect-pg-simple')(expressSession)
-//loggerMod.silly({bar:"foo"});
-//loggerMod.silly("Questo è un winston silly ");
-//loggerMod.silly("Questo è un winston silly ",{bar:"foo"});
-//loggerMod.verbose('and over your neighbors dog?');
-//loggerMod.info('Whats great for a snack,');
-//loggerMod.warn('And fits on your back?');
-//loggerMod.error('Its log, log, log');
-//loggerMod.debug('Its log, log, log');
 const initializeAuthentication = require('./initializers/initializeAuthentication')
 const initializeSwagger = require('./initializers/initializeSwagger')
 const initializeCors = require('./initializers/initializeCors')
 const initializeRoutes = require('./initializers/initializeRoutes')
 const initializeHttp = require('./initializers/initializeHttp');
 const { type } = require("os");
-//const initializePassport = require('./initializers/initializePassport')
 //const initializeWebSocket = require('./initializers/initializeWebSocket')
 
 // ? https://itnext.io/make-security-on-your-nodejs-api-the-priority-50da8dc71d68
@@ -38,7 +26,8 @@ module.exports = function createServer() {
   const router = express.Router();
 
   // ? Add Session for authentication
-  app.use(
+  //* Sessions are not used
+  /*app.use(
     expressSession({
       secret: process.env.SESSION_SECRET,
       resave: false,
@@ -46,12 +35,12 @@ module.exports = function createServer() {
       store: new pgSessionConnection(),
       cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }  //? 30 days
     })
-  );
+  );*/
 
   // ? Initialize Passport for authentication
   app.use(passport.initialize());
-  app.use(passport.session());
-
+  //app.use(passport.session()); //* Sessions are not used
+ 
   // ? Add logger middleware
   app.use(morgan('dev'));
 
@@ -60,9 +49,6 @@ module.exports = function createServer() {
 
   // ? Add gzip compression
   app.use(compression())
-  
-  // ? Add middleware that allows override of REST methods
-  app.use(methodOverride('_method'));
 
   // ? add parser middleware
   app.use(express.urlencoded({ extended: false }));
@@ -71,9 +57,9 @@ module.exports = function createServer() {
   // ? Initialize CORS
   initializeCors(app, router);
 
-  // ? Add public folder
+  // ? Add public folders
   app.use('/public', express.static(publicFolder)) 
-  //app.use("/resources", express.static(path.join(__dirname, "../../resources")));
+  app.use("/resources", express.static(path.join(__dirname, "../../resources")));
   
   // ? Serve Favicon 
   app.use(favicon(path.join(publicFolder, 'favicon.ico')))

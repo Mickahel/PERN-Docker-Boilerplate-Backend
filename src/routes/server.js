@@ -27,7 +27,7 @@ router.get('/healthcheck',authRequired(roles.SUPERADMIN), (req, res, next) => {
  *          - bearerAuthAdmin: []
  *      tags: [Server]
  */
-router.delete("/kill-process", (req, res, next) => {
+router.delete("/kill-process",authRequired(roles.SUPERADMIN), (req, res, next) => {
   console.log("killing ", process.pid);
   res.send("killing " + process.pid);
   process.exit();

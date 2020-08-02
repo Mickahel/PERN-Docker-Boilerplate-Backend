@@ -21,8 +21,8 @@ module.exports = function initializeAuthentication() {
         })
     }
     ))
-
-    passport.serializeUser((user, done) => done(undefined, user))
+    //* Sessions are not used
+    /*passport.serializeUser((user, done) => done(undefined, user))
 
     passport.deserializeUser(async (user, done) => {
         try {
@@ -30,5 +30,5 @@ module.exports = function initializeAuthentication() {
         } catch (e) {
             done(e, null);
         }
-    });
+    });*/
 };

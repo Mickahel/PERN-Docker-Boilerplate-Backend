@@ -170,7 +170,7 @@ router.post('/password-reset', AuthValidator.passwordReset, async (req, res, nex
 })
 
 
-router.post("/token", async(req,res,next)=>{
+router.post("/token",AuthValidator.token, async(req,res,next)=>{
   let refreshToken = req.body.token
   let refreshTokenDB= await UserRepository.getRefreshToken(refreshToken)
   if(refreshTokenDB){
@@ -183,7 +183,7 @@ router.post("/token", async(req,res,next)=>{
 })
 
 
-router.delete("/logout",async (req,res,next)=>{
+router.delete("/logout", AuthValidator.token, async (req,res,next)=>{
   let refreshToken = req.body.token
   try{
   let deleted = await UserRepository.deleteRefreshToken(refreshToken)

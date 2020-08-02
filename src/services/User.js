@@ -1,7 +1,5 @@
 //const download = require('image-downloader')
 const UserRepository = require('../repositories/User')
-const _ = require('lodash')
-const path = require('path')
 const jwt = require('jsonwebtoken');
 
 const UserService = class UserService {
@@ -24,6 +22,7 @@ const UserService = class UserService {
         return jwt.sign(
           {id, role},
           process.env.ACCESS_TOKEN_SECRET,
+          {expiresIn:`${process.env.ACCESS_TOKEN_EXPIRATION} days`}
           //{expiresIn:"60s"}
         );
       };

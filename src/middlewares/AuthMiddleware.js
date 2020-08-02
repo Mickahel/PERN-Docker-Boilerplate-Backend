@@ -32,9 +32,9 @@ const authRequired = (role) => (req, res, next) => {
 
 const checkRole = (userRole, role) => {
   // ? Get permission Level of the user
-  if (typeof role === "string") role = Object.values(roles).find(enumRole => role.toLowerCase() == enumRole.name.toLowerCase())
+  if(!role) role = {permissionLevel:0}
+  else if (typeof role === "string") role = Object.values(roles).find(enumRole => role.toLowerCase() == enumRole.name.toLowerCase())
   const userPermissionLevel = Object.values(roles).find(enumRole => userRole == enumRole.name)
-  console.log(userPermissionLevel.permissionLevel, role.permissionLevel)
   if (userPermissionLevel.permissionLevel >= role.permissionLevel) return true
   else return false
 }

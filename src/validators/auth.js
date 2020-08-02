@@ -70,6 +70,17 @@ const AuthValidator = class AuthValidator {
         if (valid) next()
         else res.status(400).send(ajv.errors)
     }
+
+    token(req, res, next) {
+        const { token } = req.params
+        let schema = {
+            type: "string",
+        }
+        var valid = ajv.validate(schema, token);
+        if (valid) next()
+        else res.status(400).send(ajv.errors)
+    }
+
 }
 
 module.exports = new AuthValidator()
