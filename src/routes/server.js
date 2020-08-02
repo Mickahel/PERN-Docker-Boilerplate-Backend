@@ -7,7 +7,7 @@ const {roles} = require("../../config")
  *    get:
  *      summary: Healthcheck
  *      security:
- *          - bearerAuthBasic: []
+ *          - bearerAuthSuperAdmin: []
  *      tags: [Server]
  */
 router.get('/healthcheck',authRequired(roles.SUPERADMIN), (req, res, next) => {
@@ -24,7 +24,7 @@ router.get('/healthcheck',authRequired(roles.SUPERADMIN), (req, res, next) => {
  *    delete:
  *      summary: kills the process
  *      security:
- *          - bearerAuthAdmin: []
+ *          - bearerAuthSuperAdmin: []
  *      tags: [Server]
  */
 router.delete("/kill-process",authRequired(roles.SUPERADMIN), (req, res, next) => {

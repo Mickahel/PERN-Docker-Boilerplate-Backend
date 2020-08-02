@@ -1,11 +1,12 @@
 require("./pg-EnumFix");
 const Sequelize = require("sequelize");
 const { isProduction } = require("../auxiliaries/ServerAuxiliaries");
-const Logger = require("../services/Logger");
-const logger = new Logger("Database", "bgYellowBright");
-const createUserModel = require("./User");
 const { config } = require("../../config");
+const Logger = require("../services/Logger");
+const logger = new Logger("Database", "#FF9A00");
 
+const createUserModel             = require("./User");
+const createGeneralSettingModel   = require("./GeneralSetting");
 
 
 const database = new Sequelize(
@@ -21,9 +22,10 @@ const initializeDatabase = async () => {
     logger.info("Connection to database has been established successfully.");
 
     // ? --------- Model initialization ------
-    const User = createUserModel(database);
+    const User              = createUserModel(database);
+    const GeneralSetting    = createGeneralSettingModel(database);
 
-    if (!isProduction) await database.sync({ alter: true}); 
+    if (!isProduction) await database.sync({ force: true}); 
     else await database.sync();
     
     logger.info("Database synchronized successfully");

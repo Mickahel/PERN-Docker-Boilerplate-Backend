@@ -7,7 +7,6 @@ const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 const _ = require("lodash");
 const passport = require('passport');
-const  favicon = require('serve-favicon')
 const {publicFolder} = require("../auxiliaries/ServerAuxiliaries")
 const initializeAuthentication = require('./initializers/initializeAuthentication')
 const initializeSwagger = require('./initializers/initializeSwagger')
@@ -61,8 +60,6 @@ module.exports = function createServer() {
   app.use('/public', express.static(publicFolder)) 
   app.use("/resources", express.static(path.join(__dirname, "../../resources")));
   
-  // ? Serve Favicon 
-  app.use(favicon(path.join(publicFolder, 'favicon.ico')))
   
   // ? Security middleware
   app.use(helmet())

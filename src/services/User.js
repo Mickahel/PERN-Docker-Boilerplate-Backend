@@ -2,7 +2,7 @@
 const UserRepository = require('../repositories/User')
 const jwt = require('jsonwebtoken');
 
-const UserService = class UserService {
+class UserService {
 
     async isUserRegistrated(email) {
             if (!email) return false

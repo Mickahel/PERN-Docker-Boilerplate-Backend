@@ -1,4 +1,4 @@
-const {DataTypes } = require("sequelize");
+const {DataTypes} = require("sequelize");
 const crypto = require("crypto");
 const { v4: uuid } = require('uuid');
 const jwt = require("jsonwebtoken");
@@ -17,7 +17,8 @@ const createModel = (database) => {
     email: { 
         type: DataTypes.STRING, 
         unique: "emailUnique",
-        allowNull: false },
+        allowNull: false 
+    },
     salt: {
         type: DataTypes.STRING,
         allowNull: false

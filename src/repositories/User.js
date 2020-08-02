@@ -2,7 +2,8 @@ const { database } = require("../models");
 const Sequelize = require("sequelize");
 const _ = require("lodash");
 
-const UserRepository = class UserRepository {
+class UserRepository {
+
   getTotal() {
     return models.user.count({
       group: ["status"],

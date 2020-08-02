@@ -1,10 +1,7 @@
 const router = require('express').Router();
 const passport = require('passport');
-const Logger = require('../services/Logger')
-const logger = new Logger("Auth Routes", "#aeaefe")
 const { sendResetPasswordMail, sendUserActivatedMail, sendNewUserActivationMail } = require('../services/Mailer')
 const _ = require('lodash')
-const { database } = require('../models')
 const UserService = require('../services/User')
 const UserRepository = require('../repositories/User')
 const AuthValidator = require("../validators/auth")
@@ -17,20 +14,20 @@ const jwt = require('jsonwebtoken')
  *      summary: Registration endpoint
  *      tags: [Auth]
  *      parameters:
- *      - in: "body"
- *        name: "email"
- *        description: "registration email"
+ *      - in: body
+ *        name: email
+ *        description: Registration email
  *        required: true
- *      - in: "body"
- *        name: "password"
- *        description: "password chosen"
+ *      - in: body
+ *        name: password
+ *        description: Password chosen
  *        required: true
  *      responses:
- *        "409":
- *          description: "User is registered"
- *        "406":
- *          description: "User is not activated / User is deleted"
- */
+ *        409:
+ *          description: User is registered
+ *        406:
+ *          description: User is not activated / User is deleted
+*/
 router.post('/signup', AuthValidator.signup, async (req, res, next) => {
   let { body: user } = req
   try {
@@ -48,27 +45,27 @@ router.post('/signup', AuthValidator.signup, async (req, res, next) => {
 })
 
 /**
-* @swagger
-* /v1/auth/login:
-*    post:
-*      summary: Login endpoint
-*      parameters:
-*      - in: "body"
-*        name: "email"
-*        description: "registration email"
-*        required: true
-*      - in: "body"
-*        name: "password"
-*        description: "password chosen"
-*        required: true
-*      responses:
-*        "404":
-*          description: "user doesn't exist"
-*        "401":
-*          description: "user is deleted / user is not activated"
-*        "403":
-*          description: "email or password is invalid"
-*      tags: [Auth]
+ * @swagger
+ * /v1/auth/login:
+ *    post:
+ *      summary: Login endpoint
+ *      tags: [Auth]
+ *      parameters:
+ *      - in: body
+ *        name: email
+ *        description: Registration email
+ *        required: true
+ *      - in: body
+ *        name: password
+ *        description: Password chosen
+ *        required: true
+ *      responses:
+ *        404:
+ *          description: User doesn't exist
+ *        401:
+ *          description: User is deleted / user is not activated
+ *        403:
+ *          description: Email or password is invalid
 */
 router.post('/login', AuthValidator.login,  (req, res, next) => {
   let { body: user } = req;
@@ -101,7 +98,15 @@ router.post('/login', AuthValidator.login,  (req, res, next) => {
  *    post:
  *      summary: Activates the user using the activationCode
  *      tags: [Auth]
- */
+ *      parameters:
+ *      - in: path
+ *        name: activationCode
+ *        description: the activation code
+ *        required: true
+ *      responses:
+ *        404:
+ *          description: User not found
+*/
 router.post('/activation/:activationCode', AuthValidator.activation, async (req, res, next) => {
   const { activationCode } = req.params
   try {
@@ -122,12 +127,20 @@ router.post('/activation/:activationCode', AuthValidator.activation, async (req,
 
 
 /**
-  * @swagger
+ * @swagger
  * /v1/auth/lost-password-mail:
  *    post:
  *      summary: Send lost password email
  *      tags: [Auth]
- */
+ *      parameters:
+ *      - in: "body"
+ *        name: "email"
+ *        description: "Registration email"
+ *        required: true
+ *      responses:
+ *        "404":
+ *          description: "User not found"
+*/
 router.post('/lost-password-mail', AuthValidator.lostPasswordMail, async (req, res, next) => {
   let email = req.body.email.trim()
   try {
@@ -151,7 +164,20 @@ router.post('/lost-password-mail', AuthValidator.lostPasswordMail, async (req, r
  *    post:
  *      summary : Resets the password
  *      tags: [Auth]
- */
+ *      parameters:
+ *      - in: body
+ *        name: activationCode
+ *        description: activation Code
+ *        required: true
+ *      - in: body
+ *        name: password
+ *        description: new password
+ *        required: true
+ *      responses:
+ *        404:
+ *          description: User not found
+ * 
+*/
 router.post('/password-reset', AuthValidator.passwordReset, async (req, res, next) => {
   const { activationCode, password } = req.body
   try {
@@ -169,7 +195,22 @@ router.post('/password-reset', AuthValidator.passwordReset, async (req, res, nex
   }
 })
 
-
+/**
+ * @swagger
+ * /v1/auth/token:
+ *    post:
+ *      summary : Gets new access token
+ *      tags: [Auth]
+ *      parameters:
+ *      - in: body
+ *        name: token
+ *        description: Refresh Token
+ *        required: true
+ *      responses:
+ *        403:
+ *          description: Error in RefreshToken / RefreshToken Not Found
+ * 
+*/
 router.post("/token",AuthValidator.token, async(req,res,next)=>{
   let refreshToken = req.body.token
   let refreshTokenDB= await UserRepository.getRefreshToken(refreshToken)
@@ -182,7 +223,22 @@ router.post("/token",AuthValidator.token, async(req,res,next)=>{
   } else next({message: "RefreshToken Not Found", status:403})
 })
 
-
+/**
+ * @swagger
+ * /v1/auth/logout:
+ *    delete:
+ *      summary : Removes Refresh Token
+ *      tags: [Auth]
+ *      parameters:
+ *      - in: body
+ *        name: token
+ *        description: Refresh Token
+ *        required: true
+ *      responses:
+ *        403:
+ *          description: Error in Logout / RefreshToken Not Found
+ * 
+*/
 router.delete("/logout", AuthValidator.token, async (req,res,next)=>{
   let refreshToken = req.body.token
   try{

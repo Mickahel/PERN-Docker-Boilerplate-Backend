@@ -1,11 +1,14 @@
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const { isProduction } = require("../../auxiliaries/ServerAuxiliaries");
-const {config} = require("../../../config")
+const { config } = require("../../../config")
+
+
 const swaggerOptions = {
   swaggerDefinition: {
     // Like the one described here: https://swagger.io/specification/#infoObject
     openapi: "3.0.1",
+    host: process.env.BACKEND_URL,
     info: {
       title: config.title,
       version: "0.0.0",
@@ -20,8 +23,6 @@ const swaggerOptions = {
       },
 
     },
-
-    host: process.env.BACKEND_URL,
     components: {
       securitySchemes: {
         bearerAuthBasic: {
@@ -36,8 +37,14 @@ const swaggerOptions = {
           bearerFormat: "JWT",
           description: "JWT required, Admin Role Required",
         },
+        bearerAuthSuperAdmin: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+          description: "JWT required, SuperAdmin Role Required",
+        },
         basicAuth: {
-          type:   'http',
+          type: 'http',
           scheme: 'basic'
         }
       },
@@ -47,8 +54,8 @@ const swaggerOptions = {
         url: process.env.BACKEND_URL,
         description: "Main API Server",
       },
-
     ],
+
   },
   apis: ["./src/routes/*.js"],
 };

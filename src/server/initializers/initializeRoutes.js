@@ -4,15 +4,16 @@ const initializeRoutes = (router) => {
   //router.get('/', (req, res, next) => { // Echo route
   //res.redirect(301, process.env.FRONTEND_URL)
   //})
+  
+  // Echo route
+  router.get("/", (req, res, next) => res.send(`<h1>${config.title}</h1>`));
 
-  router.get("/", (req, res, next) => {
-    // Echo route
-    res.send(`<h1>${config.title}</h1>`);
-  });
-
+  router.get("/favicon.ico", (req, res, next) => res.status(204));
+  
   // ? Import Routes & Add Middlewares
-  router.use("/v1/auth", require("../../routes/auth"));
-  router.use("/v1/server", require("../../routes/server"));
+  router.use("/v1/auth",    require("../../routes/auth"));
+  router.use("/v1/server",  require("../../routes/server"));
+  router.use("/v1/general-setting",  require("../../routes/generalSetting"));
 
   // ? Development routes
   if (!isProduction) {router.use("/v1/debug", require("../../routes/debug"));}

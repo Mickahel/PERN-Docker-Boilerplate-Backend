@@ -31,7 +31,6 @@
     "passport-local": "^1.0.0",
     "pg": "^8.2.1",
     "sequelize": "^6.3.0",
-    "serve-favicon": "^2.5.0",
     "swagger-jsdoc": "^4.0.0",
     "swagger-ui-express": "^4.1.4",
     "uuid": "^8.2.0",
