@@ -29,26 +29,11 @@ a PERN(Postgres, Express, React, Node) Boilerplate for developing and go-prod wi
 
 ## Milestones
 ### 🖥️ Backend
-* ✔️ Clustering 
-* ✔️ Custom Logger
-* ✔️ Authentication with passport-local
-* ✔️ Add validators
-* ✔️ Create Server API
-* ✔️ Create Debug API
-* ✔️ Connect to postgres database depending on NODE_ENV
-* ✔️ Create auth middleware for authenticated users
-* 📝 Authentication with facebook and google API
+* 📝 Authentication with facebook and google API (blocked by file upload)
     * 📝 Validator
+    * 📝 Routes
     * 📝 Swagger Documentation
-* 📝 Create emails
-* 📝 Create upload files API
-    * 📝 Validator
-    * 📝 Swagger Documentation
-* 📝 Create Subscriptions API
-    * 📝 Validator
-    * 📝 Swagger Documentation
-    * 📝 Models 
-    * 📝 Repository 
+* 📝 Create emails 
 * 📝 Create General Settings API
     * 📝 Validator
     * 📝 Swagger Documentation
@@ -63,17 +48,15 @@ a PERN(Postgres, Express, React, Node) Boilerplate for developing and go-prod wi
     * 📝 Swagger Documentation
     * 📝 Models 
     * 📝 Repository
-* 📝 Create TOS API
+* 📝 Create TOS API (It's in General Settings)
     * 📝 Validator
     * 📝 Swagger Documentation
     * 📝 Models 
     * 📝 Repository
 * 📝 Add notifications
 * 📝 Log rotation
-* 📝 Create pagination Middleware
 
 ### 🖼️ App Development
-* ✔️ Added caching strategy workbox
 * 📝 [Add google fonts caching](https://developers.google.com/web/tools/workbox/guides/common-recipes#google_fonts)
 * 📝 [Add UX dialog to SW](https://developers.google.com/web/tools/workbox/guides/advanced-recipes)
 * 📝 [Add MUI Drawer](https://material-ui.com/components/drawers/#mini-variant-drawer)
@@ -115,7 +98,6 @@ a PERN(Postgres, Express, React, Node) Boilerplate for developing and go-prod wi
 ### 🐘 DB Administration & Usage
 * 📝 Setup a user for backend app with permission restrictions
 
-
 ### 🖼️ Documentation
 * 📝 Getting Started
 * 📝 Deploy
@@ -123,3 +105,22 @@ a PERN(Postgres, Express, React, Node) Boilerplate for developing and go-prod wi
 * 📝 Development
 * 📝 [Backend] how to use logger
 * 📝 [Frontend] how to use fetcher
+
+
+### 🔮 Future development
+* 📝 Subscriptions
+    * 📝 Validator
+    * 📝 Swagger Documentation
+    * 📝 Models 
+    * 📝 Routes 
+    * 📝 Repository
+    * 📝 Dedicated page on App
+    * 📝 Dedicated page on Admin
+* 📝 Payments
+    * 📝 Validator
+    * 📝 Swagger Documentation
+    * 📝 Models 
+    * 📝 Routes 
+    * 📝 Repository
+    * 📝 Dedicated page on App
+    * 📝 Dedicated page on Admin
