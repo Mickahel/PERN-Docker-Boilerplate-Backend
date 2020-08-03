@@ -5,7 +5,7 @@ const _ = require("lodash");
 class UserRepository {
 
   getTotal() {
-    return models.user.count({
+    return database.models.user.count({
       group: ["status"],
     });
   }

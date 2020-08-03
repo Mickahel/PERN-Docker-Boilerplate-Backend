@@ -25,7 +25,7 @@ const initializeDatabase = async () => {
     const User              = createUserModel(database);
     const GeneralSetting    = createGeneralSettingModel(database);
 
-    if (!isProduction) await database.sync({ force: true}); 
+    if (!isProduction) await database.sync({ alter: true}); 
     else await database.sync();
     
     logger.info("Database synchronized successfully");
