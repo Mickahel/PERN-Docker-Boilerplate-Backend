@@ -9,9 +9,10 @@ const {
   port,
   isProduction,
   host,
+  devHttpPort
 } = require("../../auxiliaries/ServerAuxiliaries");
 
-const  initializeHttp = (app) => {
+const initializeHttp = (app) => {
   let server = null;
 
   if (isProduction) {
@@ -29,6 +30,12 @@ const  initializeHttp = (app) => {
       },
       app
     );
+
+    //? Dev server that redirects http to https 
+    http.createServer((req, res) =>{
+      res.writeHead(301, { "Location": "https://" + req.headers['host']+":"+port + req.url });
+      res.end();
+    }).listen(devHttpPort);
   }
 
   server.listen(port, () => {

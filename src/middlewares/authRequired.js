@@ -12,9 +12,9 @@ const getTokenFromHeaders = (req) => {
 
 const authRequired = (role) => (req, res, next) => {
   let token = getTokenFromHeaders(req)
-  if (!token) return res.send({ message: "User is not authorized", status: 401 })
+  if (!token) return next({ message: "User is not authorized", status: 401 })
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (error, user) => {
-    if (error) return res.send({ message: "Token expired", status: 403 })
+    if (error) return next({ message: "Token expired", status: 403 })
     try {
       // ? Check if the role is right
       let isAuthorized = checkRole(user.role, role)
@@ -22,9 +22,9 @@ const authRequired = (role) => (req, res, next) => {
         let userDB = await UserRepository.getById(user.id)
         req.user = userDB
         next()
-      } else res.send({ message: "User doesn\'t have right permission", status: 401 })
+      } else next({ message: "User doesn\'t have right permission", status: 401 })
     } catch (e) {
-      res.status(500).send({ message: "Error retrieving user" })
+      next({ message: "Error retrieving user" })
     }
   })
 }

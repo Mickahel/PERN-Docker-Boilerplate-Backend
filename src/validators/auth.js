@@ -1,5 +1,5 @@
 const Ajv = require('ajv');
-const ajv = new Ajv({ allErrors: true });
+const ajv = new Ajv();
 
 class AuthValidator {
 
@@ -9,13 +9,13 @@ class AuthValidator {
             type: "object",
             required: ["email", "password"],
             properties: {
-                email: { type: "string" },
+                email: { type: "string", format: "email"},
                 password: { type: "string", minLength: 8 }
             }
         }
         var valid = ajv.validate(schema, user);
         if (valid) next()
-        else res.status(400).send(ajv.errors)
+        else next({message:"Validation Error", errors: ajv.errors, status: 400})
     }
 
 
@@ -31,7 +31,7 @@ class AuthValidator {
         }
         var valid = ajv.validate(schema, user);
         if (valid) next()
-        else res.status(400).send(ajv.errors)
+        else next({message:"Validation Error", errors: ajv.errors, status: 400})
     }
 
     activation(req, res, next) {
@@ -42,7 +42,7 @@ class AuthValidator {
         }
         var valid = ajv.validate(schema, activationCode);
         if (valid) next()
-        else res.status(400).send(ajv.errors)
+        else next({message:"Validation Error", errors: ajv.errors, status: 400})
     }
 
     lostPasswordMail(req, res, next) {
@@ -53,7 +53,7 @@ class AuthValidator {
         }
         var valid = ajv.validate(schema, activationCode);
         if (valid) next()
-        else res.status(400).send(ajv.errors)
+        else next({message:"Validation Error", errors: ajv.errors, status: 400})
     }
 
     passwordReset(req, res, next) {
@@ -68,7 +68,7 @@ class AuthValidator {
         }
         var valid = ajv.validate(schema, email);
         if (valid) next()
-        else res.status(400).send(ajv.errors)
+        else next({message:"Validation Error", errors: ajv.errors, status: 400})
     }
 
     token(req, res, next) {
@@ -78,7 +78,7 @@ class AuthValidator {
         }
         var valid = ajv.validate(schema, token);
         if (valid) next()
-        else res.status(400).send(ajv.errors)
+        else next({message:"Validation Error", errors: ajv.errors, status: 400})
     }
 
 }

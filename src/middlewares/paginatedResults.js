@@ -1,32 +1,40 @@
 const GeneralRepository = require("../repositories/General")
+const MiddlewareValidator = require('../validators/Middlewares')
+const express = require('express');
+
 
 const paginatedResults = (model, excludeFields, options) => async (req, res, next) => {
-    const page = parseInt(req.query.page)
-    const limit = parseInt(req.query.limit)
+    const validationResult = MiddlewareValidator.paginatedResults(req)
+    if (validationResult) next(validationResult)
+    else {
+        const page = parseInt(req.query.page)
+        const limit = parseInt(req.query.limit)
 
-    const startIndex = (page - 1) * limit
+        const startIndex = (page - 1) * limit
 
-    try {
-        const resultsDB = await GeneralRepository.getPaginatedResults(model, limit, startIndex, excludeFields, options)
-        const pages = Math.ceil(resultsDB.length/limit)
-        let result = {}
+        try {
 
-        // ? Check if there is a previous page
-        if (startIndex > 0) result.previous = { page: page - 1, limit }
+            const resultsDB = await GeneralRepository.getPaginatedResults(model, limit, startIndex, excludeFields, options)
 
-        //? Check if there is a next page
-        if (page < pages) result.next = { page: page + 1, limit }
+            const pages = Math.ceil(resultsDB.length / limit)
+            let result = {}
 
-        result.results = resultsDB.result
-        result.pages = pages
-        result.length = resultsDB.length
+            // ? Check if there is a previous page
+            if (startIndex > 0) result.previous = { page: page - 1, limit }
 
-        req.paginatedResults = result
-        next()
-    } catch (e) {
-        next({ message: "Error with Pagination" })
+            //? Check if there is a next page
+            if (page < pages) result.next = { page: page + 1, limit }
+
+            result.results = resultsDB.result
+            result.pages = pages
+            result.length = resultsDB.length
+
+            req.paginatedResults = result
+            next()
+        } catch (e) {
+            next({ message: "Error with Pagination" })
+        }
     }
-
 }
 
 module.exports = paginatedResults

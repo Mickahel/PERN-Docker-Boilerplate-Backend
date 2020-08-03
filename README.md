@@ -37,6 +37,7 @@ a PERN(Postgres, Express, React, Node) Boilerplate for developing and go-prod wi
 * ✔️ Create Debug API
 * ✔️ Connect to postgres database depending on NODE_ENV
 * ✔️ Create auth middleware for authenticated users
+* ✔️ Create pagination Middleware
 * 📝 Authentication with facebook and google API
     * 📝 Validator
     * 📝 Swagger Documentation
@@ -70,7 +71,7 @@ a PERN(Postgres, Express, React, Node) Boilerplate for developing and go-prod wi
     * 📝 Repository
 * 📝 Add notifications
 * 📝 Log rotation
-* 📝 Create pagination Middleware
+
 
 ### 🖼️ App Development
 * ✔️ Added caching strategy workbox

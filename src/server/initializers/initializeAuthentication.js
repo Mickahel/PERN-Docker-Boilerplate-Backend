@@ -31,4 +31,14 @@ module.exports = function initializeAuthentication() {
             done(e, null);
         }
     });*/
+
+  // ? http://www.passportjs.org/docs/facebook/
+  /*passport.use('facebook', new passportFacebook.Strategy({
+  }))
+  
+  //? http://www.passportjs.org/packages/passport-google-oauth20/
+    /*passport.use('google', new passportFacebook.Strategy({
+  }))
+  
+  */
 };

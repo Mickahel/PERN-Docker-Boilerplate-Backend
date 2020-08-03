@@ -14,9 +14,9 @@ const initializeRoutes = (router) => {
   router.get("/favicon.ico", (req, res, next) => res.status(204));
   
 
-  /*router.get("/users", paginatedResults(database.models.user), (req,res,next) =>{
+  router.get("/users", paginatedResults(database.models.user), (req,res,next) =>{
     res.send(req.paginatedResults)
-  })*/
+  })
 
   // ? Import Routes & Add Middlewares
   router.use("/v1/auth",    require("../../routes/auth"));

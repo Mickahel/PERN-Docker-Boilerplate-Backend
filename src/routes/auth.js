@@ -236,7 +236,7 @@ router.post("/token",AuthValidator.token, async(req,res,next)=>{
  *        required: true
  *      responses:
  *        403:
- *          description: Error in Logout / RefreshToken Not Found
+ *          description: RefreshToken Not Found
  * 
 */
 router.delete("/logout", AuthValidator.token, async (req,res,next)=>{
@@ -246,9 +246,58 @@ router.delete("/logout", AuthValidator.token, async (req,res,next)=>{
   if(deleted[0]==1) res.sendStatus(204)
   else next({message: "RefreshToken Not Found", status:403})
   } catch(e){
-    next({message: "Error in Logout", status:403})
+    next(e)
   }
 })
+
+const loginCallbackOptions = {
+  failureRedirect: '/v1/auth/login/callback/failed', 
+  successRedirect: '/v1/auth/login/callback/success'
+}
+
+const originGetter = (req, res, next) => {
+  if(!req.hostname){
+    next()
+    return
+  }
+
+  if(req.session) req.session.hostname = req.headers.referer
+  next()
+}
+
+const getOrigin = (req, res, next) =>{
+  if(!req.session) return process.env.FRONTEND_URL
+  if(_.includes(req.session.hostname, "admin")) return  process.env.ADMIN_FRONTEND_URL;
+  return process.env.FRONTEND_URL;
+}
+
+//? -------------------- Social Login -------------------
+router.get('/v1/auth/login/facebook', originGetter, passport.authenticate('facebook', { scope:['email'] }));
+router.get('/v1/auth/login/google', originGetter,  passport.authenticate('google'));
+
+
+router.get('/v1/auth/login/callback/facebook', passport.authenticate('facebook', loginCallbackOptions ))
+router.get('/v1/auth/login/callback/google', passport.authenticate('google', loginCallbackOptions));
+
+router.get('/v1/auth/login/callback/failed', async (req, res, next) => {
+  res.redirect(`${getOrigin(req,res, next)}/auth/login/failed`)
+});
+
+router.get('/v1/auth/login/callback/success', async (req, res, next) => {
+  let user = _.get(req.session, 'passport.user')
+  if(!user){
+    next("Cannot find user")
+    //return;
+  }
+  
+  let jwt = User.generateJWT(user.id); //TODO Rivedere
+
+  res.redirect(`${getOrigin(req,res, next)}/auth/login/success?token=${jwt.token}`)
+});
+
+
+
+
 
 
 module.exports = router;
