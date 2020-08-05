@@ -64,7 +64,7 @@ const initializeSwagger = (app, router) => {
   if (isProduction) return;
 
   const specs = swaggerJsdoc(swaggerOptions);
-  router.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+  router.use(config.apiDocsLink, swaggerUi.serve, swaggerUi.setup(specs));
 };
 
 module.exports = initializeSwagger;

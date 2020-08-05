@@ -13,7 +13,7 @@ const DebugValidator = require("../validators/debug")
  *        required: true
  * 
  */
-router.get('/status/:status',   (req , res, next) => {
+router.get('/status/:status', DebugValidator.status,  (req , res, next) => {
    res.status(req.params.status).send(req.params.status==500 ? {}: {
        status:req.params.status,
        data: "SomeData",

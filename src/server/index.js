@@ -81,6 +81,8 @@ module.exports = function createServer() {
   
   // ? Add Routes
   initializeRoutes(router);
+    // ? Add https middleware
+
   app.use(router);
 
 

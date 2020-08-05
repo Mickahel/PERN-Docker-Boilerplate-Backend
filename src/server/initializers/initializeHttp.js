@@ -30,12 +30,6 @@ const initializeHttp = (app) => {
       },
       app
     );
-
-    //? Dev server that redirects http to https 
-    http.createServer((req, res) =>{
-      res.writeHead(301, { "Location": "https://" + req.headers['host']+":"+port + req.url });
-      res.end();
-    }).listen(devHttpPort);
   }
 
   server.listen(port, () => {

@@ -4,8 +4,8 @@ const ajv = new Ajv();
 class AuthValidator {
 
     signup(req, res, next) {
-        let { body: user } = req
-        let schema = {
+        const { body: user } = req
+        const schema = {
             type: "object",
             required: ["email", "password"],
             properties: {
@@ -13,15 +13,15 @@ class AuthValidator {
                 password: { type: "string", minLength: 8 }
             }
         }
-        var valid = ajv.validate(schema, user);
+        const valid = ajv.validate(schema, user);
         if (valid) next()
         else next({message:"Validation Error", errors: ajv.errors, status: 400})
     }
 
 
     login(req, res, next) {
-        let { body: user } = req
-        let schema = {
+        const { body: user } = req
+        const schema = {
             type: "object",
             required: ["email", "password"],
             properties: {
@@ -29,36 +29,36 @@ class AuthValidator {
                 password: { type: "string" }
             }
         }
-        var valid = ajv.validate(schema, user);
+        const valid = ajv.validate(schema, user);
         if (valid) next()
         else next({message:"Validation Error", errors: ajv.errors, status: 400})
     }
 
     activation(req, res, next) {
         const { activationCode } = req.params
-        let schema = {
+        const schema = {
             type: "string",
             format: "uuid",
         }
-        var valid = ajv.validate(schema, activationCode);
+        const valid = ajv.validate(schema, activationCode);
         if (valid) next()
         else next({message:"Validation Error", errors: ajv.errors, status: 400})
     }
 
     lostPasswordMail(req, res, next) {
-        const { activationCode } = req.params
-        let schema = {
+        const { email } = req.params
+        const schema = {
             type: "string",
-            format: "uuid",
+            format: "email",
         }
-        var valid = ajv.validate(schema, activationCode);
+        const valid = ajv.validate(schema, email);
         if (valid) next()
         else next({message:"Validation Error", errors: ajv.errors, status: 400})
     }
 
     passwordReset(req, res, next) {
-        const { activationCode, password } = req.body
-        let schema = {
+        const data = req.body
+        const schema = {
             type: "object",
             required: ["activationCode", "password"],
             properties: {
@@ -66,17 +66,17 @@ class AuthValidator {
                 password: { type: "string", minLength: 8 }
             }
         }
-        var valid = ajv.validate(schema, email);
+        const valid = ajv.validate(schema, data);
         if (valid) next()
         else next({message:"Validation Error", errors: ajv.errors, status: 400})
     }
 
     token(req, res, next) {
         const { token } = req.params
-        let schema = {
+        const schema = {
             type: "string",
         }
-        var valid = ajv.validate(schema, token);
+        const valid = ajv.validate(schema, token);
         if (valid) next()
         else next({message:"Validation Error", errors: ajv.errors, status: 400})
     }

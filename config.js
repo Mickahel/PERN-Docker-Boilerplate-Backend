@@ -2,7 +2,8 @@ const { isProduction } = require("./src/auxiliaries/ServerAuxiliaries");
 const config = {
   base:{
     title:"PERN Boilerplate",
-    date:"a PERN boilerplate"
+    date:"a PERN boilerplate",
+    apiDocsLink: "/api-docs"
   },
   production: {
     databaseConfig:{

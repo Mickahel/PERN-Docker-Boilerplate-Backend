@@ -33,22 +33,12 @@ a PERN(Postgres, Express, React, Node) Boilerplate for developing and go-prod wi
     * 📝 Validator
     * 📝 Routes
     * 📝 Swagger Documentation
-* 📝 Create emails 
-* 📝 Create General Settings API
-    * 📝 Validator
-    * 📝 Swagger Documentation
-    * 📝 Models 
-    * 📝 Repository
+* 📝 Create emails
 * 📝 Create Profile API
     * 📝 Validator
     * 📝 Swagger Documentation 
     * 📝 Repository
 * 📝 Create file upload API
-    * 📝 Validator
-    * 📝 Swagger Documentation
-    * 📝 Models 
-    * 📝 Repository
-* 📝 Create TOS API (It's in General Settings)
     * 📝 Validator
     * 📝 Swagger Documentation
     * 📝 Models 

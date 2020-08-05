@@ -4,11 +4,11 @@ const ajv = new Ajv();
 class MiddlewareValidator {
 
     paginatedResults(req) {
-        let data = req.query
-
-        data.page = parseInt(data.page)
-        data.limit = parseInt(data.limit)
-        let schema = {
+        const paginationData = req.query.data
+        let data
+        data.page = parseInt(paginationData.page)
+        data.limit = parseInt(paginationData.limit)
+        const schema = {
             type: "object",
             required: ["page", "limit"],
             properties: {
@@ -16,7 +16,7 @@ class MiddlewareValidator {
                 limit: { type: "number", minimum:1 }
             }
         }
-        var valid = ajv.validate(schema, data);
+        const valid = ajv.validate(schema, data);
 
         if (valid) return
         else return {message:"Validation Error", errors: ajv.errors, status: 400}
