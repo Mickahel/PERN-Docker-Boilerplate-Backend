@@ -14,7 +14,8 @@ class MiddlewareValidator {
             properties: {
                 page: { type: "number", minimum:1},
                 limit: { type: "number", minimum:1 }
-            }
+            },
+            additionalProperties: false
         }
         const valid = ajv.validate(schema, data);
 

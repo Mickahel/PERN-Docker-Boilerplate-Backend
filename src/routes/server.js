@@ -1,16 +1,14 @@
 const router = require('express').Router();
-const authRequired = require('../middlewares/authRequired')
-const {roles} = require("../../config")
 /**
  * @swagger
- * /v1/server/healthcheck:
+ * /v1/admin/server/healthcheck:
  *    get:
  *      summary: Healthcheck
  *      security:
- *          - bearerAuthSuperAdmin: []
+ *          - bearerAuthAdmin: []
  *      tags: [Server]
  */
-router.get('/healthcheck',authRequired(roles.SUPERADMIN), (req, res, next) => {
+router.get('/healthcheck', (req, res, next) => {
   res.send({
     pid: process.pid,
     uptime: Math.floor(process.uptime()) + " Seconds",
@@ -20,14 +18,14 @@ router.get('/healthcheck',authRequired(roles.SUPERADMIN), (req, res, next) => {
 
 /**
  * @swagger
- * /v1/server/kill-process:
+ * /v1/admin/server/kill-process:
  *    delete:
  *      summary: kills the process
  *      security:
- *          - bearerAuthSuperAdmin: []
+ *          - bearerAuthAdmin: []
  *      tags: [Server]
  */
-router.delete("/kill-process",authRequired(roles.SUPERADMIN), (req, res, next) => {
+router.delete("/kill-process", (req, res, next) => {
   console.log("killing ", process.pid);
   res.send("killing " + process.pid);
   process.exit();

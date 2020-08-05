@@ -3,7 +3,12 @@ const config = {
   base:{
     title:"PERN Boilerplate",
     date:"a PERN boilerplate",
-    apiDocsLink: "/api-docs"
+    apiDocsLink: "/api-docs",
+    contact: {
+      name: "Michelangelo De Francesco",
+      url: "https://www.linkedin.com/in/michelangelodefrancesco",
+      email: "df.michelangelo@gmail.com",
+    },
   },
   production: {
     databaseConfig:{
@@ -38,10 +43,17 @@ const roles = Object.freeze({
   BASE:       {name: "BASE",        permissionLevel: 0}
 });
 
+const statuses  = Object.freeze({
+  ACTIVE: "ACTIVE",
+  PENDING: "PENDING",
+  DISABLED: "DISABLED"
+});
 
 module.exports = { 
     config: {
       ...(isProduction ? config.production : config.development),
       ...config.base
     }, 
-    roles }; 
+    roles,
+    statuses
+  }; 

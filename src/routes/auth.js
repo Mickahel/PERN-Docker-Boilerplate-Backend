@@ -6,7 +6,7 @@ const UserService = require('../services/User')
 const UserRepository = require('../repositories/User')
 const AuthValidator = require("../validators/auth")
 const jwt = require('jsonwebtoken')
-
+const {statuses} = require("../../config")
 /**
  * @swagger
  * /v1/auth/registration:
@@ -26,7 +26,7 @@ const jwt = require('jsonwebtoken')
  *        409:
  *          description: User is registered
  *        406:
- *          description: User is not activated / User is deleted
+ *          description: User is not activated / User is disabled
 */
 router.post('/signup', AuthValidator.signup, async (req, res, next) => {
   let { body: user } = req
@@ -63,7 +63,7 @@ router.post('/signup', AuthValidator.signup, async (req, res, next) => {
  *        404:
  *          description: User doesn't exist
  *        401:
- *          description: User is deleted / user is not activated
+ *          description: User is disabled / user is not activated
  *        403:
  *          description: Email or password is invalid
 */
@@ -112,7 +112,7 @@ router.post('/activation/:activationCode', AuthValidator.activation, async (req,
   try {
     let user = await UserRepository.getUserByActivationCode(activationCode)
     if (user) {
-      user.status = 1
+      user.status = statuses.ACTIVE
       user.activationCode = null
       user.save()
       //sendUserActivatedMail(user) //TODO

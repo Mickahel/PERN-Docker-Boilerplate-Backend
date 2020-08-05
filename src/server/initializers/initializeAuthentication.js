@@ -1,7 +1,7 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const UserRepository = require('../../repositories/User')
-
+const {statuses} = require("../../../config")
 
 module.exports = function initializeAuthentication() {
 
@@ -12,9 +12,9 @@ module.exports = function initializeAuthentication() {
 
         UserRepository.getUserByMail(email).then(user => {
             if (!user) return done(null, false, { message: 'user doesn\'t exist', status: 404 });
-            else if (user.status==-1) return done(null, false, { message: 'user is deleted', status:401 });
-            else if (user.status==0) return done(null, false, { message: 'user is not activated', status:401 });
-            else if (!user.validatePassword(password) && user.status==1) return done(null, false, { message: ' email or password is invalid', status:403});
+            else if (user.status==statuses.DISABLED) return done(null, false, { message: 'user is disabled', status:401 });
+            else if (user.status==statuses.PENDING) return done(null, false, { message: 'user is not activated', status:401 });
+            else if (!user.validatePassword(password) && user.status==statuses.ACTIVE) return done(null, false, { message: ' email or password is invalid', status:403});
             return done(null, user);
         }).catch(e => {
             done(null, false, e)

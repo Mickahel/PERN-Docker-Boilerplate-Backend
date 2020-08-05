@@ -20,6 +20,10 @@ const authRequired = (role) => (req, res, next) => {
       let isAuthorized = checkRole(user.role, role)
       if (isAuthorized) {
         let userDB = await UserRepository.getById(user.id)
+        if (userDB.role === roles.BASE.name) {
+          delete userDB.dataValues.role
+          delete userDB.dataValues.status
+        }
         req.user = userDB
         next()
       } else next({ message: "User doesn\'t have right permission", status: 401 })
@@ -32,7 +36,7 @@ const authRequired = (role) => (req, res, next) => {
 
 const checkRole = (userRole, role) => {
   // ? Get permission Level of the user
-  if(!role) role = {permissionLevel:0}
+  if (!role) role = { permissionLevel: 0 }
   else if (typeof role === "string") role = Object.values(roles).find(enumRole => role.toLowerCase() == enumRole.name.toLowerCase())
   const userPermissionLevel = Object.values(roles).find(enumRole => userRole == enumRole.name)
   if (userPermissionLevel.permissionLevel >= role.permissionLevel) return true

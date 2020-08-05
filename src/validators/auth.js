@@ -11,7 +11,8 @@ class AuthValidator {
             properties: {
                 email: { type: "string", format: "email"},
                 password: { type: "string", minLength: 8 }
-            }
+            },
+            additionalProperties: false
         }
         const valid = ajv.validate(schema, user);
         if (valid) next()
@@ -27,7 +28,8 @@ class AuthValidator {
             properties: {
                 email: { type: "string", format: "email" },
                 password: { type: "string" }
-            }
+            },
+            additionalProperties: false
         }
         const valid = ajv.validate(schema, user);
         if (valid) next()
@@ -39,6 +41,7 @@ class AuthValidator {
         const schema = {
             type: "string",
             format: "uuid",
+            additionalProperties: false
         }
         const valid = ajv.validate(schema, activationCode);
         if (valid) next()
@@ -50,6 +53,7 @@ class AuthValidator {
         const schema = {
             type: "string",
             format: "email",
+            additionalProperties: false
         }
         const valid = ajv.validate(schema, email);
         if (valid) next()
@@ -64,7 +68,8 @@ class AuthValidator {
             properties: {
                 activationCode: { type: "string", format: "uuid"},
                 password: { type: "string", minLength: 8 }
-            }
+            },
+            additionalProperties: false
         }
         const valid = ajv.validate(schema, data);
         if (valid) next()
@@ -75,6 +80,7 @@ class AuthValidator {
         const { token } = req.params
         const schema = {
             type: "string",
+            additionalProperties: false
         }
         const valid = ajv.validate(schema, token);
         if (valid) next()

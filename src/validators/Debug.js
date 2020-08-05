@@ -7,7 +7,8 @@ class DebugValidator {
         const status = req.params.status
         status = parseInt(status)
         const schema  = {
-            type:"integer"
+            type:"integer",
+            additionalProperties: false
         }
         const valid = ajv.validate(schema, status);
         if (valid) next()

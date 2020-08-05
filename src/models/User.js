@@ -1,11 +1,9 @@
-const {DataTypes} = require("sequelize");
+const { DataTypes } = require("sequelize");
 const crypto = require("crypto");
 const { v4: uuid } = require('uuid');
 const jwt = require("jsonwebtoken");
 const _ = require("lodash");
-const { roles } = require("../../config");
-const Logger = require("../services/Logger");
-const logger = new Logger("User Model", "#facafa");
+const { roles, statuses } = require("../../config");
 
 const createModel = (database) => {
   const model = database.define("user", {
@@ -14,33 +12,33 @@ const createModel = (database) => {
       primaryKey: true,
       defaultValue: () => uuid(),
     },
-    email: { 
-        type: DataTypes.STRING, 
-        unique: "emailUnique",
-        allowNull: false 
+    email: {
+      type: DataTypes.STRING,
+      unique: "emailUnique",
+      allowNull: false
     },
     salt: {
-        type: DataTypes.STRING,
-        allowNull: false
-    }, 
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     hash: {
-        type: DataTypes.STRING,
-        allowNull: false
+      type: DataTypes.STRING,
+      allowNull: false
     },
     firstname: DataTypes.STRING,
     lastname: DataTypes.STRING,
     activationCode: DataTypes.UUID,
     profileImageUrl: DataTypes.STRING,
     role: {
-      type: DataTypes.ENUM(Object.values(roles).map((role)=>role.name)),
+      type: DataTypes.ENUM(Object.values(roles).map((role) => role.name)),
       defaultValue: roles.BASE.name,
-      allowNull:false
+      allowNull: false
     },
     status: {
-      type: DataTypes.INTEGER, //? 1=Activated, 0=Activation pending, -1=Trashed
-      defaultValue: 0,
+      type: DataTypes.ENUM(Object.values(statuses)),
+      defaultValue: statuses.PENDING,
       allowNull: false
-    }, 
+    },
     refreshToken: DataTypes.STRING
   });
 
@@ -77,7 +75,7 @@ const createModel = (database) => {
   model.prototype.setActivationCode = function () {
     this.activationCode = uuid();
   };
- 
+
   model.prototype.validatePassword = function (password) {
     const hash = crypto
       .pbkdf2Sync(password, this.salt, 10, 64, "sha512")
@@ -85,14 +83,17 @@ const createModel = (database) => {
     return this.hash === hash;
   };
 
-  
+
   model.prototype.toJSON = function () {
     var values = Object.assign({}, this.get());
 
-    delete values.salt;
-    delete values.hash;
-    delete values.activationCode;
+    delete values.salt
+    delete values.hash
+    delete values.refreshToken
+    delete values.activationCode
+
     return values;
+
   };
 
   return model;

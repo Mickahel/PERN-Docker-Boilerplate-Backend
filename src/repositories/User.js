@@ -1,7 +1,7 @@
 const { database } = require("../models");
 const Sequelize = require("sequelize");
 const _ = require("lodash");
-
+const {statuses} = require("../../config")
 class UserRepository {
 
   getTotal() {
@@ -10,13 +10,13 @@ class UserRepository {
     });
   }
 
-  getUserList(includeDeletedUsers = false) {
-    if (includeDeletedUsers) {
+  getUserList(includeDisabledUsers = false) {
+    if (includeDisabledUsers) {
       return database.models.user.findAll({});
     } else {
       return database.models.user.findAll({
         where: {
-          status: { [Sequelize.Op.not]: -1 },
+          status: { [Sequelize.Op.not]: statuses.DISABLED },
         },
       });
     }
@@ -62,6 +62,9 @@ class UserRepository {
       return await newUser.save() 
   }
   
+  async updateUser(user,newData){
+    return await user.update(newData)
+  }
   async setRefreshToken(user,refreshToken){
       user.setRefreshToken(refreshToken)
       await user.save() 

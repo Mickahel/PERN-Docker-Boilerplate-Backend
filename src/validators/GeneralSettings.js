@@ -6,7 +6,8 @@ class GenralSettingsValidator {
     getGeneralSettingByFeature(req,res,next){
         const feature = req.params.feature
         const schema  = {
-            type:"string"
+            type:"string",
+            additionalProperties: false
         }
         const valid = ajv.validate(schema, feature);
         if (valid) next()
@@ -21,7 +22,8 @@ class GenralSettingsValidator {
             properties: {
                 feature: { type: "string"},
                 value: { type: "string"}
-            }
+            },
+            additionalProperties: false
         }
         const valid = ajv.validate(schema, data);
         if (valid) next()
@@ -41,7 +43,8 @@ class GenralSettingsValidator {
             anyOf: [
                 {required: ["newFeatureName"]},
                 {required: ["newValue"]},
-            ]
+            ],
+            additionalProperties: false
         }
         const valid = ajv.validate(schema, data);
         if (valid) next()

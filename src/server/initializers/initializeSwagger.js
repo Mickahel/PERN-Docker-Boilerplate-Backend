@@ -13,11 +13,7 @@ const swaggerOptions = {
       title: config.title,
       version: "0.0.0",
       description: config.description,
-      contact: {
-        name: "Michelangelo De Francesco",
-        url: "https://www.linkedin.com/in/michelangelodefrancesco",
-        email: "df.michelangelo@gmail.com",
-      },
+      contact: config.contact,
       license: {
         name: "PROPRIETARY LICENSE",
       },

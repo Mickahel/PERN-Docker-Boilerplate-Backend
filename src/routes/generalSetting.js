@@ -1,17 +1,17 @@
 const router = require('express').Router()
 const GeneralSettingsRepository = require('../repositories/GeneralSetting')
 const GeneralSettingsValidator = require("../validators/GeneralSettings")
-const authRequired = require('../middlewares/authRequired')
-const {roles} = require("../../config")
 
 /**
  * @swagger
- * /v1/general-settings:
+ * /v1/admin/general-settings:
  *    get:
  *      summary: Gets all the general settings
  *      tags: [General Settings]
+ *      security:
+ *          - bearerAuthAdmin: []
 */
-router.get('/',authRequired(roles.SUPERADMIN), async (req, res, next) => {
+router.get('/', async (req, res, next) => {
     try {
         const result = await GeneralSettingsRepository.getList()
         res.send(result)
@@ -22,10 +22,12 @@ router.get('/',authRequired(roles.SUPERADMIN), async (req, res, next) => {
 
 /**
  * @swagger
- * /v1/general-settings/:feature:
+ * /v1/admin/general-settings/:feature:
  *    get:
  *      summary: Gets single general setting
  *      tags: [General Settings]
+ *      security:
+ *          - bearerAuthAdmin: []
  *      parameters:
  *      - in: path
  *        name: feature
@@ -35,7 +37,7 @@ router.get('/',authRequired(roles.SUPERADMIN), async (req, res, next) => {
  *        404:
  *          description: Cannot find data
 */
-router.get('/:feature',authRequired(roles.SUPERADMIN), GeneralSettingsValidator.getGeneralSettingByFeature, async (req, res, next) => {
+router.get('/:feature', GeneralSettingsValidator.getGeneralSettingByFeature, async (req, res, next) => {
     try {
         const result = await GeneralSettingsRepository.getGeneralSettingByFeature(req.params.feature)
         if (!result) next({ message: "Cannot find data", status: 404 })
@@ -48,10 +50,12 @@ router.get('/:feature',authRequired(roles.SUPERADMIN), GeneralSettingsValidator.
 
 /**
  * @swagger
- * /v1/general-settings:
+ * /v1/admin/general-settings:
  *    post:
  *      summary: Gets single general setting
  *      tags: [General Settings]
+ *      security:
+ *          - bearerAuthAdmin: []
  *      parameters:
  *      - in: body
  *        name: feature
@@ -65,7 +69,7 @@ router.get('/:feature',authRequired(roles.SUPERADMIN), GeneralSettingsValidator.
  *        409:
  *          description: General Setting already exists
 */
-router.post('/', authRequired(roles.SUPERADMIN),GeneralSettingsValidator.createGeneralSetting, async (req, res, next) => {
+router.post('/', GeneralSettingsValidator.createGeneralSetting, async (req, res, next) => {
     const { feature, value } = req.body
     try {
         let generalSettingDB = await GeneralSettingsRepository.getGeneralSettingByFeature(feature)
@@ -82,10 +86,12 @@ router.post('/', authRequired(roles.SUPERADMIN),GeneralSettingsValidator.createG
 
 /**
  * @swagger
- * /v1/general-settings:
+ * /v1/admin/general-settings:
  *    put:
  *      summary: edits single general setting
  *      tags: [General Settings]
+ *      security:
+ *          - bearerAuthAdmin: []
  *      parameters:
  *      - in: body
  *        name: feature
@@ -101,7 +107,7 @@ router.post('/', authRequired(roles.SUPERADMIN),GeneralSettingsValidator.createG
  *        404:
  *          description: Cannot find data
 */
-router.put('/', authRequired(roles.SUPERADMIN), GeneralSettingsValidator.updateGeneralSetting, async (req, res, next) => {
+router.put('/',GeneralSettingsValidator.updateGeneralSetting, async (req, res, next) => {
     const { feature, newFeatureName, newValue } = req.body
     try {
         const generalSetting = await GeneralSettingsRepository.getGeneralSettingByFeature(feature,false)
@@ -121,10 +127,12 @@ router.put('/', authRequired(roles.SUPERADMIN), GeneralSettingsValidator.updateG
 
 /**
  * @swagger
- * /v1/general-settings/:feature:
+ * /v1/admin/general-settings/:feature:
  *    delete:
  *      summary: Deletes single general setting
  *      tags: [General Settings]
+ *      security:
+ *          - bearerAuthAdmin: []
  *      parameters:
  *      - in: path
  *        name: feature
@@ -134,7 +142,7 @@ router.put('/', authRequired(roles.SUPERADMIN), GeneralSettingsValidator.updateG
  *        404:
  *          description: Cannot find data
 */
-router.delete('/:feature',authRequired(roles.SUPERADMIN), GeneralSettingsValidator.getGeneralSettingByFeature, async (req, res, next) => {
+router.delete('/:feature', GeneralSettingsValidator.getGeneralSettingByFeature, async (req, res, next) => {
     try {
         const result = await GeneralSettingsRepository.deleteGeneralSettingByFeature(req.params.feature)
         if (!result) next({ message: "Cannot find data", status: 404 })

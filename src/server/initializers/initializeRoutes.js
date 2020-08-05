@@ -1,7 +1,8 @@
 const { isProduction } = require("../../auxiliaries/ServerAuxiliaries");
-const {config} = require("../../../config")
+const {config, roles} = require("../../../config")
 const paginatedResults  = require("../../middlewares/paginatedResults")
 const { database } = require("../../models");
+const authRequired = require('../../middlewares/authRequired')
 
 const initializeRoutes = (router) => {
   //router.get('/', (req, res, next) => { // Echo route
@@ -23,10 +24,28 @@ const initializeRoutes = (router) => {
     res.send(req.paginatedResults)
   })
 */
+
+
+  // * https://stackoverflow.com/questions/46783270/expressjs-best-way-to-add-prefix-versioning-routes
   // ? Import Routes & Add Middlewares
-  router.use("/v1/auth",    require("../../routes/auth"));
-  router.use("/v1/server",  require("../../routes/server"));
-  router.use("/v1/general-settings",  require("../../routes/generalSetting"));
+
+
+  // ? Public Routes 
+  router.use("/v1/auth",                    require("../../routes/auth"));
+
+
+  // ? Admin Routes
+  router.use("/v1/admin*",                  authRequired(roles.ADMIN))
+  router.use("/v1/admin/server",            require("../../routes/server"));
+  router.use("/v1/admin/general-settings",  require("../../routes/generalSetting"));
+  router.use("/v1/admin/user",              require("../../routes/user/admin"))
+  
+  // ? App Routes
+  router.use("/v1/app*",                    authRequired(roles.BASE))
+  router.use("/v1/app/user",                require("../../routes/user/app"))
+
+
+
 
   // ? Development routes
   if (!isProduction) {router.use("/v1/debug", require("../../routes/debug"));}
