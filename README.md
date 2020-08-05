@@ -34,7 +34,7 @@ a PERN(Postgres, Express, React, Node) Boilerplate for developing and go-prod wi
     * 📝 Routes
     * 📝 Swagger Documentation
 * 📝 Create emails
-* 📝 Create Profile API
+* 📝 Create User API
     * 📝 Validator
     * 📝 Swagger Documentation 
     * 📝 Repository

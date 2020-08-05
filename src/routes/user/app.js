@@ -3,17 +3,18 @@ const UserValidator = require("../../validators/User")
 const UserReposiory = require("../../repositories/User")
 /**
  * @swagger
- * /v1/app/user:
+ * /v1/app/user/info:
  *    get:
  *      summary: get user information
  *      tags: [User]
 */
-router.get('/', (req, res, next) => {
+router.get('/info', (req, res, next) => {
     res.send(req.user)
 })
+
 /**
  * @swagger
- * /v1/app/user:
+ * /v1/app/user/edit:
  *    put:
  *      summary: edit user information
  *      tags: [User]
@@ -28,7 +29,7 @@ router.get('/', (req, res, next) => {
  *        name: lastname
  *        description: new lastname
 */
-router.put('/', UserValidator.editUser, async (req, res, next) => {
+router.put('/edit', UserValidator.editUser, async (req, res, next) => {
     const newData = req.body
     try {
         const newUser = await UserReposiory.updateUser(req.user, newData)

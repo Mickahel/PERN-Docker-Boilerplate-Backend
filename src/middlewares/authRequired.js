@@ -19,7 +19,7 @@ const authRequired = (role) => (req, res, next) => {
       // ? Check if the role is right
       let isAuthorized = checkRole(user.role, role)
       if (isAuthorized) {
-        let userDB = await UserRepository.getById(user.id)
+        let userDB = await UserRepository.getUserById(user.id)
         if (userDB.role === roles.BASE.name) {
           delete userDB.dataValues.role
           delete userDB.dataValues.status

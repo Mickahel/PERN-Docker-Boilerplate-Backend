@@ -30,7 +30,7 @@ class UserRepository {
     });
   }
 
-  getById(id) {
+  getUserById(id) {
     return database.models.user.findOne({
       where: {
         id,
@@ -82,7 +82,7 @@ class UserRepository {
       }) 
   }
 
-  delete(user){
+  deleteUser(user){
     if(!user) return
 
     return database.models.user.destroy({
