@@ -29,7 +29,7 @@ router.get('/info', (req, res, next) => {
  *        name: lastname
  *        description: new lastname
 */
-router.put('/edit', UserValidator.editUser, async (req, res, next) => {
+router.put('/edit', UserValidator.editUser, async (req, res, next) => { //TODO ADD IMAGE UPLOAD
     const newData = req.body
     try {
         const newUser = await UserReposiory.updateUser(req.user, newData)

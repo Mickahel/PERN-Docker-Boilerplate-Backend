@@ -76,8 +76,8 @@ router.post('/login', AuthValidator.login,  (req, res, next) => {
       if (err) return next(err);
         if (!passportUser && info) return next(info)
         else {
-          const accessToken   = UserService.generateAccessToken(passportUser.id, passportUser.role)
-          const refreshToken  = UserService.generateRefreshToken(passportUser.id, passportUser.role)
+          const accessToken   = UserService.generateAccessToken(passportUser.id)
+          const refreshToken  = UserService.generateRefreshToken(passportUser.id)
           await UserRepository.setRefreshToken(passportUser, refreshToken)
           res.send({
             accessToken,

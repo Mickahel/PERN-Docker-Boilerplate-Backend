@@ -17,18 +17,21 @@ const authRequired = (role) => (req, res, next) => {
     if (error) return next({ message: "Token expired", status: 403 })
     try {
       // ? Check if the role is right
-      let isAuthorized = checkRole(user.role, role)
-      if (isAuthorized) {
-        let userDB = await UserRepository.getUserById(user.id)
-        if (userDB.role === roles.BASE.name) {
-          delete userDB.dataValues.role
-          delete userDB.dataValues.status
-        }
-        req.user = userDB
-        next()
-      } else next({ message: "User doesn\'t have right permission", status: 401 })
+      let userDB = await UserRepository.getUserById(user.id)
+      if (userDB) {
+        let isAuthorized = checkRole(userDB.role, role)
+        if (isAuthorized) {
+
+          if (userDB.role === roles.BASE.name) {
+            delete userDB.dataValues.role
+            delete userDB.dataValues.status
+          }
+          req.user = userDB
+          next()
+        } else next({ message: "User doesn\'t have right permission", status: 401 })
+      } else next({ message: "User doesn\'t exist", status: 404 })
     } catch (e) {
-      next({ message: "Error retrieving user" })
+      next({ message: "Error retrieving user", status: 404 })
     }
   })
 }

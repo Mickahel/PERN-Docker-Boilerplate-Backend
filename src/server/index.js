@@ -7,13 +7,12 @@ const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 const _ = require("lodash");
 const passport = require('passport');
-const {publicFolder} = require("../auxiliaries/ServerAuxiliaries")
+const {publicFolder, isProduction} = require("../auxiliaries/ServerAuxiliaries")
 const initializeAuthentication = require('./initializers/initializeAuthentication')
 const initializeSwagger = require('./initializers/initializeSwagger')
 const initializeCors = require('./initializers/initializeCors')
 const initializeRoutes = require('./initializers/initializeRoutes')
 const initializeHttp = require('./initializers/initializeHttp');
-const { type } = require("os");
 //const initializeWebSocket = require('./initializers/initializeWebSocket')
 
 // ? https://itnext.io/make-security-on-your-nodejs-api-the-priority-50da8dc71d68
@@ -93,9 +92,9 @@ module.exports = function createServer() {
       response: "error",
       message: err.message,
       errors: err.errors,
-      status,
-      stack: _.get(err, "stack"),
-    };
+      status
+    }
+    if(!isProduction) errorMessage.stack = _.get(err, "stack")
     //logger.error(err)
     res.status(status).send(errorMessage);
   }); 

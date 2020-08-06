@@ -17,25 +17,19 @@ const createModel = (database) => {
       unique: "emailUnique",
       allowNull: false
     },
-    salt: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    hash: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
+    salt: DataTypes.STRING,
+    hash: DataTypes.STRING,
     firstname: DataTypes.STRING,
     lastname: DataTypes.STRING,
     activationCode: DataTypes.UUID,
     profileImageUrl: DataTypes.STRING,
     role: {
-      type: DataTypes.ENUM(Object.values(roles).map((role) => role.name)),
+      type: DataTypes.ENUM(roles.names()),
       defaultValue: roles.BASE.name,
       allowNull: false
     },
     status: {
-      type: DataTypes.ENUM(Object.values(statuses)),
+      type: DataTypes.ENUM(statuses.names()),
       defaultValue: statuses.PENDING,
       allowNull: false
     },

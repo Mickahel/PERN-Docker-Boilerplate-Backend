@@ -14,13 +14,13 @@ class UserService {
             else if(user.status === statuses.DISABLED)  return { status: 406, message: 'User is disabled'        }
     }
 
-    generateRefreshToken(id,role) {
-        return jwt.sign({id, role},process.env.REFRESH_TOKEN_SECRET)
+    generateRefreshToken(id) {
+        return jwt.sign({id},process.env.REFRESH_TOKEN_SECRET)
     }
 
-    generateAccessToken(id, role) {
+    generateAccessToken(id) {
         return jwt.sign(
-          {id, role},
+          {id},
           process.env.ACCESS_TOKEN_SECRET,
           {expiresIn:`${process.env.ACCESS_TOKEN_EXPIRATION} days`}
           //{expiresIn:"60s"}

@@ -63,6 +63,10 @@ class UserRepository {
   }
   
   async updateUser(user,newData){
+    if(newData.password) {
+      user.setPassword(newData.password)
+      await user.save()
+    }
     return await user.update(newData)
   }
   async setRefreshToken(user,refreshToken){

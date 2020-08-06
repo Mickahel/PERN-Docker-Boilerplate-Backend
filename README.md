@@ -29,15 +29,11 @@ a PERN(Postgres, Express, React, Node) Boilerplate for developing and go-prod wi
 
 ## Milestones
 ### 🖥️ Backend
-* 📝 Authentication with facebook and google API (blocked by file upload)
+* 📝 Authentication with facebook and google API (WIP, blocked by file upload)
     * 📝 Validator
     * 📝 Routes
     * 📝 Swagger Documentation
 * 📝 Create emails
-* 📝 Create User API
-    * 📝 Validator
-    * 📝 Swagger Documentation 
-    * 📝 Repository
 * 📝 Create file upload API
     * 📝 Validator
     * 📝 Swagger Documentation

@@ -53,7 +53,7 @@ const swaggerOptions = {
     ],
 
   },
-  apis: ["./src/routes/*.js"],
+  apis: ["./src/routes/*.js","./src/routes/*/*.js"],
 };
 
 const initializeSwagger = (app, router) => {
