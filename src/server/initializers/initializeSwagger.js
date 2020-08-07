@@ -1,6 +1,6 @@
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
-const { isProduction } = require("../../auxiliaries/ServerAuxiliaries");
+const { isProduction } = require("../../auxiliaries/server");
 const { config } = require("../../../config")
 
 

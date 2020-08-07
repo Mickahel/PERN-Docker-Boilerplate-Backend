@@ -1,4 +1,4 @@
-const { isProduction } = require("../../auxiliaries/ServerAuxiliaries");
+const { isProduction } = require("../../auxiliaries/server");
 const {config, roles} = require("../../../config")
 const paginatedResults  = require("../../middlewares/paginatedResults")
 const { database } = require("../../models");
@@ -32,7 +32,7 @@ const initializeRoutes = (router) => {
 
   // ? Public Routes 
   router.use("/v1/auth",                    require("../../routes/auth"));
-
+  router.use("/v1/upload",                  require("../../routes/upload"));
 
   // ? Admin Routes
   router.use("/v1/admin*",                  authRequired(roles.ADMIN))

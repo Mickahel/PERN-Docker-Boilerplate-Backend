@@ -7,6 +7,8 @@ const UserReposiory = require("../../repositories/User")
  *    get:
  *      summary: get user information
  *      tags: [User]
+ *      security:
+ *          - bearerAuthBase: []
 */
 router.get('/info', (req, res, next) => {
     res.send(req.user)
@@ -18,6 +20,8 @@ router.get('/info', (req, res, next) => {
  *    put:
  *      summary: edit user information
  *      tags: [User]
+ *      security:
+ *          - bearerAuthBase: []
  *      parameters:
  *      - in: body
  *        name: email

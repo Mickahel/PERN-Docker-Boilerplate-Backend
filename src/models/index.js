@@ -1,6 +1,6 @@
 require("./pg-EnumFix");
 const Sequelize = require("sequelize");
-const { isProduction } = require("../auxiliaries/ServerAuxiliaries");
+const { isProduction } = require("../auxiliaries/server");
 const { config } = require("../../config");
 const Logger = require("../services/Logger");
 const logger = new Logger("Database", "#FF9A00");

@@ -10,7 +10,7 @@ const {
   isProduction,
   host,
   devHttpPort
-} = require("../../auxiliaries/ServerAuxiliaries");
+} = require("../../auxiliaries/server");
 
 const initializeHttp = (app) => {
   let server = null;

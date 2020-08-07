@@ -1,6 +1,6 @@
 require('dotenv').config();
 const cors = require('cors')
-const {isProduction,host} = require('../../auxiliaries/ServerAuxiliaries')
+const {isProduction,host} = require('../../auxiliaries/server')
 
 const initializeCors = (app, router) =>{
     if(isProduction){

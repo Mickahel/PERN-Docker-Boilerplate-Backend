@@ -1,4 +1,4 @@
-const GeneralRepository = require("../repositories/General")
+const BaseRepository = require("../repositories/Base")
 const MiddlewareValidator = require('../validators/Middlewares')
 
 const paginatedResults = (model, excludeFields, options) => async (req, res, next) => {
@@ -11,8 +11,8 @@ const paginatedResults = (model, excludeFields, options) => async (req, res, nex
         const startIndex = (page - 1) * limit
 
         try {
-
-            const resultsDB = await GeneralRepository.getPaginatedResults(model, limit, startIndex, excludeFields, options)
+            const modelRepository = new BaseRepository(model)
+            const resultsDB = await modelRepository.getPaginatedResults(limit, startIndex, excludeFields, options)
 
             const pages = Math.ceil(resultsDB.length / limit)
             let result = {}

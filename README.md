@@ -34,13 +34,12 @@ a PERN(Postgres, Express, React, Node) Boilerplate for developing and go-prod wi
     * 📝 Routes
     * 📝 Swagger Documentation
 * 📝 Create emails
-* 📝 Create file upload API
+* 📝 Create file upload API - WIP
     * 📝 Validator
     * 📝 Swagger Documentation
     * 📝 Models 
     * 📝 Repository
 * 📝 Add notifications
-* 📝 Log rotation
 
 ### 🖼️ App Development
 * 📝 [Add google fonts caching](https://developers.google.com/web/tools/workbox/guides/common-recipes#google_fonts)

@@ -15,7 +15,7 @@ const cluster = require("cluster");
 const os = require("os");
 const createServer = require("./src/server");
 const logger = new Logger("Cluster", "#F2FE");
-const { isProduction } = require("./src/auxiliaries/ServerAuxiliaries");
+const { isProduction } = require("./src/auxiliaries/server");
 const { initializeDatabase } = require("./src/models");
 
 
