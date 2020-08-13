@@ -40,18 +40,17 @@ a PERN(Postgres, Express, React, Node) Boilerplate for developing and go-prod wi
     * 📝 Models 
     * 📝 Repository
 * 📝 Add notifications
+* 📝 Add login api for Admin
+* 📝 Add password change 
 
 ### 🖼️ App Development
 * 📝 [Add google fonts caching](https://developers.google.com/web/tools/workbox/guides/common-recipes#google_fonts)
 * 📝 [Add UX dialog to SW](https://developers.google.com/web/tools/workbox/guides/advanced-recipes)
 * 📝 [Add MUI Drawer](https://material-ui.com/components/drawers/#mini-variant-drawer)
 * 📝 Connect to API depending on REACT_APP_NODE_ENV
-* 📝 Add Axios Fetcher
-* 📝 Add ThemeContext
+* 📝 Add translations for yup [Here](https://medium.com/code-divoire/how-to-internationalize-a-yup-validation-schema-in-a-react-formik-and-react-i18next-app-689ff3cd978), [Here](https://github.com/jquense/yup/issues/159)
 * 📝 Add notifications
-* 📝 Add UserContext
-* 📝 Add Public/Private Routes
-* 📝 Try React Query
+* 📝 Add [react cookies](https://www.npmjs.com/package/react-query/v/2.4.11)
 
 ### 🏗️ Admin Development
 🚧 To Be Defined
