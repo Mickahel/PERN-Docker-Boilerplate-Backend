@@ -79,8 +79,8 @@ router.post('/login', AuthValidator.login, (req, res, next) => {
         const refreshToken = UserService.generateRefreshToken(passportUser.id)
         await UserRepository.setRefreshToken(passportUser, refreshToken)
 
-        res.cookie("accessToken", accessToken, {httpOnly: true, secure:false, maxAge:process.env.ACCESS_TOKEN_EXPIRATION*1000*60*60*24})
-        res.cookie("refreshToken", refreshToken, {httpOnly: true, secure:false})
+        res.cookie("accessToken", accessToken, { httpOnly: true, secure: false, maxAge: 1000*5/*process.env.ACCESS_TOKEN_EXPIRATION * 1000 * 60 * 60 * 24*/ })
+        res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: false })
         res.send({
           accessToken,
           refreshToken,
@@ -213,17 +213,20 @@ router.post('/password-reset', AuthValidator.passwordReset, async (req, res, nex
  *          description: Error in RefreshToken / RefreshToken Not Found
  * 
 */
-router.post("/token", AuthValidator.token, async (req, res, next) => {
+router.post("/token", async (req, res, next) => {
   let refreshToken = req.cookies.refreshToken
-  let refreshTokenDB = await UserRepository.getRefreshToken(refreshToken)
-  if (refreshTokenDB) {
-    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, data) => {
-      if (err) return next({ message: "Error in RefreshToken", status: 403 })
-      const accessToken = UserService.generateAccessToken(data.id)
-      res.cookie("accessToken", accessToken, {httpOnly: true, secure:false, maxAge:process.env.ACCESS_TOKEN_EXPIRATION*1000*60*60*24})
-      res.send({ accessToken })
-    })
-  } else next({ message: "RefreshToken Not Found", status: 403 })
+  if (!refreshToken) next({ message: "RefreshToken Not Found", status: 403 })
+  else {
+    let refreshTokenDB = await UserRepository.getRefreshToken(refreshToken)
+    if (refreshTokenDB) {
+      jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, data) => {
+        if (err) return next({ message: "Error in RefreshToken", status: 403 })
+        const accessToken = UserService.generateAccessToken(data.id)
+        res.cookie("accessToken", accessToken, { httpOnly: true, secure: false, maxAge: process.env.ACCESS_TOKEN_EXPIRATION * 1000 * 60 * 60 * 24 })
+        res.send({ accessToken })
+      })
+    } else next({ message: "RefreshToken Not Found", status: 403 })
+  }
 })
 
 /**
@@ -242,15 +245,18 @@ router.post("/token", AuthValidator.token, async (req, res, next) => {
  *          description: RefreshToken Not Found
  * 
 */
-router.delete("/logout", AuthValidator.token, async (req, res, next) => {
-  let refreshToken = req.body.token
-  try {
+router.delete("/logout", async (req, res, next) => {
+  let refreshToken = req.cookies.refreshToken
+  if (!refreshToken) next({ message: "RefreshToken Not Found", status: 403 })
+  else {
+    try {
     let deleted = await UserRepository.deleteRefreshToken(refreshToken)
     if (deleted[0] == 1) res.sendStatus(204)
     else next({ message: "RefreshToken Not Found", status: 403 })
   } catch (e) {
     next(e)
   }
+}
 })
 
 const loginCallbackOptions = {
