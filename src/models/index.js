@@ -10,9 +10,9 @@ const createGeneralSettingModel   = require("./GeneralSetting");
 
 
 const database = new Sequelize(
-  config.databaseConfig.database,
-  config.databaseConfig.user,
-  config.databaseConfig.password,
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
   config.databaseConfig.options
 );  
 const initializeDatabase = async () => {

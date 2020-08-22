@@ -6,7 +6,7 @@ const UserService = require('../services/User')
 const UserRepository = require('../repositories/User')
 const AuthValidator = require("../validators/auth")
 const jwt = require('jsonwebtoken')
-const {statuses} = require("../../config")
+const { statuses } = require("../../config")
 /**
  * @swagger
  * /v1/auth/registration:
@@ -36,7 +36,7 @@ router.post('/signup', AuthValidator.signup, async (req, res, next) => {
     if (isIn) next(isIn)
     else {
       let userInDB = await UserRepository.createUser(user)
-      //sendNewUserActivationMail(userInDB) //userInDB.datavalues //TODO
+      sendNewUserActivationMail(userInDB.dataValues)
       res.status(201).send({ message: "ok" })
     }
   } catch (e) {
@@ -67,25 +67,27 @@ router.post('/signup', AuthValidator.signup, async (req, res, next) => {
  *        403:
  *          description: Email or password is invalid
 */
-router.post('/login', AuthValidator.login,  (req, res, next) => {
+router.post('/login', AuthValidator.login, (req, res, next) => {
   let { body: user } = req;
   try {
     user.email = user.email.trim();
-
-    passport.authenticate('local', { session: false }, async(err, passportUser, info) => {
+    passport.authenticate('local', { session: false }, async (err, passportUser, info) => {
       if (err) return next(err);
-        if (!passportUser && info) return next(info)
-        else {
-          const accessToken   = UserService.generateAccessToken(passportUser.id)
-          const refreshToken  = UserService.generateRefreshToken(passportUser.id)
-          await UserRepository.setRefreshToken(passportUser, refreshToken)
-          res.send({
-            accessToken,
-            refreshToken,
-            user: passportUser,
-          })
-        }
+      if (!passportUser && info) return next(info)
+      else {
+        const accessToken = UserService.generateAccessToken(passportUser.id)
+        const refreshToken = UserService.generateRefreshToken(passportUser.id)
+        await UserRepository.setRefreshToken(passportUser, refreshToken)
+
+        res.cookie("accessToken", accessToken, {httpOnly: true, secure:false, maxAge:process.env.ACCESS_TOKEN_EXPIRATION*1000*60*60*24})
+        res.cookie("refreshToken", refreshToken, {httpOnly: true, secure:false})
+        res.send({
+          accessToken,
+          refreshToken,
+          user: passportUser,
+        })
       }
+    }
     )(req, res, next)
   } catch (e) {
     next(e)
@@ -115,8 +117,8 @@ router.post('/activation/:activationCode', AuthValidator.activation, async (req,
       user.status = statuses.ACTIVE
       user.activationCode = null
       user.save()
-      //sendUserActivatedMail(user) //TODO
-      res.send({ message: "ok" }) 
+      sendUserActivatedMail(user.dataValues)
+      res.send({ message: "ok" })
     } else {
       next({ message: "User not found", status: 404 })
     }
@@ -148,7 +150,7 @@ router.post('/lost-password-mail', AuthValidator.lostPasswordMail, async (req, r
     if (user) {
       user.setActivationCode()
       await user.save()
-      //sendResetPasswordMail(user.dataValues)  //TODO
+      sendResetPasswordMail(user.dataValues)
       res.send({ message: "ok" })
     } else {
       next({ message: "User not found", status: 404 })
@@ -211,16 +213,17 @@ router.post('/password-reset', AuthValidator.passwordReset, async (req, res, nex
  *          description: Error in RefreshToken / RefreshToken Not Found
  * 
 */
-router.post("/token",AuthValidator.token, async(req,res,next)=>{
-  let refreshToken = req.body.token
-  let refreshTokenDB= await UserRepository.getRefreshToken(refreshToken)
-  if(refreshTokenDB){
-    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, data)=>{
-        if(err) return next({message: "Error in RefreshToken", status:403})
-        const accessToken = UserService.generateAccessToken(data.id, data.role)
-        res.send({accessToken})
+router.post("/token", AuthValidator.token, async (req, res, next) => {
+  let refreshToken = req.cookies.refreshToken
+  let refreshTokenDB = await UserRepository.getRefreshToken(refreshToken)
+  if (refreshTokenDB) {
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, data) => {
+      if (err) return next({ message: "Error in RefreshToken", status: 403 })
+      const accessToken = UserService.generateAccessToken(data.id)
+      res.cookie("accessToken", accessToken, {httpOnly: true, secure:false, maxAge:process.env.ACCESS_TOKEN_EXPIRATION*1000*60*60*24})
+      res.send({ accessToken })
     })
-  } else next({message: "RefreshToken Not Found", status:403})
+  } else next({ message: "RefreshToken Not Found", status: 403 })
 })
 
 /**
@@ -239,60 +242,60 @@ router.post("/token",AuthValidator.token, async(req,res,next)=>{
  *          description: RefreshToken Not Found
  * 
 */
-router.delete("/logout", AuthValidator.token, async (req,res,next)=>{
+router.delete("/logout", AuthValidator.token, async (req, res, next) => {
   let refreshToken = req.body.token
-  try{
-  let deleted = await UserRepository.deleteRefreshToken(refreshToken)
-  if(deleted[0]==1) res.sendStatus(204)
-  else next({message: "RefreshToken Not Found", status:403})
-  } catch(e){
+  try {
+    let deleted = await UserRepository.deleteRefreshToken(refreshToken)
+    if (deleted[0] == 1) res.sendStatus(204)
+    else next({ message: "RefreshToken Not Found", status: 403 })
+  } catch (e) {
     next(e)
   }
 })
 
 const loginCallbackOptions = {
-  failureRedirect: '/v1/auth/login/callback/failed', 
+  failureRedirect: '/v1/auth/login/callback/failed',
   successRedirect: '/v1/auth/login/callback/success'
 }
 
 const originGetter = (req, res, next) => {
-  if(!req.hostname){
+  if (!req.hostname) {
     next()
     return
   }
 
-  if(req.session) req.session.hostname = req.headers.referer
+  if (req.session) req.session.hostname = req.headers.referer
   next()
 }
 
-const getOrigin = (req, res, next) =>{
-  if(!req.session) return process.env.FRONTEND_URL
-  if(_.includes(req.session.hostname, "admin")) return  process.env.ADMIN_FRONTEND_URL;
+const getOrigin = (req, res, next) => {
+  if (!req.session) return process.env.FRONTEND_URL
+  if (_.includes(req.session.hostname, "admin")) return process.env.ADMIN_FRONTEND_URL;
   return process.env.FRONTEND_URL;
 }
 
 //? -------------------- Social Login -------------------
-router.get('/v1/auth/login/facebook', originGetter, passport.authenticate('facebook', { scope:['email'] }));
-router.get('/v1/auth/login/google', originGetter,  passport.authenticate('google'));
+router.get('/v1/auth/login/facebook', originGetter, passport.authenticate('facebook', { scope: ['email'] }));
+router.get('/v1/auth/login/google', originGetter, passport.authenticate('google'));
 
 
-router.get('/v1/auth/login/callback/facebook', passport.authenticate('facebook', loginCallbackOptions ))
+router.get('/v1/auth/login/callback/facebook', passport.authenticate('facebook', loginCallbackOptions))
 router.get('/v1/auth/login/callback/google', passport.authenticate('google', loginCallbackOptions));
 
 router.get('/v1/auth/login/callback/failed', async (req, res, next) => {
-  res.redirect(`${getOrigin(req,res, next)}/auth/login/failed`)
+  res.redirect(`${getOrigin(req, res, next)}/auth/login/failed`)
 });
 
 router.get('/v1/auth/login/callback/success', async (req, res, next) => {
   let user = _.get(req.session, 'passport.user')
-  if(!user){
+  if (!user) {
     next("Cannot find user")
     //return;
   }
-  
+
   let jwt = User.generateJWT(user.id); //TODO Rivedere
 
-  res.redirect(`${getOrigin(req,res, next)}/auth/login/success?token=${jwt.token}`)
+  res.redirect(`${getOrigin(req, res, next)}/auth/login/success?token=${jwt.token}`)
 });
 
 

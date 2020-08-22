@@ -6,6 +6,7 @@ const morgan = require("morgan");
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 const _ = require("lodash");
+const cookieParser = require("cookie-parser")
 const passport = require('passport');
 const {publicFolder, isProduction} = require("../auxiliaries/server")
 const initializeAuthentication = require('./initializers/initializeAuthentication')
@@ -38,7 +39,8 @@ module.exports = function createServer() {
   // ? Initialize Passport for authentication
   app.use(passport.initialize());
   //app.use(passport.session()); //* Sessions are not used
- 
+  // ? Cookie Parser middleware
+  app.use(cookieParser()) 
   // ? Add logger middleware
   app.use(morgan('dev'));
 

@@ -12,13 +12,18 @@ const initializeRoutes = (router) => {
   // Echo route
   router.get("/", (req, res, next) => res.send(
     `
-    <h1>${config.title}</h1>
+    <h1>${config.longTitle}</h1>
     <h2><a href=\"${config.apiDocsLink}\">API Documentation</h2>
     `
     ));
 
   router.get("/favicon.ico", (req, res, next) => res.status(204));
   
+
+  router.post("/create-cookie", (req,res,next)=>{
+    res.cookie("banan", "123")
+    res.send("ok")
+  })
 /*
   router.get("/users", paginatedResults(database.models.user), (req,res,next) =>{
     res.send(req.paginatedResults)

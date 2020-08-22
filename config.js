@@ -1,7 +1,7 @@
 const config = {
   base: {
-    title: "PERN Boilerplate",
-    date: "a PERN boilerplate",
+    longTitle: "PERN Boilerplate",
+    shortTitle: "PERNB",
     apiDocsLink: "/api-docs",
     contact: {
       name: "Michelangelo De Francesco",
@@ -11,9 +11,6 @@ const config = {
   },
   production: {
     databaseConfig: {
-      database: process.env.DB_PROD_NAME,
-      user: process.env.DB_PROD_USER,
-      password: process.env.DB_PROD_PASSWORD,
       options: {
         host: "localhost",
         dialect: "postgres",
@@ -23,9 +20,6 @@ const config = {
   },
   development: {
     databaseConfig: {
-      database: process.env.DB_DEV_NAME,
-      user: process.env.DB_DEV_USER,
-      password: process.env.DB_DEV_PASSWORD,
       options: {
         host: "192.168.99.100",
         dialect: "postgres",

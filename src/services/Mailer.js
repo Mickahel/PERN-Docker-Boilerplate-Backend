@@ -2,28 +2,65 @@ require('dotenv').config();
 const nodemailer = require('nodemailer')
 const nunjucks = require('nunjucks')
 const Logger = require('./Logger')
-const logger = new Logger("Mailer", "#a2aec2")
+const logger = new Logger("Mails", "#cacaca")
+const {config} = require('../../config')
 
-nunjucks.configure('resources',{ autoescape: true });
+nunjucks.configure('src/resources',{ autoescape: true });
 
 const transporter = nodemailer.createTransport({
-    //service: process.env.MAILER_TRANSPORT,
-    host: process.env.MAILER_HOST,
-    port: process.env.MAILER_PORT,
-    auth: {
-        user: process.env.MAILER_USER,
-        pass: process.env.MAILER_PASSWORD
-    },
-    tls: {
-        rejectUnauthorized: false
-    }
+  //service: process.env.MAILER_TRANSPORT,
+  host: process.env.MAILER_HOST,
+  port: process.env.MAILER_PORT,
+  auth: {
+    user: process.env.MAILER_USER,
+    pass: process.env.MAILER_PASSWORD
+  },
+  tls: {
+    rejectUnauthorized: false
+  }
 })
 
+function sendMail(to, subject, html){
+  let mailOptions = {
+    from: process.env.MAILER_USER,
+    to,
+    subject,
+    html
+  };
+
+  transporter.sendMail(mailOptions, (error, info) =>{
+    if (error) logger.error("Email send error ", error);
+  });
+}
+
+function renderNewUserActivationMail(user){
+  return nunjucks.render('NewUserMailActivation.html', { user});
+}
+
+ function sendNewUserActivationMail(user){
+  let html =  renderNewUserActivationMail(user)
+  sendMail(user.email, `${config.shortTitle} - Account Activation`, html)
+}
+
+async function sendNewUserMail(user, plainPassword){
+  const html = nunjucks.render('NewUserMail.html', { user, plainPassword});
+  sendMail(user.email,  `${config.shortTitle} - Welcome`, html)} 
+
+async function sendUserActivatedMail(user){
+  const html = nunjucks.render('NewUserMailActivated.html', { user});
+  sendMail(user.email, `${config.shortTitle} - Account Activated`, html)
+}
+
+async function sendResetPasswordMail(user){
+  const html = nunjucks.render('ResetPasswordMail.html', { user });
+  sendMail(user.email, `${config.shortTitle} - Reset your password`, html)
+}
+
 module.exports = {
-   /* renderNewUserActivationMail,
-    sendNewUserActivationMail,
-    sendNewUserMail,
-    sendUserActivatedMail,
-    sendResetPasswordMail,
-    sendMail,*/
+  renderNewUserActivationMail,
+  sendNewUserActivationMail,
+  sendNewUserMail,
+  sendUserActivatedMail,
+  sendResetPasswordMail,
+  sendMail,
 }

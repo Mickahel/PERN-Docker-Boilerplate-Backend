@@ -10,7 +10,7 @@ const swaggerOptions = {
     openapi: "3.0.1",
     host: process.env.BACKEND_URL,
     info: {
-      title: config.title,
+      title: config.longTitle,
       version: "0.0.0",
       description: config.description,
       contact: config.contact,

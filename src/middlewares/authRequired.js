@@ -3,15 +3,13 @@ const jwt = require('jsonwebtoken')
 const { roles } = require("../../config")
 const UserRepository = require("../repositories/User")
 
-const getTokenFromHeaders = (req) => {
-  const { headers: { authorization } } = req;
-  if (authorization && authorization.split(' ')[0] === 'Bearer') return authorization.split(' ')[1];
-  return null;
+const getTokenFromCookie = (req) => {
+  return req.cookies.accessToken
 };
 
 
 const authRequired = (role) => (req, res, next) => {
-  let token = getTokenFromHeaders(req)
+  let token = getTokenFromCookie(req)
   if (!token) return next({ message: "User is not authorized", status: 401 })
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (error, user) => {
     if (error) return next({ message: "Token expired", status: 403 })

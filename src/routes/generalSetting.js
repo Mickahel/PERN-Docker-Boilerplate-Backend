@@ -52,7 +52,7 @@ router.get('/:feature', GeneralSettingsValidator.getGeneralSettingByFeature, asy
  * @swagger
  * /v1/admin/general-settings:
  *    post:
- *      summary: Gets single general setting
+ *      summary: create single general setting
  *      tags: [General Settings]
  *      security:
  *          - bearerAuthAdmin: []

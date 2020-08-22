@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./index.js",
-    "dev": " set NODE_ENV=development&&nodemon ./index.js -L"
+    "dev": " env-cmd -f .env.development nodemon ./index.js -L"
   },
   "author": "Michelangelo De Francesco",
   "license": "ISC",
@@ -14,9 +14,10 @@
     "chalk": "^4.1.0",
     "color-json": "^2.0.1",
     "compression": "^1.7.4",
-    "connect-pg-simple": "^6.1.0",
+    "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
+    "env-cmd": "^10.1.0",
     "errorhandler": "^1.5.1",
     "express": "^4.17.1",
     "express-rate-limit": "^5.1.3",

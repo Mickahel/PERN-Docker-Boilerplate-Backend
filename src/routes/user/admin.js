@@ -74,7 +74,7 @@ router.post('/create',UserValidator.createUserByAdmin, async (req , res, next) =
       else {
         let userInDB = await UserRepository.createUser(user,sendActivationEmail)
         
-        if(sendActivationEmail){} //sendNewUserActivationMail(userInDB) //userInDB.datavalues //TODO
+        if(sendActivationEmail){} //sendNewUserActivationMail(userInDB) //userInDB.dataValues //TODO
         if(!user.password){} //sendNewUserSetPasswordMail(userInDB) //TODO
         res.status(201).send({ message: "ok" })
       }

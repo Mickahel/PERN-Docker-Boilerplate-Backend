@@ -1,5 +1,4 @@
 require("dotenv").config();
-const {config} = require("./config")
 const Logger = require("./src/services/Logger");
 const crashLogger = new Logger("CRASH", "#ff0000");
 
@@ -11,6 +10,7 @@ process.on("uncaughtException", (error) => {
   crashLogger.error("uncaughtException", error);
 });
 
+const {config} = require("./config")
 const cluster = require("cluster");
 const os = require("os");
 const createServer = require("./src/server");
@@ -53,9 +53,7 @@ function startSingle() {
 } 
 
 async function start() {
-  logger.info(`Starting ${config.title}`);
-
-
+  logger.info(`Starting ${config.longTitle}`);
 
   // ? Start services
   try {
