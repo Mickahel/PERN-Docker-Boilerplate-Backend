@@ -55,7 +55,7 @@ module.exports = function createServer() {
   app.use(express.json(/*{ limit: '20kb' }*/ ));
 
   // ? Initialize CORS
-  initializeCors(app, router);
+  initializeCors(app);
 
   // ? Add public folders
   app.use('/public', express.static(publicFolder)) 
