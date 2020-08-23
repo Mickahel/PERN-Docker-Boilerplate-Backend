@@ -26,7 +26,7 @@ const initializeCors = (app, router) =>{
     }else{
         app.use(cors({
             credentials: true,
-            origin:'http://localhost:3000'
+            origin:'http://localhost:9000'
         }))
         //router.all('*', cors());
     }
