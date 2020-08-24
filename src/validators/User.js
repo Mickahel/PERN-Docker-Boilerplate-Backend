@@ -10,7 +10,10 @@ class UserValidator {
             properties: {
                 firstnama: { type: "string" },
                 lastname: { type: "string" },
-                email: { type: "string", format: "email" }
+                email: { type: "string", format: "email" },
+                language: { type: "string" },
+                theme: { enum: ["light", "dark"] },
+ 
             },
             additionalProperties: false
         }
@@ -31,6 +34,8 @@ class UserValidator {
                 lastname: { type: "string" },
                 password: { type: "string" },
                 email: { type: "string", format: "email" },
+                language: { type: "string" },
+                theme: { enum: ["light", "dark"] },
                 status: { enum:statuses.names() },
                 role: { enum:roles.names() }
             },
@@ -68,7 +73,9 @@ class UserValidator {
                         email: { type: "string", format: "email" },
                         password: { type: "string" },
                         status: { enum:statuses.names() },
-                        role: { enum:roles.names() }
+                        role: { enum:roles.names() },
+                        language: { type: "string" },
+                        theme: { enum: ["light", "dark"] },        
                     }
                 },
                 sendActivationEmail: { type: "boolean" }

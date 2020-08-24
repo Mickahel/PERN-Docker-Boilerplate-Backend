@@ -33,6 +33,16 @@ const createModel = (database) => {
       defaultValue: statuses.PENDING,
       allowNull: false
     },
+    language: {
+      type:DataTypes.STRING,
+      defaultValue: "en-EN",
+      allowNull: false
+    },
+    theme: {
+      type:DataTypes.ENUM(["light", "dark"]),
+      defaultValue: "light",
+      allowNull: false
+    },
     refreshToken: DataTypes.STRING
   });
 
