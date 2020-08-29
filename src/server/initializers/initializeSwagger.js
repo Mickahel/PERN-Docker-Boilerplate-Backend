@@ -21,28 +21,34 @@ const swaggerOptions = {
     },
     components: {
       securitySchemes: {
-        bearerAuthBasic: {
-          type: "http",
-          scheme: "bearer",
-          bearerFormat: "JWT",
-          description: "JWT required, Basic Role Required",
+        cookieAuthBasic: {
+          type: "apiKey",
+          in: "cookie",
+          name: 'accessToken',
+          //scheme: "bearer",
+          //bearerFormat: "JWT",
+          description: "Cookie accessToken required, Basic Role Required",
         },
-        bearerAuthAdmin: {
-          type: "http",
-          scheme: "bearer",
-          bearerFormat: "JWT",
-          description: "JWT required, Admin Role Required",
+        cookieAuthAdmin: {
+          type: "apiKey",
+          in: "cookie",
+          name: 'accessToken',
+          //scheme: "bearer",
+          //bearerFormat: "JWT",
+          description: "Cookie accessToken required, Admin Role Required",
         },
-        bearerAuthSuperAdmin: {
-          type: "http",
-          scheme: "bearer",
-          bearerFormat: "JWT",
-          description: "JWT required, SuperAdmin Role Required",
+        cookieAuthSuperAdmin: {
+          type: "apiKey",
+          in: "cookie",
+          name: 'accessToken',
+          //scheme: "bearer",
+          //bearerFormat: "JWT",
+          description: "Cookie accessToken required, SuperAdmin Role Required",
         },
-        basicAuth: {
-          type: 'http',
-          scheme: 'basic'
-        }
+        //basicAuth: {
+        //  type: 'apiKey',
+        //  scheme: 'basic'
+        //}
       },
     },
     servers: [

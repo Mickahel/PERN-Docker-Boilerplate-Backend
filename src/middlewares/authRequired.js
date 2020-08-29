@@ -17,7 +17,7 @@ const authRequired = (role) => (req, res, next) => {
       // ? Check if the role is right
       let userDB = await UserRepository.getUserById(user.id)
       if (userDB) {
-        let isAuthorized = checkRole(userDB.role, role)
+        let isAuthorized = isAllowed(userDB.role, role)
         if (isAuthorized) {
 
           if (userDB.role === roles.BASE.name) {
@@ -35,7 +35,7 @@ const authRequired = (role) => (req, res, next) => {
 }
 
 
-const checkRole = (userRole, role) => {
+const isAllowed = (userRole, role) => {
   // ? Get permission Level of the user
   if (!role) role = { permissionLevel: 0 }
   else if (typeof role === "string") role = Object.values(roles).find(enumRole => role.toLowerCase() == enumRole.name.toLowerCase())

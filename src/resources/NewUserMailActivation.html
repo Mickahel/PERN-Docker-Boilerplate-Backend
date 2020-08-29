@@ -1,4 +1,5 @@
-{% import "_base.html" as site%}
+{% import "utilities.html" as utilities %}
+{% set realName = utilities.trim(utilities.getRealName(user)) %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +15,7 @@
 
   <!-- start preheader -->
   <div class="preheader" style="display: none; max-width: 0; max-height: 0; overflow: hidden; font-size: 1px; line-height: 1px; color:#ffff; opacity: 0;">
-    Confirm the email to enter in PERN Boilerplate
+    Confirm the email to access in {{appName}}
     <!-- A preheader is the short summary text that follows the subject line when an email is viewed in the inbox. -->
   </div>
   <!-- end preheader -->
@@ -67,7 +68,7 @@
           <!-- start copy -->
           <tr>
             <td align="left" bgcolor="#ffffff" style="padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;">
-              <p style="margin: 0;">Welcome {{user.email}}, <br>Your registration has been successful, click on the button below to confirm your email and visitPERN Boilerplate
+              <p style="margin: 0;">Welcome {{realName}}, <br>Your registration has been successful, click on the button below to confirm your email and visit {{appName}}
               <br>
             </td>
           </tr>
@@ -81,7 +82,7 @@
                     <table border="0" cellpadding="0" cellspacing="0">
                       <tr>
                         <td align="center" bgcolor="#03A9F4" style="border-radius: 6px; ">
-                          <a href="{{site.frontendUrl}}auth/activate/{{user.activationCode}}" target="_blank" style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;">Confirm Your Email</a>
+                          <a href="{{frontendUrl}}auth/activate/{{user.activationCode}}" target="_blank" style="display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;">Confirm Your Email</a>
                         </td>
                       </tr>
                     </table>

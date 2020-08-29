@@ -236,27 +236,22 @@ router.post("/token", async (req, res, next) => {
  *      summary : Removes Refresh Token
  *      tags: [Auth]
  *      parameters:
- *      - in: body
- *        name: token
- *        description: Refresh Token
- *        required: true
- *      responses:
- *        403:
- *          description: RefreshToken Not Found
+ *      - in: cookie
+ *        name: refreshToken
+ *        schema:
+ *          type: string
  * 
 */
 router.delete("/logout", async (req, res, next) => {
   let refreshToken = req.cookies.refreshToken
-  if (!refreshToken) next({ message: "RefreshToken Not Found", status: 403 })
-  else {
     try {
-    let deleted = await UserRepository.deleteRefreshToken(refreshToken)
-    if (deleted[0] == 1) res.sendStatus(204)
-    else next({ message: "RefreshToken Not Found", status: 403 })
+      if (refreshToken) await UserRepository.deleteRefreshToken(refreshToken)
+    res.clearCookie("refreshToken")
+    res.clearCookie("accessToken")
+    res.sendStatus(204)
   } catch (e) {
     next(e)
   }
-}
 })
 
 const loginCallbackOptions = {

@@ -7,14 +7,6 @@ class BaseRepository {
     getRepository(){
         return this._repository;
     }
-
-    getAll(){
-        return this._repository.getAll();
-    }
-
-    getById(id){
-        return this._repository.getById(id);
-    }
     
     async getPaginatedResults(limit, offset, excludeFields, options) {
         let result = await this.repository.findAll({

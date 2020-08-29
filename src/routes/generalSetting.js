@@ -9,7 +9,7 @@ const GeneralSettingsValidator = require("../validators/GeneralSettings")
  *      summary: Gets all the general settings
  *      tags: [General Settings]
  *      security:
- *          - bearerAuthAdmin: []
+ *          - cookieAuthAdmin: []
 */
 router.get('/', async (req, res, next) => {
     try {
@@ -27,7 +27,7 @@ router.get('/', async (req, res, next) => {
  *      summary: Gets single general setting
  *      tags: [General Settings]
  *      security:
- *          - bearerAuthAdmin: []
+ *          - cookieAuthAdmin: []
  *      parameters:
  *      - in: path
  *        name: feature
@@ -55,7 +55,7 @@ router.get('/:feature', GeneralSettingsValidator.getGeneralSettingByFeature, asy
  *      summary: create single general setting
  *      tags: [General Settings]
  *      security:
- *          - bearerAuthAdmin: []
+ *          - cookieAuthAdmin: []
  *      parameters:
  *      - in: body
  *        name: feature
@@ -91,7 +91,7 @@ router.post('/', GeneralSettingsValidator.createGeneralSetting, async (req, res,
  *      summary: edits single general setting
  *      tags: [General Settings]
  *      security:
- *          - bearerAuthAdmin: []
+ *          - cookieAuthAdmin: []
  *      parameters:
  *      - in: body
  *        name: feature
@@ -132,7 +132,7 @@ router.put('/',GeneralSettingsValidator.updateGeneralSetting, async (req, res, n
  *      summary: Deletes single general setting
  *      tags: [General Settings]
  *      security:
- *          - bearerAuthAdmin: []
+ *          - cookieAuthAdmin: []
  *      parameters:
  *      - in: path
  *        name: feature

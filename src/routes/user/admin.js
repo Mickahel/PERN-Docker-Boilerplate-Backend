@@ -10,7 +10,7 @@ const UserService = require("../../services/User")
  *      summary: get all users information
  *      tags: [User]
  *      security:
- *      - bearerAuthAdmin: []
+ *      - cookieAuthAdmin: []
  *      responses:
  *          404:
  *              description: User not found
@@ -58,7 +58,7 @@ router.get('/info/all', async (req , res, next) => {
  *        name: sendActivationEmail
  *        description: Send Activation Email
  *      security:
- *      - bearerAuthAdmin: []
+ *      - cookieAuthAdmin: []
  *      responses:
  *          409:
  *              description: User is registered
@@ -96,7 +96,7 @@ router.post('/create',UserValidator.createUserByAdmin, async (req , res, next) =
  *        description: id of the user
  *        required: true
  *      security:
- *          - bearerAuthAdmin: []
+ *          - cookieAuthAdmin: []
  *      responses:
  *        404:
  *          description: User not found
@@ -145,7 +145,7 @@ router.get('/info/:id', UserValidator.getUserById, async (req , res, next) => {
  *        description: id of the user
  *        required: true
  *      security:
- *      - bearerAuthAdmin: []
+ *      - cookieAuthAdmin: []
  *      responses:
  *          409:
  *              description: User is registered

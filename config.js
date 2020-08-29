@@ -3,6 +3,7 @@ const config = {
     longTitle: "PERN Boilerplate",
     shortTitle: "PERNB",
     apiDocsLink: "/api-docs",
+    mainDomain: "https://app.pernboilerplate.it",
     contact: {
       name: "Michelangelo De Francesco",
       url: "https://www.linkedin.com/in/michelangelodefrancesco",

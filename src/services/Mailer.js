@@ -33,31 +33,26 @@ function sendMail(to, subject, html){
   });
 }
 
-function renderNewUserActivationMail(user){
-  return nunjucks.render('NewUserMailActivation.html', { user});
-}
-
  function sendNewUserActivationMail(user){
-  let html =  renderNewUserActivationMail(user)
+  let html =  nunjucks.render('NewUserMailActivation.html', {user, appName:config.longTitle, mainDomain: config.mainDomain, frontendUrl:process.env.FRONTEND_URL,imagesUrl: process.env.BACKEND_IMAGES_URL });
   sendMail(user.email, `${config.shortTitle} - Account Activation`, html)
 }
 
 async function sendNewUserMail(user, plainPassword){
-  const html = nunjucks.render('NewUserMail.html', { user, plainPassword});
+  const html = nunjucks.render('NewUserMail.html', { user, plainPassword, appName:config.longTitle,mainDomain: config.mainDomain, frontendUrl:process.env.FRONTEND_URL,imagesUrl: process.env.BACKEND_IMAGES_URL});
   sendMail(user.email,  `${config.shortTitle} - Welcome`, html)} 
 
 async function sendUserActivatedMail(user){
-  const html = nunjucks.render('NewUserMailActivated.html', { user});
+  const html = nunjucks.render('NewUserMailActivated.html', {user, appName:config.longTitle, mainDomain: config.mainDomain, frontendUrl:process.env.FRONTEND_URL,imagesUrl: process.env.BACKEND_IMAGES_URL});
   sendMail(user.email, `${config.shortTitle} - Account Activated`, html)
 }
 
 async function sendResetPasswordMail(user){
-  const html = nunjucks.render('ResetPasswordMail.html', { user });
+  const html = nunjucks.render('ResetPasswordMail.html', { user,appName:config.longTitle,mainDomain: config.mainDomain, frontendUrl:process.env.FRONTEND_URL,imagesUrl: process.env.BACKEND_IMAGES_URL });
   sendMail(user.email, `${config.shortTitle} - Reset your password`, html)
 }
 
 module.exports = {
-  renderNewUserActivationMail,
   sendNewUserActivationMail,
   sendNewUserMail,
   sendUserActivatedMail,
