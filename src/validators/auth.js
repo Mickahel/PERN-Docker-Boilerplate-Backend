@@ -49,7 +49,7 @@ class AuthValidator {
     }
 
     lostPasswordMail(req, res, next) {
-        const { email } = req.params
+        const { email } = req.body
         const schema = {
             type: "string",
             format: "email",

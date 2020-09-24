@@ -61,7 +61,7 @@ router.get('/info/all', async (req , res, next) => {
  *      - cookieAuthAdmin: []
  *      responses:
  *          409:
- *              description: User is registered
+ *              description: User is already registered
  *          406:
  *              description: User is not activated / User is disabled
 */
@@ -74,8 +74,8 @@ router.post('/create',UserValidator.createUserByAdmin, async (req , res, next) =
       else {
         let userInDB = await UserRepository.createUser(user,sendActivationEmail)
         
-        if(sendActivationEmail){} //sendNewUserActivationMail(userInDB) //userInDB.dataValues //TODO
-        if(!user.password){} //sendNewUserSetPasswordMail(userInDB) //TODO
+        if(sendActivationEmail) sendNewUserActivationMail(userInDB.dataValues)
+        if(!user.password)      sendNewUserSetPasswordMail(userInDB.dataValues) 
         res.status(201).send({ message: "ok" })
       }
     } catch (e) {
@@ -148,7 +148,7 @@ router.get('/info/:id', UserValidator.getUserById, async (req , res, next) => {
  *      - cookieAuthAdmin: []
  *      responses:
  *          409:
- *              description: User is registered
+ *              description: User is already registered
  *          406:
  *              description: User is not activated / User is disabled
 */

@@ -1,6 +1,6 @@
 const Ajv = require('ajv');
 const ajv = new Ajv();
-const { roles,statuses } = require("../../config")
+const { roles, statuses } = require("../../config")
 class UserValidator {
 
     editUser(req, res, next) {
@@ -8,16 +8,30 @@ class UserValidator {
         const schema = {
             type: "object",
             properties: {
-                firstnama: { type: "string" },
+                firstname: { type: "string" },
                 lastname: { type: "string" },
                 email: { type: "string", format: "email" },
                 language: { type: "string" },
                 theme: { enum: ["light", "dark"] },
- 
+
             },
             additionalProperties: false
         }
         const valid = ajv.validate(schema, newData);
+        if (valid) next()
+        else next({ message: "Validation Error", errors: ajv.errors, status: 400 })
+    }
+
+    resetPassword(req, res, next) {
+        const schema = {
+            type: "object",
+            properties: {
+                currentPassword: { type: "string" },
+                password: { type: "string" }
+            },
+            additionalProperties: false
+        }
+        const valid = ajv.validate(schema, req.body);
         if (valid) next()
         else next({ message: "Validation Error", errors: ajv.errors, status: 400 })
     }
@@ -36,8 +50,8 @@ class UserValidator {
                 email: { type: "string", format: "email" },
                 language: { type: "string" },
                 theme: { enum: ["light", "dark"] },
-                status: { enum:statuses.names() },
-                role: { enum:roles.names() }
+                status: { enum: statuses.names() },
+                role: { enum: roles.names() }
             },
             additionalProperties: false
         }
@@ -72,10 +86,10 @@ class UserValidator {
                         lastname: { type: "string" },
                         email: { type: "string", format: "email" },
                         password: { type: "string" },
-                        status: { enum:statuses.names() },
-                        role: { enum:roles.names() },
+                        status: { enum: statuses.names() },
+                        role: { enum: roles.names() },
                         language: { type: "string" },
-                        theme: { enum: ["light", "dark"] },        
+                        theme: { enum: ["light", "dark"] },
                     }
                 },
                 sendActivationEmail: { type: "boolean" }

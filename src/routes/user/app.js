@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const UserValidator = require("../../validators/User")
-const UserReposiory = require("../../repositories/User")
+const UserRepository = require("../../repositories/User")
+const passport = require('passport');
 /**
  * @swagger
  * /v1/app/user/info:
@@ -36,13 +37,44 @@ router.get('/info', (req, res, next) => {
 router.put('/edit', UserValidator.editUser, async (req, res, next) => { //TODO ADD IMAGE UPLOAD
     const newData = req.body
     try {
-        const newUser = await UserReposiory.updateUser(req.user, newData)
+        const newUser = await UserRepository.updateUser(req.user, newData)
         res.send(newUser)
     }
     catch (e) {
         next(e)
     }
 })
+
+/**
+ * @swagger
+ * /v1/app/user/reset-password:
+ *    put:
+ *      summary: reset password
+ *      tags: [User]
+ *      security:
+ *          - bearerAuthBase: []
+ *      parameters:
+ *      - in: body
+ *        name: email
+ *        description: new email
+ *      - in: body
+ *        name: firstname
+*/
+router.put('/reset-password', UserValidator.resetPassword, async (req, res, next) => {
+    try {
+        if (req.user.validatePassword(req.body.currentPassword)) {
+            await UserRepository.updateUser(req.user,{password: req.body.password})           
+            res.send({message:"ok"})
+        }
+        else {
+            next({ message: "Current Password is Wrong", status: 401 })
+        }
+    }
+    catch (e) {
+        next(e)
+    }
+})
+
 
 
 module.exports = router;

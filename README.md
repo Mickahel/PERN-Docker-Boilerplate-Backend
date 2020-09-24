@@ -41,12 +41,17 @@ a PERN(Postgres, Express, React, Node) Boilerplate for developing and go-prod wi
 * 📝 Add notifications
 * 📝 Add login api for Admin
 * 📝 Add password change 
+* 📝 Add permissions to CRUD users with higher order
 
 ### 🖼️ App Development
 * 📝 [Add google fonts caching](https://developers.google.com/web/tools/workbox/guides/common-recipes#google_fonts)
 * 📝 [Add UX dialog to SW](https://developers.google.com/web/tools/workbox/guides/advanced-recipes)
 * 📝 Connect to API depending on REACT_APP_NODE_ENV
 * 📝 Add notifications
+* 📝 Add profile GET
+* 📝 Add profile PUT
+* 📝 Login facebook
+* 📝 Login Google
 
 ### 🏗️ Admin Development
 🚧 To Be Defined

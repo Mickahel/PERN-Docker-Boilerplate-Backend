@@ -24,7 +24,7 @@ const { statuses } = require("../../config")
  *        required: true
  *      responses:
  *        409:
- *          description: User is registered
+ *          description: User is already registered
  *        406:
  *          description: User is not activated / User is disabled
 */
@@ -79,7 +79,7 @@ router.post('/login', AuthValidator.login, (req, res, next) => {
         const refreshToken = UserService.generateRefreshToken(passportUser.id)
         await UserRepository.setRefreshToken(passportUser, refreshToken)
 
-        res.cookie("accessToken", accessToken, { httpOnly: true, secure: false, maxAge: 1000*5/*process.env.ACCESS_TOKEN_EXPIRATION * 1000 * 60 * 60 * 24*/ })
+        res.cookie("accessToken", accessToken, { httpOnly: true, secure: false, maxAge:process.env.ACCESS_TOKEN_EXPIRATION * 1000 * 60 * 60 * 24 })
         res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: false })
         res.send({
           accessToken,
