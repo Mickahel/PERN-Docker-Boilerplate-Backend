@@ -40,7 +40,6 @@ a PERN(Postgres, Express, React, Node) Boilerplate for developing and go-prod wi
     * 📝 Repository
 * 📝 Add notifications
 * 📝 Add login api for Admin
-* 📝 Add password change 
 * 📝 Add permissions to CRUD users with higher order
 
 ### 🖼️ App Development
@@ -48,8 +47,6 @@ a PERN(Postgres, Express, React, Node) Boilerplate for developing and go-prod wi
 * 📝 [Add UX dialog to SW](https://developers.google.com/web/tools/workbox/guides/advanced-recipes)
 * 📝 Connect to API depending on REACT_APP_NODE_ENV
 * 📝 Add notifications
-* 📝 Add profile GET
-* 📝 Add profile PUT
 * 📝 Login facebook
 * 📝 Login Google
 

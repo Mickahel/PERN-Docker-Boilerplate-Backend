@@ -37,7 +37,6 @@ const initializeRoutes = (router) => {
 
   // ? Public Routes 
   router.use("/v1/auth",                    require("../../routes/auth"));
-  router.use("/v1/upload",                  require("../../routes/upload"));
 
   // ? Admin Routes
   router.use("/v1/admin*",                  authRequired(roles.ADMIN))

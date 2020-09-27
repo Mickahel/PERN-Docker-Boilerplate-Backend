@@ -3,6 +3,7 @@ const compression = require('compression')
 const path = require("path");
 const errorHandler = require("errorhandler");
 const morgan = require("morgan");
+const fileUpload = require('express-fileupload');
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 const _ = require("lodash");
@@ -36,6 +37,12 @@ module.exports = function createServer() {
     })
   );*/
 
+  // ? Uploader Middleware
+  app.use(fileUpload({
+    limits: { fileSize: 10 * 1024 * 1024 }, // ? 10 mb
+    files : 1 
+  }));
+
   // ? Initialize Passport for authentication
   app.use(passport.initialize());
   //app.use(passport.session()); //* Sessions are not used
@@ -60,7 +67,6 @@ module.exports = function createServer() {
   // ? Add public folders
   app.use('/public', express.static(publicFolder)) 
   app.use("/resources", express.static(path.join(__dirname, "../../resources")));
-  
   
   // ? Security middleware
   app.use(helmet())
