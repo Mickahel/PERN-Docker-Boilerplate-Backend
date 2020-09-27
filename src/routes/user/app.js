@@ -9,7 +9,7 @@ const passport = require('passport');
  *      summary: get user information
  *      tags: [User]
  *      security:
- *          - bearerAuthBase: []
+ *          - cookieAuthBasic: []
 */
 router.get('/info', (req, res, next) => {
     res.send(req.user)
@@ -22,7 +22,7 @@ router.get('/info', (req, res, next) => {
  *      summary: edit user information
  *      tags: [User]
  *      security:
- *          - bearerAuthBase: []
+ *          - cookieAuthBasic: []
  *      parameters:
  *      - in: body
  *        name: email
@@ -52,7 +52,7 @@ router.put('/edit', UserValidator.editUser, async (req, res, next) => { //TODO A
  *      summary: reset password
  *      tags: [User]
  *      security:
- *          - bearerAuthBase: []
+ *          - cookieAuthBasic: []
  *      parameters:
  *      - in: body
  *        name: email
