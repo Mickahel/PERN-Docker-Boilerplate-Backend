@@ -46,19 +46,34 @@ router.get('/info', (req, res, next) => {
 */
 router.put('/edit', UserValidator.editUser, async (req, res, next) => {
     const newData = req.body
-
     try {
-        if (req.files?.profileImageUrl) {
-            let extension = "." + req.files.profileImageUrl.name.split(".")[req.files.profileImageUrl.name.split(".").length - 1]
-            newData.profileImageUrl = uuid() + extension
-            req.files.profileImageUrl.mv(publicFolder + '/uploads/profileImgs/' + newData.profileImageUrl, function (err) {
-                if (err) throw err
+        // ? Only Remove old image 
+        if (newData.removeProfileImageUrl) {
+            fs.unlink(publicFolder + 'uploads/profileImgs/' + req.user.profileImageUrl, (err) => {
+                if (err) logger.error(err)
             })
+            newData.profileImageUrl = null
         }
-        if (req.user?.profileImageUrl || newData.removeProfileImageUrl) fs.unlink(publicFolder + '/uploads/profileImgs/' + req.user.profileImageUrl, (err) => {
-            if (err) logger.error(err)
-        })
+        else {
+            // ? Set new image - Remove old image
+            if (req.user?.profileImageUrl) {
+                fs.unlink(publicFolder + 'uploads/profileImgs/' + req.user.profileImageUrl, (err) => {
+                    if (err) logger.error(err)
+                })
 
+            }
+
+            // ? Set new image
+            if (req.files?.profileImageUrl) {
+                let extension = "." + req.files.profileImageUrl.name.split(".")[req.files.profileImageUrl.name.split(".").length - 1]
+                newData.profileImageUrl = uuid() + extension
+                req.files.profileImageUrl.mv(publicFolder + '/uploads/profileImgs/' + newData.profileImageUrl, function (err) {
+                    if (err) throw err
+                })
+                newData.profileImageUrl = '/uploads/profileImgs/' + newData.profileImageUrl
+            }
+
+        }
         const newUser = await UserRepository.updateUser(req.user, newData)
         res.send(newUser)
     }

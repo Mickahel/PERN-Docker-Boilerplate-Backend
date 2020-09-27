@@ -12,12 +12,11 @@ class UserValidator {
                 lastname: { type: "string" },
                 email: { type: "string", format: "email" },
                 language: { type: "string" },
-                profileImageUrl: { type: "string" },
                 removeBackgroundImage: { enum: ["true", "false"] },
                 theme: { enum: ["light", "dark"] },
 
             },
-            additionalProperties: false
+            additionalProperties: true
         }
         const valid = ajv.validate(schema, newData);
         if (valid) next()

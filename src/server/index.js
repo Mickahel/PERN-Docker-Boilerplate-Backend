@@ -40,7 +40,8 @@ module.exports = function createServer() {
   // ? Uploader Middleware
   app.use(fileUpload({
     limits: { fileSize: 10 * 1024 * 1024 }, // ? 10 mb
-    files : 1 
+    //files : 1,
+    //debug:true,
   }));
 
   // ? Initialize Passport for authentication
