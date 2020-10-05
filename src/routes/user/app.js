@@ -49,7 +49,7 @@ router.put('/edit', UserValidator.editUser, async (req, res, next) => {
     try {
         // ? Only Remove old image 
         if (newData.removeProfileImageUrl) {
-            fs.unlink(publicFolder + 'uploads/profileImgs/' + req.user.profileImageUrl, (err) => {
+            fs.unlink(publicFolder + req.user.profileImageUrl, (err) => {
                 if (err) logger.error(err)
             })
             newData.profileImageUrl = null
@@ -57,7 +57,7 @@ router.put('/edit', UserValidator.editUser, async (req, res, next) => {
         else {
             // ? Set new image - Remove old image
             if (req.user?.profileImageUrl) {
-                fs.unlink(publicFolder + 'uploads/profileImgs/' + req.user.profileImageUrl, (err) => {
+                fs.unlink(publicFolder + req.user.profileImageUrl, (err) => {
                     if (err) logger.error(err)
                 })
 
@@ -67,10 +67,10 @@ router.put('/edit', UserValidator.editUser, async (req, res, next) => {
             if (req.files?.profileImageUrl) {
                 let extension = "." + req.files.profileImageUrl.name.split(".")[req.files.profileImageUrl.name.split(".").length - 1]
                 newData.profileImageUrl = uuid() + extension
-                req.files.profileImageUrl.mv(publicFolder + '/uploads/profileImgs/' + newData.profileImageUrl, function (err) {
+                req.files.profileImageUrl.mv(publicFolder + 'uploads/profileImgs/' + newData.profileImageUrl, function (err) {
                     if (err) throw err
                 })
-                newData.profileImageUrl = '/uploads/profileImgs/' + newData.profileImageUrl
+                newData.profileImageUrl = 'uploads/profileImgs/' + newData.profileImageUrl
             }
 
         }
@@ -79,6 +79,7 @@ router.put('/edit', UserValidator.editUser, async (req, res, next) => {
     }
     catch (e) {
         next(e)
+
     }
 })
 

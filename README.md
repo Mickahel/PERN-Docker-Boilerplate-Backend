@@ -5,7 +5,6 @@ a PERN(Postgres, Express, React, Node) Boilerplate for developing and go-prod wi
 ## Technologies
 * 🖥️ Node
 * 🖼️ React
-* 🔄 GitHub Actions
 * 🐋 Docker
 * 🤹 Nginx 
 * 📊 PM2
@@ -23,35 +22,36 @@ a PERN(Postgres, Express, React, Node) Boilerplate for developing and go-prod wi
 |-------|--------------------|----------------------------------------------|
 | ⌛     | June 2020         | Start Project, Start Docker                  |
 | ⏳     | July 2020         | Backend Development, Database Creation       |
-| 🔮    | August 2020        | Backend Development                         |
-| 🔮    | September 2020     | Frontend Development                        |
-| 🔮    | October 2020        | Pipelines And Automation                   |
+| ⏳    | August 2020        | Backend Development                         |
+| ⏳    | September 2020     | Frontend Development                        |
+| 🔮    | October 2020        | Frontend and backend Fine tuning, Admin Creation                   |
+| 🔮    | November 2020        | Backend typescript migration                   |
+| 🔮    | December 2020        | Pipelines, Automation and Docker                   |
 
 ## Milestones
 ### 🖥️ Backend
-* 📝 Authentication with facebook and google API (WIP, blocked by file upload)
+* 📝 Authentication with facebook and google API
     * 📝 Validator
     * 📝 Routes
     * 📝 Swagger Documentation
-* 📝 Create file upload API - WIP
-    * 📝 Validator
-    * 📝 Swagger Documentation
-    * 📝 Models 
-    * 📝 Repository
 * 📝 Add notifications
+* 📝 Add API for feedback,google
 * 📝 Add login api for Admin
 * 📝 Add permissions to CRUD users with higher order
 
 ### 🖼️ App Development
 * 📝 [Add google fonts caching](https://developers.google.com/web/tools/workbox/guides/common-recipes#google_fonts)
 * 📝 [Add UX dialog to SW](https://developers.google.com/web/tools/workbox/guides/advanced-recipes)
-* 📝 Connect to API depending on REACT_APP_NODE_ENV
+* 📝 Add icon component for feedback
 * 📝 Add notifications
 * 📝 Login facebook
 * 📝 Login Google
 
 ### 🏗️ Admin Development
 🚧 To Be Defined
+* 📝 Add editor to create GDPR
+* 📝 Add GDPR Editor Page
+* 📝 Add fetch GDPR
 * 👀 Views
     * 📝 Dashboard
     * 📝 TOS Editor
@@ -59,12 +59,6 @@ a PERN(Postgres, Express, React, Node) Boilerplate for developing and go-prod wi
         * 📝 Single User
     * 📝 Subscriptions
     * 📝 Logs
-
-### 🔄 CD/CI
-* 📝 Create a pipeline that creates a docker image with the  backend and publish it to dockerhub
-* 📝 Create a pipeline that creates a docker image with the  frontend and publish it to dockerhub
-* 📝 Create a pipeline that pulls app image from the server
-* 📝 Create a pipeline that pulls backend image from the server
 
 ### ⚒️ DevOps
 * 📝 Create Dockerfile for backend development 
@@ -77,9 +71,6 @@ a PERN(Postgres, Express, React, Node) Boilerplate for developing and go-prod wi
 * 📝 Add pm2 to backend in order to set the go-prod
 * 📝 Add pm2 to frontend in order to set the go-prod
 
-### 🐘 DB Administration & Usage
-* 📝 Setup a user for backend app with permission restrictions
-
 ### 🖼️ Documentation
 * 📝 Getting Started
 * 📝 Deploy
@@ -87,22 +78,3 @@ a PERN(Postgres, Express, React, Node) Boilerplate for developing and go-prod wi
 * 📝 Development
 * 📝 [Backend] how to use logger
 * 📝 [Frontend] how to use fetcher
-
-
-### 🔮 Future development
-* 📝 Subscriptions
-    * 📝 Validator
-    * 📝 Swagger Documentation
-    * 📝 Models 
-    * 📝 Routes 
-    * 📝 Repository
-    * 📝 Dedicated page on App
-    * 📝 Dedicated page on Admin
-* 📝 Payments
-    * 📝 Validator
-    * 📝 Swagger Documentation
-    * 📝 Models 
-    * 📝 Routes 
-    * 📝 Repository
-    * 📝 Dedicated page on App
-    * 📝 Dedicated page on Admin

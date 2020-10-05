@@ -47,6 +47,7 @@ const initializeRoutes = (router) => {
   // ? App Routes
   router.use("/v1/app*",                    authRequired(roles.BASE))
   router.use("/v1/app/user",                require("../../routes/user/app"))
+  router.use("/v1/app/feedback",            require("../../routes/feedback/app"))
 
 
 
