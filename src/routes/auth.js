@@ -7,6 +7,7 @@ const UserRepository = require('../repositories/User')
 const AuthValidator = require("../validators/auth")
 const jwt = require('jsonwebtoken')
 const { statuses } = require("../../config")
+const { roles } = require("../../config")
 /**
  * @swagger
  * /v1/auth/registration:
@@ -73,7 +74,7 @@ router.post('/login', AuthValidator.login, (req, res, next) => {
     user.email = user.email.trim();
     passport.authenticate('local', { session: false }, async (err, passportUser, info) => {
       if (err) return next(err);
-      if (!passportUser && info) return next(info)
+      else if (!passportUser && info) return next(info)
       else {
         const accessToken = UserService.generateAccessToken(passportUser.id)
         const refreshToken = UserService.generateRefreshToken(passportUser.id)
@@ -88,6 +89,59 @@ router.post('/login', AuthValidator.login, (req, res, next) => {
         })
       }
     }
+    )(req, res, next)
+  } catch (e) {
+    next(e)
+  }
+})
+
+/**
+ * @swagger
+ * /v1/auth/admin/login:
+ *    post:
+ *      summary: Admin Login endpoint
+ *      tags: [Auth]
+ *      parameters:
+ *      - in: body
+ *        name: email
+ *        description: Registration email
+ *        required: true
+ *      - in: body
+ *        name: password
+ *        description: Password chosen
+ *        required: true
+ *      responses:
+ *        404:
+ *          description: User doesn't exist
+ *        401:
+ *          description: User is disabled / user is not activated
+ *        403:
+ *          description: Email or password is invalid / User does not have the permission
+*/
+router.post('/admin/login', AuthValidator.login, (req, res, next) => {
+  let { body: user } = req;
+  try {
+    user.email = user.email.trim();
+    passport.authenticate('local', { session: false }, async (err, passportUser, info) => {
+      if (err) return next(err);
+      else if (!passportUser && info) return next(info)
+      else {
+        if (roles[passportUser.role].permissionLevel>=roles.getAdminRoleWithMinimumPermissionLevel().permissionLevel){ 
+        const accessToken = UserService.generateAccessToken(passportUser.id)
+        const refreshToken = UserService.generateRefreshToken(passportUser.id)
+        await UserRepository.setRefreshToken(passportUser, refreshToken)
+
+        res.cookie("accessToken", accessToken, { httpOnly: true, secure: false, maxAge:process.env.ACCESS_TOKEN_EXPIRATION * 1000 * 60 * 60 * 24 })
+        res.cookie("refreshToken", refreshToken, { httpOnly: true, secure: false })
+        res.send({
+          accessToken,
+          refreshToken,
+          user: passportUser,
+        })
+      }  
+    else next({ message: "User does not have the permission", status: 403 })
+    }
+  }
     )(req, res, next)
   } catch (e) {
     next(e)

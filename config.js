@@ -46,12 +46,26 @@ generateEnum.prototype.names= function(){
 
 const roles = new generateEnum(
   {
-    SUPERADMIN: { name: "SUPERADMIN", permissionLevel: 2 },
-    ADMIN: { name: "ADMIN", permissionLevel: 1 },
-    BASE: { name: "BASE", permissionLevel: 0 },
+    SUPERADMIN: { name: "SUPERADMIN", permissionLevel: 2, isAdmin: true },
+    ADMIN: { name: "ADMIN", permissionLevel: 1, isAdmin: true},
+    BASE: { name: "BASE", permissionLevel: 0, isAdmin: false },
   }
 )
 
+roles.getPermissionLevelByName = function (name){
+  for (const role of Object.values(roles)) {
+    if(name == role.name) return role.permissionLevel
+  }
+   return 0
+}
+
+roles.getAdminRoleWithMinimumPermissionLevel = function(){
+  let adminRole={permissionLevel: +Infinity}
+  for (const role of Object.values(roles)) {
+    if(role.permissionLevel<adminRole?.permissionLevel && role.isAdmin==true) adminRole = role 
+  }
+  return adminRole 
+}
 const statuses = new generateEnum(
   {
     ACTIVE: "ACTIVE",
