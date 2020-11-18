@@ -39,13 +39,13 @@ const initializeRoutes = (router) => {
   router.use("/v1/auth",                    require("../../routes/auth"));
 
   // ? Admin Routes
-  router.use("/v1/admin*",                  authRequired(roles.ADMIN))
+  router.use("/v1/admin*",                  authRequired(roles.getRoleWithMinimumPermissionLevelByUserType(true)))
   router.use("/v1/admin/server",            require("../../routes/server"));
   router.use("/v1/admin/general-settings",  require("../../routes/generalSetting"));
   router.use("/v1/admin/user",              require("../../routes/user/admin"))
   
   // ? App Routes
-  router.use("/v1/app*",                    authRequired(roles.BASE))
+  router.use("/v1/app*",                    authRequired(roles.getRoleWithMinimumPermissionLevelByUserType(false)))
   router.use("/v1/app/user",                require("../../routes/user/app"))
   router.use("/v1/app/feedback",            require("../../routes/feedback/app"))
 

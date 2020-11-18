@@ -126,7 +126,7 @@ router.post('/admin/login', AuthValidator.login, (req, res, next) => {
       if (err) return next(err);
       else if (!passportUser && info) return next(info)
       else {
-        if (roles[passportUser.role].permissionLevel>=roles.getAdminRoleWithMinimumPermissionLevel().permissionLevel){ 
+        if (roles[passportUser.role].permissionLevel>=roles.getRoleWithMinimumPermissionLevelByUserType(true).permissionLevel){ 
         const accessToken = UserService.generateAccessToken(passportUser.id)
         const refreshToken = UserService.generateRefreshToken(passportUser.id)
         await UserRepository.setRefreshToken(passportUser, refreshToken)

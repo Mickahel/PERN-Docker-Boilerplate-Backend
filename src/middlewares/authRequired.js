@@ -19,8 +19,8 @@ const authRequired = (role) => (req, res, next) => {
       if (userDB) {
         let isAuthorized = isAllowed(userDB.role, role)
         if (isAuthorized) {
-
-          if (userDB.role === roles.BASE.name) {
+          
+          if (roles.getRoleByName(userDB.role)?.isAdmin === false) {
             delete userDB.dataValues.role
             delete userDB.dataValues.status
           }

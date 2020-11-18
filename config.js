@@ -53,18 +53,20 @@ const roles = new generateEnum(
 )
 
 roles.getPermissionLevelByName = function (name){
-  for (const role of Object.values(roles)) {
-    if(name == role.name) return role.permissionLevel
-  }
-   return 0
+  for (const role of Object.values(roles)) if(name == role.name) return role.permissionLevel
+  return Math.min(...Object.values(roles).filter(role=>role.permissionLevel!=undefined).map(role=>role.permissionLevel))
 }
 
-roles.getAdminRoleWithMinimumPermissionLevel = function(){
-  let adminRole={permissionLevel: +Infinity}
+roles.getRoleByName = function (name){
+  for (const role of Object.values(roles)) if(name == role.name) return role
+   return null
+}
+roles.getRoleWithMinimumPermissionLevelByUserType = function(isAdmin){
+  let roleChosen={permissionLevel: +Infinity}
   for (const role of Object.values(roles)) {
-    if(role.permissionLevel<adminRole?.permissionLevel && role.isAdmin==true) adminRole = role 
+    if(role.permissionLevel<roleChosen?.permissionLevel && role.isAdmin==isAdmin) roleChosen = role 
   }
-  return adminRole 
+  return roleChosen 
 }
 const statuses = new generateEnum(
   {
