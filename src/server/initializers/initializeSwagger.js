@@ -1,8 +1,7 @@
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const { isProduction } = require("../../auxiliaries/server");
-const { config } = require("../../../config")
-
+const { config } = require("../../../config");
 
 const swaggerOptions = {
   swaggerDefinition: {
@@ -17,14 +16,13 @@ const swaggerOptions = {
       license: {
         name: "PROPRIETARY LICENSE",
       },
-
     },
     components: {
       securitySchemes: {
         cookieAuthBasic: {
           type: "apiKey",
           in: "cookie",
-          name: 'accessToken',
+          name: "accessToken",
           //scheme: "bearer",
           //bearerFormat: "JWT",
           description: "Cookie accessToken required, Basic Role Required",
@@ -32,7 +30,7 @@ const swaggerOptions = {
         cookieAuthAdmin: {
           type: "apiKey",
           in: "cookie",
-          name: 'accessToken',
+          name: "accessToken",
           //scheme: "bearer",
           //bearerFormat: "JWT",
           description: "Cookie accessToken required, Admin Role Required",
@@ -40,7 +38,7 @@ const swaggerOptions = {
         cookieAuthSuperAdmin: {
           type: "apiKey",
           in: "cookie",
-          name: 'accessToken',
+          name: "accessToken",
           //scheme: "bearer",
           //bearerFormat: "JWT",
           description: "Cookie accessToken required, SuperAdmin Role Required",
@@ -57,9 +55,8 @@ const swaggerOptions = {
         description: "Main API Server",
       },
     ],
-
   },
-  apis: ["./src/routes/*.js","./src/routes/*/*.js"],
+  apis: ["./src/routes/*.js", "./src/routes/*/*.js"],
 };
 
 const initializeSwagger = (app, router) => {

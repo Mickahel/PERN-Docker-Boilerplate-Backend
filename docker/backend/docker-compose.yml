@@ -48,9 +48,9 @@
 #    restart: always
 #    ports:
 #      - 5432:5432
-#    volumes: 
+#    volumes:
 #      - ./pgdata:/var/lib/postgresql
-#    environment: 
+#    environment:
 #      - POSTGRES_USER=postgres
 #      - POSTGRES_PASSWORD=password
 #      - PGDATA=/var/lib/postgresql/data
@@ -60,9 +60,9 @@
 ###########################
 #
 #  nginx:
-#    volumes: 
+#    volumes:
 #      - ./site.template:/etc/nginx/conf.d/site.template
 #    ports:
 #      - "8081:80"
-#    depends_on: 
+#    depends_on:
 #      - dev-database

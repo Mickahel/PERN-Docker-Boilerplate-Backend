@@ -10,14 +10,13 @@ process.on("uncaughtException", (error) => {
   crashLogger.error("uncaughtException", error);
 });
 
-const {config} = require("./config")
+const { config } = require("./config");
 const cluster = require("cluster");
 const os = require("os");
 const createServer = require("./src/server");
 const logger = new Logger("Cluster", "#F2FE");
 const { isProduction } = require("./src/auxiliaries/server");
 const { initializeDatabase } = require("./src/models");
-
 
 logger.info("Environement: " + process.env.NODE_ENV);
 
@@ -50,7 +49,7 @@ const startCluster = () => {
 
 function startSingle() {
   createServer();
-} 
+}
 
 async function start() {
   logger.info(`Starting ${config.longTitle}`);
@@ -71,7 +70,7 @@ async function start() {
     }*/
 
     await initializeDatabase();
- 
+
     // ? Start server
     if (process.env.CLUSTER === "true") {
       startCluster();
@@ -83,4 +82,4 @@ async function start() {
   }
 }
 
-start(); 
+start();

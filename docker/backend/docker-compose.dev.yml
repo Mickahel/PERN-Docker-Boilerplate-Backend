@@ -2,10 +2,9 @@ version: "3"
 # docker-compose -f docker-compose.dev.yml up
 # docker-compose -f docker-compose.dev.yml -d up
 services:
-
-###########################
-#       dev-frontend      #
-###########################
+  ###########################
+  #       dev-frontend      #
+  ###########################
   dev-frontend:
     #tty: true
     #stdin_open: true
@@ -14,17 +13,17 @@ services:
       context: ./frontend
       dockerfile: dev.Dockerfile
     volumes:
-      - './frontend:/app/frontend'
-      - '/app/frontend/node_modules'
+      - "./frontend:/app/frontend"
+      - "/app/frontend/node_modules"
     ports:
       - 3000:3000
     environment:
       - CHOKIDAR_USEPOLLING=true
       - REACT_APP_ENDPOINT="PINGUINI"
 
-###########################
-#       dev-backend       #
-###########################
+  ###########################
+  #       dev-backend       #
+  ###########################
   dev-backend:
     container_name: dev-node-backend
     environment:
@@ -35,28 +34,27 @@ services:
     depends_on:
       - "dev-database"
     volumes:
-      - './backend:/app/backend'
-      - '/app/backend/node_modules'
+      - "./backend:/app/backend"
+      - "/app/backend/node_modules"
     ports:
       - 4000:4000
 
-##########################
-#       dev-database      #
-##########################
+  ##########################
+  #       dev-database      #
+  ##########################
   dev-database:
     container_name: dev-postgres-database
     image: postgres
     restart: always
     ports:
       - 5432:5432
-    volumes: 
+    volumes:
       - ./pgdata:/var/lib/postgresql
-    environment: 
+    environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
       - PGDATA=/var/lib/postgresql/data
       - POSTGRES_DB=postgres
-    
 #  pgadmin:
 #    image: dpage/pgadmin4:4.18
 #    restart: always

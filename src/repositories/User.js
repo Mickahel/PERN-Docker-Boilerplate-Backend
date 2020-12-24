@@ -1,9 +1,8 @@
 const { database } = require("../models");
 const Sequelize = require("sequelize");
 const _ = require("lodash");
-const {statuses} = require("../../config")
+const { statuses } = require("../../config");
 class UserRepository {
-
   getTotal() {
     return database.models.user.count({
       group: ["status"],
@@ -34,69 +33,68 @@ class UserRepository {
     return database.models.user.findOne({
       where: {
         id,
-      }
+      },
     });
   }
 
-  getUserByActivationCode(activationCode){
+  getUserByActivationCode(activationCode) {
     return database.models.user.findOne({
-      where:{
-        activationCode
-      }
-    })
+      where: {
+        activationCode,
+      },
+    });
   }
 
-  getRefreshToken(refreshToken){
+  getRefreshToken(refreshToken) {
     return database.models.user.findOne({
       attributes: ["refreshToken"],
-      where:{
-        refreshToken
-      }
-    })
+      where: {
+        refreshToken,
+      },
+    });
   }
 
-  async createUser(user, generateActivationCode=true){
-      const newUser = database.models.user.build(user)
-      if(user.password) newUser.setPassword(user.password)
-      if(generateActivationCode) newUser.setActivationCode()
-      return await newUser.save() 
+  async createUser(user, generateActivationCode = true) {
+    const newUser = database.models.user.build(user);
+    if (user.password) newUser.setPassword(user.password);
+    if (generateActivationCode) newUser.setActivationCode();
+    return await newUser.save();
   }
-  
-  async updateUser(user,newData){
-    if(newData.password) {
-      user.setPassword(newData.password)
-      await user.save()
+
+  async updateUser(user, newData) {
+    if (newData.password) {
+      user.setPassword(newData.password);
+      await user.save();
     }
-    return await user.update(newData)
+    return await user.update(newData);
   }
-  async setRefreshToken(user,refreshToken){
-      user.setRefreshToken(refreshToken)
-      await user.save() 
+  async setRefreshToken(user, refreshToken) {
+    user.setRefreshToken(refreshToken);
+    await user.save();
   }
-  
-  deleteRefreshToken(refreshToken){
+
+  deleteRefreshToken(refreshToken) {
     return database.models.user.update(
       {
-        refreshToken:null
+        refreshToken: null,
       },
       {
         where: {
-          refreshToken
-        }
-      }) 
+          refreshToken,
+        },
+      }
+    );
   }
 
-  deleteUser(user){
-    if(!user) return
+  deleteUser(user) {
+    if (!user) return;
 
     return database.models.user.destroy({
-      where:{
-        id: user.id
-      }
-    })
+      where: {
+        id: user.id,
+      },
+    });
   }
+}
 
-
-};
-
-module.exports = new UserRepository()
+module.exports = new UserRepository();

@@ -1,27 +1,25 @@
 const winston = require("winston");
-require('winston-daily-rotate-file');
+require("winston-daily-rotate-file");
 const _ = require("lodash");
 const standardTimestampData = { format: "DD/MM/YYYY h:mm:ss:SSS" };
 const cj = require("color-json");
 const chalk = require("chalk");
 
-
-const rotationTransport = new (winston.transports.DailyRotateFile)({
+const rotationTransport = new winston.transports.DailyRotateFile({
   format: winston.format.combine(
     winston.format.timestamp(standardTimestampData),
     winston.format.splat(),
     winston.format.json()
   ),
-  filename: '%DATE%.log',
-  datePattern: 'DD-MM-YYYY',
+  filename: "%DATE%.log",
+  datePattern: "DD-MM-YYYY",
   zippedArchive: true,
-  maxSize: '20m',
-  maxFiles: '30d',
-  auditFile: process.env.LOG_DIRECTORY+"/audit.json",
+  maxSize: "20m",
+  maxFiles: "30d",
+  auditFile: process.env.LOG_DIRECTORY + "/audit.json",
 
-  dirname:process.env.LOG_DIRECTORY
+  dirname: process.env.LOG_DIRECTORY,
 });
-
 
 const consoleFromat = {
   format: winston.format.combine(
@@ -31,8 +29,6 @@ const consoleFromat = {
     winston.format.simple()
   ),
 };
-
-
 
 const fileFormat = {
   format: winston.format.combine(
@@ -65,12 +61,11 @@ const winstonFileLogger = winston.createLogger({
   level: process.env.LOG_LEVEL,
   exitOnError: false,
   transports: [
-    rotationTransport
+    rotationTransport,
     /*new winston.transports.File({
       ...fileFormat,
       filename: process.env.LOG_FILE, //log.log
     }),*/
-
   ],
   exceptionHandlers: transportsException,
 });
@@ -201,10 +196,9 @@ ModularLogger.prototype.silly = function (message, arg) {
   this.generic(message, arg, "silly");
 };
 
-
-rotationTransport.on('rotate', function(oldFilename, newFilename) {
-  const logger = new ModularLogger("Logger", "#dadada")
-  logger.info("Log Rotated Successfully")
+rotationTransport.on("rotate", function (oldFilename, newFilename) {
+  const logger = new ModularLogger("Logger", "#dadada");
+  logger.info("Log Rotated Successfully");
 });
 
 module.exports = ModularLogger;

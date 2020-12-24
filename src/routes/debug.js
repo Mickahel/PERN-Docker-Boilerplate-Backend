@@ -1,5 +1,5 @@
-const router = require('express').Router();
-const DebugValidator = require("../validators/debug")
+const router = require("express").Router();
+const DebugValidator = require("../validators/debug");
 /**
  * @swagger
  * /v1/debug/status/:status:
@@ -11,16 +11,20 @@ const DebugValidator = require("../validators/debug")
  *        name: status
  *        description: status code that has to return
  *        required: true
- * 
+ *
  */
-router.get('/status/:status', DebugValidator.status,  (req , res, next) => {
-   res.status(req.params.status).send(req.params.status==500 ? {}: {
-       status:req.params.status,
-       data: "SomeData",
-       nestedData: {
-           anotherThing: "do",
-       }
-   })
-})
+router.get("/status/:status", DebugValidator.status, (req, res, next) => {
+  res.status(req.params.status).send(
+    req.params.status == 500
+      ? {}
+      : {
+          status: req.params.status,
+          data: "SomeData",
+          nestedData: {
+            anotherThing: "do",
+          },
+        }
+  );
+});
 
 module.exports = router;

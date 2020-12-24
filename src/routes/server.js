@@ -1,4 +1,4 @@
-const router = require('express').Router();
+const router = require("express").Router();
 /**
  * @swagger
  * /v1/admin/server/healthcheck:
@@ -8,13 +8,13 @@ const router = require('express').Router();
  *          - cookieAuthAdmin: []
  *      tags: [Server]
  */
-router.get('/healthcheck', (req, res, next) => {
+router.get("/healthcheck", (req, res, next) => {
   res.send({
     pid: process.pid,
     uptime: Math.floor(process.uptime()) + " Seconds",
-    timestamp: Date.now()
+    timestamp: Date.now(),
   });
-})
+});
 
 /**
  * @swagger

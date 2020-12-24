@@ -1,6 +1,6 @@
 const { DataTypes } = require("sequelize");
 const crypto = require("crypto");
-const { v4: uuid } = require('uuid');
+const { v4: uuid } = require("uuid");
 const jwt = require("jsonwebtoken");
 const _ = require("lodash");
 const { roles, statuses } = require("../../config");
@@ -15,7 +15,7 @@ const createModel = (database) => {
     email: {
       type: DataTypes.STRING,
       unique: "emailUnique",
-      allowNull: false
+      allowNull: false,
     },
     salt: DataTypes.STRING,
     hash: DataTypes.STRING,
@@ -25,25 +25,26 @@ const createModel = (database) => {
     profileImageUrl: DataTypes.STRING,
     role: {
       type: DataTypes.ENUM(roles.names()),
-      defaultValue: roles.BASE.name,
-      allowNull: false
+      defaultValue: roles.getRoleWithMinimumPermissionLevelByUserType(false)
+        .name,
+      allowNull: false,
     },
     status: {
       type: DataTypes.ENUM(statuses.names()),
       defaultValue: statuses.PENDING,
-      allowNull: false
+      allowNull: false,
     },
     language: {
-      type:DataTypes.STRING,
+      type: DataTypes.STRING,
       defaultValue: "en-EN",
-      allowNull: false
+      allowNull: false,
     },
     theme: {
-      type:DataTypes.ENUM(["light", "dark"]),
+      type: DataTypes.ENUM(["light", "dark"]),
       defaultValue: "light",
-      allowNull: false
+      allowNull: false,
     },
-    refreshToken: DataTypes.STRING
+    refreshToken: DataTypes.STRING,
   });
 
   model.prototype.setStatus = function (status) {
@@ -87,17 +88,15 @@ const createModel = (database) => {
     return this.hash === hash;
   };
 
-
   model.prototype.toJSON = function () {
     var values = Object.assign({}, this.get());
 
-    delete values.salt
-    delete values.hash
-    delete values.refreshToken
-    delete values.activationCode
+    delete values.salt;
+    delete values.hash;
+    delete values.refreshToken;
+    delete values.activationCode;
 
     return values;
-
   };
 
   return model;

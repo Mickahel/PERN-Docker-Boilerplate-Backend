@@ -1,6 +1,6 @@
-const router = require('express').Router()
-const GeneralSettingsRepository = require('../repositories/GeneralSetting')
-const GeneralSettingsValidator = require("../validators/GeneralSettings")
+const router = require("express").Router();
+const GeneralSettingsRepository = require("../repositories/GeneralSetting");
+const GeneralSettingsValidator = require("../validators/GeneralSettings");
 
 /**
  * @swagger
@@ -10,15 +10,15 @@ const GeneralSettingsValidator = require("../validators/GeneralSettings")
  *      tags: [General Settings]
  *      security:
  *          - cookieAuthAdmin: []
-*/
-router.get('/', async (req, res, next) => {
-    try {
-        const result = await GeneralSettingsRepository.getList()
-        res.send(result)
-    } catch (e) {
-        next(e)
-    }
-})
+ */
+router.get("/", async (req, res, next) => {
+  try {
+    const result = await GeneralSettingsRepository.getList();
+    res.send(result);
+  } catch (e) {
+    next(e);
+  }
+});
 
 /**
  * @swagger
@@ -36,17 +36,22 @@ router.get('/', async (req, res, next) => {
  *      responses:
  *        404:
  *          description: Cannot find data
-*/
-router.get('/:feature', GeneralSettingsValidator.getGeneralSettingByFeature, async (req, res, next) => {
+ */
+router.get(
+  "/:feature",
+  GeneralSettingsValidator.getGeneralSettingByFeature,
+  async (req, res, next) => {
     try {
-        const result = await GeneralSettingsRepository.getGeneralSettingByFeature(req.params.feature)
-        if (!result) next({ message: "Cannot find data", status: 404 })
-        else res.send(result.value)
+      const result = await GeneralSettingsRepository.getGeneralSettingByFeature(
+        req.params.feature
+      );
+      if (!result) next({ message: "Cannot find data", status: 404 });
+      else res.send(result.value);
     } catch (e) {
-        next(e)
+      next(e);
     }
-})
-
+  }
+);
 
 /**
  * @swagger
@@ -68,21 +73,29 @@ router.get('/:feature', GeneralSettingsValidator.getGeneralSettingByFeature, asy
  *      responses:
  *        409:
  *          description: General Setting already exists
-*/
-router.post('/', GeneralSettingsValidator.createGeneralSetting, async (req, res, next) => {
-    const { feature, value } = req.body
+ */
+router.post(
+  "/",
+  GeneralSettingsValidator.createGeneralSetting,
+  async (req, res, next) => {
+    const { feature, value } = req.body;
     try {
-        let generalSettingDB = await GeneralSettingsRepository.getGeneralSettingByFeature(feature)
-        if (!generalSettingDB) {
-            let generalSettingCreated = await GeneralSettingsRepository.createGeneralSetting(req.body)
-            res.status(201).send({ message: "ok" })
-        } else {
-            next({ message: "General Setting already exists", status: 409 })
-        }
+      let generalSettingDB = await GeneralSettingsRepository.getGeneralSettingByFeature(
+        feature
+      );
+      if (!generalSettingDB) {
+        let generalSettingCreated = await GeneralSettingsRepository.createGeneralSetting(
+          req.body
+        );
+        res.status(201).send({ message: "ok" });
+      } else {
+        next({ message: "General Setting already exists", status: 409 });
+      }
     } catch (e) {
-        next(e)
+      next(e);
     }
-})
+  }
+);
 
 /**
  * @swagger
@@ -99,31 +112,40 @@ router.post('/', GeneralSettingsValidator.createGeneralSetting, async (req, res,
  *        required: true
  *      - in: body
  *        name: newFeatureName
- *        description: new name of the feature 
+ *        description: new name of the feature
  *      - in: body
  *        name: newValue
  *        description: new string of information for the value
  *      responses:
  *        404:
  *          description: Cannot find data
-*/
-router.put('/',GeneralSettingsValidator.updateGeneralSetting, async (req, res, next) => {
-    const { feature, newFeatureName, newValue } = req.body
+ */
+router.put(
+  "/",
+  GeneralSettingsValidator.updateGeneralSetting,
+  async (req, res, next) => {
+    const { feature, newFeatureName, newValue } = req.body;
     try {
-        const generalSetting = await GeneralSettingsRepository.getGeneralSettingByFeature(feature,false)
-        if (!generalSetting) next({ message: "Cannot find data", status: 404 })
-        else {
-            const newGeneralSetting = await GeneralSettingsRepository.updateGeneralSetting(generalSetting,{
-                feature:newFeatureName, 
-                value: newValue
-            })
-            res.send({message:"ok"})
-        }
+      const generalSetting = await GeneralSettingsRepository.getGeneralSettingByFeature(
+        feature,
+        false
+      );
+      if (!generalSetting) next({ message: "Cannot find data", status: 404 });
+      else {
+        const newGeneralSetting = await GeneralSettingsRepository.updateGeneralSetting(
+          generalSetting,
+          {
+            feature: newFeatureName,
+            value: newValue,
+          }
+        );
+        res.send({ message: "ok" });
+      }
     } catch (e) {
-        next(e)
+      next(e);
     }
-
-})
+  }
+);
 
 /**
  * @swagger
@@ -141,15 +163,21 @@ router.put('/',GeneralSettingsValidator.updateGeneralSetting, async (req, res, n
  *      responses:
  *        404:
  *          description: Cannot find data
-*/
-router.delete('/:feature', GeneralSettingsValidator.getGeneralSettingByFeature, async (req, res, next) => {
+ */
+router.delete(
+  "/:feature",
+  GeneralSettingsValidator.getGeneralSettingByFeature,
+  async (req, res, next) => {
     try {
-        const result = await GeneralSettingsRepository.deleteGeneralSettingByFeature(req.params.feature)
-        if (!result) next({ message: "Cannot find data", status: 404 })
-        else res.status(204).send()
+      const result = await GeneralSettingsRepository.deleteGeneralSettingByFeature(
+        req.params.feature
+      );
+      if (!result) next({ message: "Cannot find data", status: 404 });
+      else res.status(204).send();
     } catch (e) {
-        next(e)
+      next(e);
     }
-})
+  }
+);
 
-module.exports = router
+module.exports = router;

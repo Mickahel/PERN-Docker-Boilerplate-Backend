@@ -1,7 +1,7 @@
-const router = require('express').Router();
-const UserValidator = require("../../validators/user")
+const router = require("express").Router();
+const UserValidator = require("../../validators/user");
 const UserRepository = require("../../repositories/User");
-const UserService = require("../../services/User")
+const UserService = require("../../services/User");
 
 /**
  * @swagger
@@ -14,19 +14,19 @@ const UserService = require("../../services/User")
  *      responses:
  *          404:
  *              description: User not found
-*/
-router.get('/info/all', async (req , res, next) => {
-    try{
-        const usersDB = await UserRepository.getUserList(true)
-        if(usersDB){
-            res.send(usersDB)
-        }else{
-            next({message:"Users not found", status: 404})
-        }
-    }catch(e){
-        next(e)
+ */
+router.get("/info/all", async (req, res, next) => {
+  try {
+    const usersDB = await UserRepository.getUserList(true);
+    if (usersDB) {
+      res.send(usersDB);
+    } else {
+      next({ message: "Users not found", status: 404 });
     }
-})
+  } catch (e) {
+    next(e);
+  }
+});
 
 /**
  * @swagger
@@ -64,25 +64,32 @@ router.get('/info/all', async (req , res, next) => {
  *              description: User is already registered
  *          406:
  *              description: User is not activated / User is disabled
-*/
-router.post('/create',UserValidator.createUserByAdmin, async (req , res, next) => {  //TODO ADD USER IMAGE
-    let { user,sendActivationEmail } = req.body
+ */
+router.post(
+  "/create",
+  UserValidator.createUserByAdmin,
+  async (req, res, next) => {
+    //TODO ADD USER IMAGE
+    let { user, sendActivationEmail } = req.body;
     try {
       user.email = user.email.trim();
       const isIn = await UserService.isUserRegistrated(user.email);
-      if (isIn) next(isIn)
+      if (isIn) next(isIn);
       else {
-        let userInDB = await UserRepository.createUser(user,sendActivationEmail)
-        
-        if(sendActivationEmail) sendNewUserActivationMail(userInDB.dataValues)
-        if(!user.password)      sendNewUserSetPasswordMail(userInDB.dataValues) 
-        res.status(201).send({ message: "ok" })
+        let userInDB = await UserRepository.createUser(
+          user,
+          sendActivationEmail
+        );
+
+        if (sendActivationEmail) sendNewUserActivationMail(userInDB.dataValues);
+        if (!user.password) sendNewUserSetPasswordMail(userInDB.dataValues);
+        res.status(201).send({ message: "ok" });
       }
     } catch (e) {
-      next(e)
+      next(e);
     }
-})
-
+  }
+);
 
 /**
  * @swagger
@@ -100,20 +107,19 @@ router.post('/create',UserValidator.createUserByAdmin, async (req , res, next) =
  *      responses:
  *        404:
  *          description: User not found
-*/
-router.get('/info/:id', UserValidator.getUserById, async (req , res, next) => {
-    try{
-        const userDB = await UserRepository.getUserById(req.params.id)
-        if(userDB){
-            res.send(userDB)
-        }else{
-            next({message:"User not found", status: 404})
-        }
-    }catch(e){
-        next(e)
+ */
+router.get("/info/:id", UserValidator.getUserById, async (req, res, next) => {
+  try {
+    const userDB = await UserRepository.getUserById(req.params.id);
+    if (userDB) {
+      res.send(userDB);
+    } else {
+      next({ message: "User not found", status: 404 });
     }
-})
-
+  } catch (e) {
+    next(e);
+  }
+});
 
 /**
  * @swagger
@@ -125,7 +131,7 @@ router.get('/info/:id', UserValidator.getUserById, async (req , res, next) => {
  *      - in: body
  *        name: firstname
  *        type: string
- *      - in: body   
+ *      - in: body
  *        name: lastname
  *        type: string
  *      - in: body
@@ -151,19 +157,23 @@ router.get('/info/:id', UserValidator.getUserById, async (req , res, next) => {
  *              description: User is already registered
  *          406:
  *              description: User is not activated / User is disabled
-*/
-router.put('/edit/:id',UserValidator.editUserByAdmin,  async (req , res, next) => {
-    try{
-        const userDB = await UserRepository.getUserById(req.params.id)
-        if(userDB){
-            const newUser = await UserRepository.updateUser(userDB,req.body)
-            res.send({message:"ok"})
-        }else{
-            next({message:"User not found", status: 404})
-        }
-    }catch(e){
-        next(e)
+ */
+router.put(
+  "/edit/:id",
+  UserValidator.editUserByAdmin,
+  async (req, res, next) => {
+    try {
+      const userDB = await UserRepository.getUserById(req.params.id);
+      if (userDB) {
+        const newUser = await UserRepository.updateUser(userDB, req.body);
+        res.send({ message: "ok" });
+      } else {
+        next({ message: "User not found", status: 404 });
+      }
+    } catch (e) {
+      next(e);
     }
-})
+  }
+);
 
 module.exports = router;
