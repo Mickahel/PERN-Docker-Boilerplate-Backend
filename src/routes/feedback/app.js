@@ -17,10 +17,9 @@ router.post("/sendNew", (req, res, next) => {
       let extension =
         "." +
         req.files.screenshot.name.split(".")[
-          req.files.screenshot.name.split(".").length - 1
+        req.files.screenshot.name.split(".").length - 1
         ];
       screenshotName = uuid() + extension;
-      console.log(screenshotName);
       req.files.screenshot.mv(
         publicFolder + "uploads/feedbacks/" + screenshotName,
         function (err) {

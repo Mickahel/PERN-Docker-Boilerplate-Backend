@@ -48,6 +48,7 @@ const initializeRoutes = (router) => {
     require("../../routes/generalSetting")
   );
   router.use("/v1/admin/user", require("../../routes/user/admin"));
+  router.use("/v1/admin/logs", require("../../routes/log"));
 
   // ? App Routes
   router.use(

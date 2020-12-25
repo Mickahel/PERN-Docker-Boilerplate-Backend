@@ -91,9 +91,7 @@ const setBgColor = (bgColor) => {
     */
   if (!bgColor) return;
   if (bgColor.startsWith("#")) return bgColor;
-  if (!bgColor.startsWith("bg")) {
-    bgColor = "bg" + bgColor.charAt(0).toUpperCase() + bgColor.slice(1);
-  }
+  if (!bgColor.startsWith("bg")) bgColor = "bg" + bgColor.charAt(0).toUpperCase() + bgColor.slice(1);
   return bgColor;
 };
 
@@ -115,8 +113,7 @@ ModularLogger.prototype.writeLogToFile = function (func, parsedMessage, arg) {
 
   if (arg) logToFile.object = arg;
   if (this.module) logToFile.module = this.module;
-  if (this.bgColor && this.bgColorType === "hex")
-    logToFile.bgColor = this.bgColor;
+  if (this.bgColor && this.bgColorType === "hex") logToFile.bgColor = this.bgColor;
   winstonFileLogger[func](parsedMessage, logToFile);
 };
 
@@ -129,8 +126,7 @@ ModularLogger.prototype.generic = function (message, arg, func) {
 
   if (typeof message === "object" && !arg) {
     // ? message is an object and is the only param
-    const parsedMessage =
-      message instanceof Error ? message.stack : cj(message);
+    const parsedMessage = message instanceof Error ? message.stack : cj(message);
 
     winstonCustomLogger[func](moduleText + " - " + parsedMessage, {
       ...this.otherOptions,
