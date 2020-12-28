@@ -4,6 +4,7 @@ const config = {
     shortTitle: "PERNB",
     apiDocsLink: "/api-docs",
     mainDomain: "https://app.pernboilerplate.it",
+    notificationColor: "#86DAF1",
     contact: {
       name: "Michelangelo De Francesco",
       url: "https://www.linkedin.com/in/michelangelodefrancesco",

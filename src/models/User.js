@@ -1,8 +1,6 @@
 const { DataTypes } = require("sequelize");
 const crypto = require("crypto");
 const { v4: uuid } = require("uuid");
-const jwt = require("jsonwebtoken");
-const _ = require("lodash");
 const { roles, statuses } = require("../../config");
 
 const createModel = (database) => {

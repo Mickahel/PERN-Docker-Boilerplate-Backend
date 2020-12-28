@@ -4,12 +4,13 @@ const paginatedResults = require("../../middlewares/paginatedResults");
 const { database } = require("../../models");
 const authRequired = require("../../middlewares/authRequired");
 
+
 const initializeRoutes = (router) => {
   //router.get('/', (req, res, next) => { // Echo route
   //res.redirect(301, process.env.FRONTEND_URL)
   //})
 
-  // Echo route
+  // ? Echo route
   router.get("/", (req, res, next) =>
     res.send(
       `
@@ -21,10 +22,6 @@ const initializeRoutes = (router) => {
 
   router.get("/favicon.ico", (req, res, next) => res.status(204));
 
-  router.post("/create-cookie", (req, res, next) => {
-    res.cookie("banan", "123");
-    res.send("ok");
-  });
   /*
   router.get("/users", paginatedResults(database.models.user), (req,res,next) =>{
     res.send(req.paginatedResults)
@@ -57,6 +54,7 @@ const initializeRoutes = (router) => {
   );
   router.use("/v1/app/user", require("../../routes/user/app"));
   router.use("/v1/app/feedback", require("../../routes/feedback/app"));
+  router.use("/v1/app/pushNotification", require("../../routes/pushNotification"));
 
   // ? Development routes
   if (!isProduction) {

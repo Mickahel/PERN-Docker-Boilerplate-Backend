@@ -7,10 +7,7 @@ class GeneralSettingRepository {
   }
 
   async createGeneralSetting(generalSetting) {
-    const newGeneralSetting = database.models.generalSetting.build(
-      generalSetting
-    );
-    return await newGeneralSetting.save();
+    return await database.models.generalSetting.create(generalSetting);
   }
 
   async updateGeneralSetting(generalSetting, newGeneralSetting) {

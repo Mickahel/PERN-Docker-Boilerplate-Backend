@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const logsAudit = require('../../logs/audit.json')
+const logsAudit = require(`../.${process.env.LOG_DIRECTORY}/audit.json`)
 const fs = require('fs');
 const LogValidator = require("../validators/log");
 const _ = require("lodash");

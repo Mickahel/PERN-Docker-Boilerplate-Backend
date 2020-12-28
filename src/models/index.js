@@ -7,6 +7,7 @@ const logger = new Logger("Database", "#FF9A00");
 
 const createUserModel = require("./User");
 const createGeneralSettingModel = require("./GeneralSetting");
+const createPushNotificationUserToken = require("./PushNotificationUserToken")
 
 const database = new Sequelize(
   process.env.DB_NAME,
@@ -23,6 +24,13 @@ const initializeDatabase = async () => {
     // ? --------- Model initialization ------
     const User = createUserModel(database);
     const GeneralSetting = createGeneralSettingModel(database);
+    const PushNotificationUserToken = createPushNotificationUserToken(database)
+
+    User.hasMany(PushNotificationUserToken, {
+      foreignKey: 'userId'
+    });
+    PushNotificationUserToken.belongsTo(User);
+
 
     if (!isProduction) await database.sync({ alter: true });
     else await database.sync();

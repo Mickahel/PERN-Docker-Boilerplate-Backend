@@ -10,6 +10,7 @@ const initializeCors = (app) => {
       `http://localhost:3000`,
       `http//${host}`,
       `http://localhost:9000`,
+      `https://localhost:3000`
     ];
   const corsOptions = {
     credentials: true,
