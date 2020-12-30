@@ -1,13 +1,11 @@
 const router = require("express").Router();
 const UserValidator = require("../../validators/User");
 const UserRepository = require("../../repositories/User");
-const passport = require("passport");
 const { publicFolder } = require("../../auxiliaries/server");
-const { v4: uuid } = require("uuid");
 const fs = require("fs");
 const Logger = require("../../services/Logger");
 const logger = new Logger("User API", "#9F9A00");
-
+const UserService = require("../../services/User")
 /**
  * @swagger
  * /v1/app/user/info:
@@ -63,24 +61,7 @@ router.put("/edit", UserValidator.editUser, async (req, res, next) => {
           if (err) logger.error(err);
         });
       }
-
-      // ? Set new image
-      if (req.files?.profileImageUrl) {
-        let extension =
-          "." +
-          req.files.profileImageUrl.name.split(".")[
-          req.files.profileImageUrl.name.split(".").length - 1
-          ];
-        newData.profileImageUrl = uuid() + extension;
-        req.files.profileImageUrl.mv(
-          publicFolder + "uploads/profileImgs/" + newData.profileImageUrl,
-          function (err) {
-            if (err) throw err;
-          }
-        );
-        newData.profileImageUrl =
-          "uploads/profileImgs/" + newData.profileImageUrl;
-      }
+      newData.profileImageUrl = UserService.uploadProfileImage(req.files?.profileImageUrl)
     }
     const newUser = await UserRepository.updateUser(req.user, newData);
     res.send(newUser);

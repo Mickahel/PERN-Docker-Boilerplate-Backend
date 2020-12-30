@@ -7,14 +7,14 @@ const FeedbackValidator = require("../../validators/feedback");
 
 /**
  * @swagger
- * /v1/admin/feedback/:
+ * /v1/admin/feedback/all:
  *    get:
  *      summary: Gets all feedbacks
  *      tags: [Feedback]
  *      security:
  *          - cookieAuthAdmin: []
  */
-router.get("/", async (req, res, next) => {
+router.get("/all", async (req, res, next) => {
     const feedbacks = await FeedbackRepository.getAll()
     res.send(feedbacks)
 })

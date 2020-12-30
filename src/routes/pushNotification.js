@@ -2,6 +2,7 @@ const router = require("express").Router();
 //const PushNotificationValidator = require("../validators/log");
 const PushNotificationUserTokenRepository = require("../repositories/PushNotificationUserToken");
 const PushNotificationService = require("../services/PushNotification");
+const PushNotificationValidator = require("../validators/PushNotification");
 
 
 /**
@@ -10,10 +11,15 @@ const PushNotificationService = require("../services/PushNotification");
  *    post:
  *      summary: Registers firebase token
  *      tags: [Push Notification]
+ *      parameters:
+ *      - in: path
+ *        name: token
+ *        description: user token from firebase
+ *        required: true
  *      security:
  *          - cookieAuthBasic: []
  */
-router.post('/:token', async (req, res, next) => {
+router.post('/:token', PushNotificationValidator.setPushNotificationUserToken, async (req, res, next) => {
     try {
         let ut = {
             token: req.params.token,

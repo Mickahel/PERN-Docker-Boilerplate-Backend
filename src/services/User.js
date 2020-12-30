@@ -2,6 +2,9 @@
 const UserRepository = require("../repositories/User");
 const jwt = require("jsonwebtoken");
 const { statuses } = require("../../config");
+const { publicFolder } = require("../auxiliaries/server");
+const { v4: uuid } = require("uuid");
+const sharp = require("sharp")
 class UserService {
   async isUserRegistrated(email) {
     if (!email) return false;
@@ -27,6 +30,38 @@ class UserService {
       { expiresIn: `${process.env.ACCESS_TOKEN_EXPIRATION} days` }
       //{expiresIn:"60s"}
     );
+  }
+
+
+  uploadProfileImage(imageObject) {
+
+    // ? Set new image
+    if (imageObject) {
+      let extension =
+        "." +
+        imageObject.name.split(".")[
+        imageObject.name.split(".").length - 1
+        ];
+
+      const profileImageUrlName = uuid() + extension;
+      if (extension == ".gif") {
+        imageObject.mv(
+          publicFolder + "uploads/profileImgs/" + profileImageUrlName,
+          function (err) {
+            if (err) throw err;
+          }
+        );
+      } else {
+        sharp(imageObject.data).toFile(publicFolder + "uploads/profileImgs/" + profileImageUrlName,
+          function (err) {
+            if (err) {
+              throw err;
+            }
+          })
+      }
+
+      return "uploads/profileImgs/" + profileImageUrlName;
+    }
   }
 }
 

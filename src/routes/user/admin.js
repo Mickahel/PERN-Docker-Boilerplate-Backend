@@ -83,7 +83,7 @@ router.post(
 
         if (sendActivationEmail) sendNewUserActivationMail(userInDB.dataValues);
         if (!user.password) sendNewUserSetPasswordMail(userInDB.dataValues);
-        res.status(201).send({ message: "ok" });
+        res.status(201).send(userInDB);
       }
     } catch (e) {
       next(e);
@@ -128,45 +128,40 @@ router.get("/info/:id", UserValidator.getUserById, async (req, res, next) => {
  *      summary: Edit user info
  *      tags: [User]
  *      parameters:
- *      - in: body
- *        name: firstname
- *        type: string
- *      - in: body
- *        name: lastname
- *        type: string
- *      - in: body
- *        name: email
- *        type: string
- *      - in: body
- *        name: password
- *        type: string
- *      - in: body
- *        name: status
- *        type: string
- *      - in: body
- *        name: role
- *        type: string
  *      - in: path
  *        name: id
  *        description: id of the user
  *        required: true
+ *      - in: body
+ *        name: firstname
+ *      - in: body
+ *        name: lastname
+ *      - in: body
+ *        name: email
+ *      - in: body
+ *        name: password
+ *      - in: body
+ *        name: status
+ *      - in: body
+ *        name: role
  *      security:
  *      - cookieAuthAdmin: []
  *      responses:
- *          409:
- *              description: User is already registered
  *          406:
  *              description: User is not activated / User is disabled
+ *          404:
+ *            description: User notfound
  */
 router.put(
   "/edit/:id",
   UserValidator.editUserByAdmin,
   async (req, res, next) => {
+    //TODO ADD USER IMAGE
     try {
       const userDB = await UserRepository.getUserById(req.params.id);
       if (userDB) {
         const newUser = await UserRepository.updateUser(userDB, req.body);
-        res.send({ message: "ok" });
+        res.send(newUser);
       } else {
         next({ message: "User not found", status: 404 });
       }

@@ -4,14 +4,14 @@ const GeneralSettingsValidator = require("../validators/GeneralSetting");
 
 /**
  * @swagger
- * /v1/admin/general-settings:
+ * /v1/admin/general-settings/all:
  *    get:
  *      summary: Gets all the general settings
  *      tags: [General Settings]
  *      security:
  *          - cookieAuthAdmin: []
  */
-router.get("/", async (req, res, next) => {
+router.get("/all", async (req, res, next) => {
   try {
     const result = await GeneralSettingsRepository.getAll();
     res.send(result);

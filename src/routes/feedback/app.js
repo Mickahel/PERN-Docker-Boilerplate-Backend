@@ -14,7 +14,9 @@ const FeedbackValidator = require("../../validators/feedback");
  *      parameters:
  *      - in: body
  *        name: type
- *        description: type of feedback, options are "BUG" or "FEATURE"
+ *        schema:
+ *          type: string
+ *          enum: [BUG, FEATURE]
  *        required: true
  *      - in: body
  *        name: description
