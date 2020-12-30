@@ -15,6 +15,7 @@ const authRequired = (role) => (req, res, next) => {
     try {
       // ? Check if the role is right
       let userDB = await UserRepository.getUserById(user.id);
+      //console.log(userDB)
       if (userDB) {
         let isAuthorized = isAllowed(userDB.role, role);
         if (isAuthorized) {

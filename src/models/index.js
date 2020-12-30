@@ -8,6 +8,7 @@ const logger = new Logger("Database", "#FF9A00");
 const createUserModel = require("./User");
 const createGeneralSettingModel = require("./GeneralSetting");
 const createPushNotificationUserToken = require("./PushNotificationUserToken")
+const createFeedbackModel = require("./Feedback")
 
 const database = new Sequelize(
   process.env.DB_NAME,
@@ -21,15 +22,28 @@ const initializeDatabase = async () => {
     await database.authenticate();
     logger.info("Connection to database has been established successfully.");
 
-    // ? --------- Model initialization ------
+    // ? --------- Model initialization ---------
     const User = createUserModel(database);
     const GeneralSetting = createGeneralSettingModel(database);
     const PushNotificationUserToken = createPushNotificationUserToken(database)
+    const Feedback = createFeedbackModel(database)
 
+    // ? --------- Relationships ---------
+    // ? One To Many relationship between user and push notification tokens
     User.hasMany(PushNotificationUserToken, {
       foreignKey: 'userId'
     });
-    PushNotificationUserToken.belongsTo(User);
+    PushNotificationUserToken.belongsTo(User, {
+      foreignKey: 'userId'
+    });
+
+    // ? One To Many relationship between user and push notification tokens
+    User.hasMany(Feedback, {
+      foreignKey: 'createdBy'
+    });
+    Feedback.belongsTo(User, {
+      foreignKey: 'Feedback'
+    });
 
 
     if (!isProduction) await database.sync({ alter: true });

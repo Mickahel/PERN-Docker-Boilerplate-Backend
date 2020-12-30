@@ -16,7 +16,7 @@ class PushNotificationUserTokenRepository {
     }
 
     async getUserTokens(user) {
-        console.log(user)
+        //console.log(user)
         try {
             const userToken = await database.models.PushNotificationUserToken.findAll({
                 where: {
@@ -45,7 +45,6 @@ class PushNotificationUserTokenRepository {
             })
 
             result = result.map(single => single.token)
-            console.log(result)
             return result;
         } catch (e) {
             throw e

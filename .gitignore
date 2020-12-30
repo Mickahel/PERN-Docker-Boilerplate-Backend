@@ -12,7 +12,8 @@
 /build
 
 # uploads
-/public/uploads
+/public/uploads/feedbacks/*
+/public/uploads/profileImgs/*
 
 # misc
 .DS_Store
@@ -28,6 +29,3 @@ log.log
 *.pem
 *.key
 *.crt
-
-# uploads
-/public/uploads

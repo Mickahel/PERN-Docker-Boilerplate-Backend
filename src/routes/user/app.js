@@ -42,6 +42,10 @@ router.get("/info", (req, res, next) => {
  *      - in: body
  *        name: removeBackgroundImage
  *        description: if set true, removes the profile image
+ *      - in: formData
+ *        name: profileImageUrl
+ *        type: file
+ *        description: The file of the profile image
  */
 router.put("/edit", UserValidator.editUser, async (req, res, next) => {
   const newData = req.body;
@@ -65,7 +69,7 @@ router.put("/edit", UserValidator.editUser, async (req, res, next) => {
         let extension =
           "." +
           req.files.profileImageUrl.name.split(".")[
-            req.files.profileImageUrl.name.split(".").length - 1
+          req.files.profileImageUrl.name.split(".").length - 1
           ];
         newData.profileImageUrl = uuid() + extension;
         req.files.profileImageUrl.mv(

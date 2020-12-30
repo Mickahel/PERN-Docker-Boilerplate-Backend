@@ -1,0 +1,15 @@
+{% import "utilities.html" as utilities %} {% set url = site.adminUrl +
+"/app/feedback/" + feedback.id %} {% set emailTitle = "New Feedback Received" %}
+{%include "_top.html" %}
+<div style="text-align: left; margin-bottom: 15px">
+	{{textLine.make("Hi Admin,")}} {{textLine.make("A new feedback has been
+	received")}}
+	<ul>
+		<li>Type: <b>{{feedback.type}}</b></li>
+		<li>Description: {{feedback.description}}</li>
+	</ul>
+	{%if feedback.screenshot %}
+	<img src="{{site.publicUrl}}/{{feedback.screenshot}}" />
+	{%endif %}
+</div>
+{{button.make(url, "Handle Feedback")}} {%include "_bottom.html" %}

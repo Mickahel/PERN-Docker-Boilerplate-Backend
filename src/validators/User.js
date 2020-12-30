@@ -3,7 +3,10 @@ const ajv = new Ajv();
 const { roles, statuses } = require("../../config");
 class UserValidator {
   editUser(req, res, next) {
-    const newData = req.body;
+    const newData = {
+      ...req.body,
+      ...req.files
+    };
     const schema = {
       type: "object",
       properties: {
@@ -11,8 +14,9 @@ class UserValidator {
         lastname: { type: "string" },
         email: { type: "string", format: "email" },
         language: { type: "string" },
-        removeBackgroundImage: { enum: ["true", "false"] },
+        removeBackgroundImage: { enum: [true, false] },
         theme: { enum: ["light", "dark"] },
+        profileImageUrl: { type: "object" }
       },
       additionalProperties: true,
     };

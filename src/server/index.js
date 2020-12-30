@@ -96,6 +96,8 @@ module.exports = function createServer() {
 
   app.use(router);
 
+  // ? Add middleware that replaces null with undefined 
+  app.set('json replacer', (k, v) => (v === null ? undefined : v))
   //? Error middleware
   app.use((err, req, res, next) => {
     let status = err.status ? err.status : 500;

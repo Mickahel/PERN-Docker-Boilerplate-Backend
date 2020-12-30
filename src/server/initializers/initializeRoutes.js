@@ -46,6 +46,7 @@ const initializeRoutes = (router) => {
   );
   router.use("/v1/admin/user", require("../../routes/user/admin"));
   router.use("/v1/admin/logs", require("../../routes/log"));
+  router.use("/v1/admin/feedback", require("../../routes/feedback/admin"));
 
   // ? App Routes
   router.use(

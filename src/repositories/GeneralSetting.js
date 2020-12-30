@@ -2,8 +2,8 @@ const { database } = require("../models");
 const _ = require("lodash");
 
 class GeneralSettingRepository {
-  getList() {
-    return database.models.generalSetting.findAll({ raw: true });
+  getAll() {
+    return database.models.generalSetting.findAll();
   }
 
   async createGeneralSetting(generalSetting) {
@@ -14,12 +14,11 @@ class GeneralSettingRepository {
     await generalSetting.update(newGeneralSetting);
   }
 
-  getGeneralSettingByFeature(feature, raw = true) {
+  getGeneralSettingByFeature(feature) {
     return database.models.generalSetting.findOne({
       where: {
         feature,
       },
-      raw,
     });
   }
 

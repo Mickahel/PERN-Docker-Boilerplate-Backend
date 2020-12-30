@@ -60,7 +60,7 @@ class AuthValidator {
 
   passwordReset(req, res, next) {
     const data = req.body;
-    console.log(data);
+    //console.log(data);
     const schema = {
       type: "object",
       required: ["activationCode", "password"],
