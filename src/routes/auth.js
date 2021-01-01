@@ -1,10 +1,6 @@
 const router = require("express").Router();
 const passport = require("passport");
-const {
-  sendResetPasswordMail,
-  sendUserActivatedMail,
-  sendNewUserActivationMail,
-} = require("../services/Mailer");
+const MailerService = require("../services/Mailer");
 const _ = require("lodash");
 const UserService = require("../services/User");
 const UserRepository = require("../repositories/User");
@@ -41,7 +37,7 @@ router.post("/signup", AuthValidator.signup, async (req, res, next) => {
     if (isIn) next(isIn);
     else {
       let userInDB = await UserRepository.createUser(user);
-      sendNewUserActivationMail(userInDB);
+      MailerService.sendNewUserActivationMail(userInDB);
       res.status(201).send({ message: "ok" });
     }
   } catch (e) {
@@ -208,7 +204,7 @@ router.post(
         user.status = statuses.ACTIVE;
         user.activationCode = null;
         user.save();
-        sendUserActivatedMail(user.dataValues);
+        MailerService.sendUserActivatedMail(user.dataValues);
         res.send({ message: "ok" });
       } else {
         next({ message: "User not found", status: 404 });
@@ -244,7 +240,7 @@ router.post(
       if (user) {
         user.setActivationCode();
         await user.save();
-        sendResetPasswordMail(user.dataValues);
+        MailerService.sendResetPasswordMail(user.dataValues);
         res.send({ message: "ok" });
       } else {
         next({ message: "User not found", status: 404 });

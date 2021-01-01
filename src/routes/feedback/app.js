@@ -4,7 +4,7 @@ const { publicFolder } = require("../../auxiliaries/server");
 const FeedbackRepository = require("../../repositories/feedback");
 const UserRepository = require("../../repositories/user");
 const FeedbackValidator = require("../../validators/feedback");
-const { sendNewFeedbackMail } = require("../../services/Mailer")
+const MailerService = require("../../services/Mailer")
 const { roles } = require("../../../config");
 /**
  * @swagger
@@ -58,7 +58,7 @@ router.post("/create", FeedbackValidator.createFeedback, async (req, res, next) 
     // ? Get Admins
     const adminUsers = await UserRepository.getUsersByRole(roles.getAdminRoles())
     // ? Send Emails to Admins
-    sendNewFeedbackMail(newFeedback, adminUsers)
+    MailerService.sendNewFeedbackMail(newFeedback, adminUsers)
     res.send(newFeedback);
   } catch (e) {
     next(e);

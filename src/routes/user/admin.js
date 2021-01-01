@@ -57,6 +57,10 @@ router.get("/info/all", async (req, res, next) => {
  *      - in: body
  *        name: sendActivationEmail
  *        description: Send Activation Email
+ *      - in: formData
+ *        name: profileImage
+ *        type: file
+ *        description: The file of the profile image
  *      security:
  *      - cookieAuthAdmin: []
  *      responses:
@@ -69,7 +73,7 @@ router.post(
   "/create",
   UserValidator.createUserByAdmin,
   async (req, res, next) => {
-    //TODO ADD USER IMAGE
+    //TODO ADD USER IMAGE - REVISE SWAGGER DOCUMENTATION
     let { user, sendActivationEmail } = req.body;
     try {
       user.email = user.email.trim();
@@ -80,7 +84,6 @@ router.post(
           user,
           sendActivationEmail
         );
-
         if (sendActivationEmail) sendNewUserActivationMail(userInDB.dataValues);
         if (!user.password) sendNewUserSetPasswordMail(userInDB.dataValues);
         res.status(201).send(userInDB);
@@ -156,7 +159,7 @@ router.put(
   "/edit/:id",
   UserValidator.editUserByAdmin,
   async (req, res, next) => {
-    //TODO ADD USER IMAGE
+    //TODO ADD USER IMAGE - REVISE SWAGGER DOCUMENTATION
     try {
       const userDB = await UserRepository.getUserById(req.params.id);
       if (userDB) {

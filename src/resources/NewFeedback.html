@@ -65,7 +65,7 @@
 										line-height: 48px;
 									"
 								>
-									Hi Admin,
+									New Feedback Received
 								</h1>
 							</td>
 						</tr>
@@ -106,7 +106,11 @@
 									line-height: 24px;
 								"
 							>
-								<p style="margin: 0">A new feedback has been received</p>
+								<p style="margin: 0">
+									Hi Admin,
+									<br />
+									A new feedback has been received
+								</p>
 								<ul>
 									<li>Type: <b>{{feedback.type}}</b></li>
 									<li>Description: {{feedback.description}}</li>
@@ -116,41 +120,8 @@
 								{%endif %}
 							</td>
 						</tr>
-						<tr>
-							<td align="left" bgcolor="#ffffff">
-								<table border="0" cellpadding="0" cellspacing="0" width="100%">
-									<tr>
-										<td align="center" bgcolor="#ffffff" style="padding: 12px">
-											<table border="0" cellpadding="0" cellspacing="0">
-												<tr>
-													<td
-														align="center"
-														bgcolor="#03A9F4"
-														style="border-radius: 6px"
-													>
-														<a
-															href="{{adminUrl}}/feedback/{{feedback.id}}"
-															target="_blank"
-															style="
-																display: inline-block;
-																padding: 16px 36px;
-																font-family: 'Source Sans Pro', Helvetica, Arial,
-																	sans-serif;
-																font-size: 16px;
-																color: #ffffff;
-																text-decoration: none;
-																border-radius: 6px;
-															"
-															>Handle Feedback</a
-														>
-													</td>
-												</tr>
-											</table>
-										</td>
-									</tr>
-								</table>
-							</td>
-						</tr>
+						{{button.make(adminUrl+"feedback/"+feedback.id, "Handle Feedback",
+						color)}}
 						<!-- end copy -->
 
 						<!-- start copy -->
