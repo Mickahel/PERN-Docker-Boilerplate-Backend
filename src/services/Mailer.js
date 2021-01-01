@@ -33,55 +33,87 @@ function sendMail(to, subject, html) {
   });
 }
 
+async function sendMailByOptions(mailOptions) {
+  try {
+    const info = await transporter.sendMail(mailOptions)
+    return info;
+  } catch (e) {
+    logger.error("Error in sending mail", e)
+  }
+}
+
 function sendNewUserActivationMail(user) {
   let html = nunjucks.render("NewUserMailActivation.html", {
     user,
     appName: config.longTitle,
-    mainDomain: config.mainDomain,
     frontendUrl: process.env.FRONTEND_URL,
     imagesUrl: process.env.BACKEND_IMAGES_URL,
+    color: config.notificationColor,
   });
   sendMail(user.email, `${config.shortTitle} - Account Activation`, html);
 }
 
-async function sendNewUserMail(user, plainPassword) {
+function sendNewUserMail(user, plainPassword) {
   const html = nunjucks.render("NewUserMail.html", {
     user,
     plainPassword,
     appName: config.longTitle,
-    mainDomain: config.mainDomain,
     frontendUrl: process.env.FRONTEND_URL,
     imagesUrl: process.env.BACKEND_IMAGES_URL,
+    color: config.notificationColor,
   });
   sendMail(user.email, `${config.shortTitle} - Welcome`, html);
 }
 
-async function sendUserActivatedMail(user) {
+function sendUserActivatedMail(user) {
   const html = nunjucks.render("NewUserMailActivated.html", {
     user,
     appName: config.longTitle,
-    mainDomain: config.mainDomain,
     frontendUrl: process.env.FRONTEND_URL,
     imagesUrl: process.env.BACKEND_IMAGES_URL,
+    color: config.notificationColor,
   });
   sendMail(user.email, `${config.shortTitle} - Account Activated`, html);
 }
 
-async function sendResetPasswordMail(user) {
+function sendResetPasswordMail(user) {
   const html = nunjucks.render("ResetPasswordMail.html", {
     user,
     appName: config.longTitle,
-    mainDomain: config.mainDomain,
     frontendUrl: process.env.FRONTEND_URL,
     imagesUrl: process.env.BACKEND_IMAGES_URL,
+    color: config.notificationColor,
   });
   sendMail(user.email, `${config.shortTitle} - Reset your password`, html);
 }
 
+
+
+async function sendNewFeedbackMail(feedback, users) {
+  const mails = users.map(user => user.email)
+  const html = nunjucks.render("NewFeedback.html", {
+    feedback,
+    appName: config.longTitle,
+    adminUrl: process.env.ADMIN_FRONTEND_URL,
+    imagesUrl: process.env.BACKEND_IMAGES_URL,
+    color: config.notificationColor,
+  });
+
+  const mailOptions = {
+    from: process.env.MAILER_USER,
+    bcc: mails,
+    subject: `${config.shortTitle} - A New Feedback has been received`,
+    html: html,
+    priority: "high",
+  }
+
+  await sendMailByOptions(mailOptions)
+}
 module.exports = {
   sendNewUserActivationMail,
   sendNewUserMail,
   sendUserActivatedMail,
   sendResetPasswordMail,
   sendMail,
+  sendNewFeedbackMail
 };

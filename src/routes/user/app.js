@@ -51,14 +51,14 @@ router.put("/edit", UserValidator.editUser, async (req, res, next) => {
     // ? Only Remove old image
     if (newData.removeProfileImageUrl) {
       fs.unlink(publicFolder + req.user.profileImageUrl, (err) => {
-        if (err) logger.error(err);
+        if (err) throw err;
       });
       newData.profileImageUrl = null;
     } else {
       // ? Set new image - Remove old image
       if (req.user?.profileImageUrl) {
         fs.unlink(publicFolder + req.user.profileImageUrl, (err) => {
-          if (err) logger.error(err);
+          if (err) throw err;
         });
       }
       newData.profileImageUrl = UserService.uploadProfileImage(req.files?.profileImageUrl)

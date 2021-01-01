@@ -21,12 +21,13 @@ const initializeHttp = (app) => {
     // ? https://web.archive.org/web/20120203022122/http://www.silassewell.com/blog/2010/06/03/node-js-https-ssl-server-example/
     // ? while using the comments, add '-config <folder_Of_openssl.cnf> '
     // ? openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365
+
     // ? https://stackoverflow.com/questions/10175812/how-to-create-a-self-signed-certificate-with-openssl
     // ?
     server = https.createServer(
       {
-        key: fs.readFileSync(path.join(__dirname, "../keys/privateKey.key")),
-        cert: fs.readFileSync(path.join(__dirname, "../keys/certificate.crt")),
+        key: fs.readFileSync(path.join(__dirname, "../keys/privatekey.pem")),
+        cert: fs.readFileSync(path.join(__dirname, "../keys/certificate.pem")),
       },
       app
     );

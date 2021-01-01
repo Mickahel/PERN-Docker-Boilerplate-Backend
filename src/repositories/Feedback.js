@@ -6,8 +6,8 @@ class FeedbackRepository {
         return database.models.feedback.findAll();
     }
 
-    async createFeedback(feedback) {
-        return await database.models.feedback.create(feedback);
+    createFeedback(feedback) {
+        return database.models.feedback.create(feedback);
     }
 
     getFeedbackById(id) {
@@ -18,8 +18,8 @@ class FeedbackRepository {
         });
     }
 
-    async updateFeedback(feedback, newFeedback) {
-        await feedback.update(newFeedback);
+    editFeedback(feedback, newFeedback) {
+        return feedback.update(newFeedback);
     }
 
     deleteFeedback(id) {

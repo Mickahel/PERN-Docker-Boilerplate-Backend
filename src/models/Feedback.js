@@ -11,6 +11,7 @@ const createModel = (database) => {
         type: DataTypes.ENUM(["BUG", "FEATURE"]),
         description: DataTypes.TEXT,
         screenshotUrl: DataTypes.STRING,
+        path: DataTypes.STRING,
         handled: {
             type: DataTypes.BOOLEAN,
             defaultValue: false

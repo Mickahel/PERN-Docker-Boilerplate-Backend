@@ -78,6 +78,11 @@ roles.getRoleWithMinimumPermissionLevelByUserType = function (isAdmin) {
   }
   return roleChosen;
 };
+
+roles.getAdminRoles = function () {
+  return Object.values(roles).filter(role => role?.isAdmin == true).map(role => role.name)
+}
+
 const statuses = new generateEnum({
   ACTIVE: "ACTIVE",
   PENDING: "PENDING",

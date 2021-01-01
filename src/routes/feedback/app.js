@@ -2,7 +2,10 @@ const router = require("express").Router();
 const { v4: uuid } = require("uuid");
 const { publicFolder } = require("../../auxiliaries/server");
 const FeedbackRepository = require("../../repositories/feedback");
+const UserRepository = require("../../repositories/user");
 const FeedbackValidator = require("../../validators/feedback");
+const { sendNewFeedbackMail } = require("../../services/Mailer")
+const { roles } = require("../../../config");
 /**
  * @swagger
  * /v1/app/feedback/create:
@@ -51,7 +54,11 @@ router.post("/create", FeedbackValidator.createFeedback, async (req, res, next) 
       feedbackData.screenshotUrl = "uploads/feedbacks/" + screenshotName
     }
     const newFeedback = await FeedbackRepository.createFeedback(feedbackData);
-    // TODO AGGIUNGERE EMAIL DEL FEEDBACK E MANDARLA AGLI ADMIN
+
+    // ? Get Admins
+    const adminUsers = await UserRepository.getUsersByRole(roles.getAdminRoles())
+    // ? Send Emails to Admins
+    sendNewFeedbackMail(newFeedback, adminUsers)
     res.send(newFeedback);
   } catch (e) {
     next(e);

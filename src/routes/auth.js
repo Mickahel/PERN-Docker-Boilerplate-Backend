@@ -14,7 +14,7 @@ const { statuses } = require("../../config");
 const { roles } = require("../../config");
 /**
  * @swagger
- * /v1/auth/registration:
+ * /v1/auth/signup:
  *    post:
  *      summary: Registration endpoint
  *      tags: [Auth]
@@ -41,7 +41,7 @@ router.post("/signup", AuthValidator.signup, async (req, res, next) => {
     if (isIn) next(isIn);
     else {
       let userInDB = await UserRepository.createUser(user);
-      sendNewUserActivationMail(userInDB.dataValues);
+      sendNewUserActivationMail(userInDB);
       res.status(201).send({ message: "ok" });
     }
   } catch (e) {

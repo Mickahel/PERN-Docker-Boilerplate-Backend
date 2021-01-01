@@ -14,6 +14,7 @@ class FeedbackValidator {
             properties: {
                 type: { enum: ["BUG", "FEATURE"] },
                 description: { type: "string" },
+                path: { type: "string" },
                 screenshot: { type: "object" }
             },
             additionalProperties: false,
@@ -30,6 +31,23 @@ class FeedbackValidator {
             additionalProperties: false,
         };
         const valid = ajv.validate(schema, feature);
+        if (valid) next();
+        else next({ message: "Validation Error", errors: ajv.errors, status: 400 });
+    }
+
+    editFeedback(req, res, next) {
+        const data = req.bodyd
+        const schema = {
+            type: "object",
+            required: ["id"],
+            properties: {
+                id: { type: "string", format: "uuid" },
+                type: { enum: ["BUG", "FEATURE"] },
+                description: { type: "string" },
+            },
+            additionalProperties: false,
+        };
+        const valid = ajv.validate(schema, data);
         if (valid) next();
         else next({ message: "Validation Error", errors: ajv.errors, status: 400 });
     }

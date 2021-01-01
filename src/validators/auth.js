@@ -3,6 +3,7 @@ const ajv = new Ajv();
 
 class AuthValidator {
   signup(req, res, next) {
+    console.log(req.body)
     const { body: user } = req;
     const schema = {
       type: "object",

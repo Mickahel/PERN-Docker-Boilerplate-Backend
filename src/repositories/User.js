@@ -95,6 +95,17 @@ class UserRepository {
       },
     });
   }
+
+  getUsersByRole(roles) {
+    return database.models.user.findAll({
+      where: {
+        role: {
+          [Sequelize.Op.in]: roles
+        }
+      }
+    })
+  }
 }
+
 
 module.exports = new UserRepository();

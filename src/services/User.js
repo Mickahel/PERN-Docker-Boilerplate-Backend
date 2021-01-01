@@ -34,7 +34,6 @@ class UserService {
 
 
   uploadProfileImage(imageObject) {
-
     // ? Set new image
     if (imageObject) {
       let extension =
@@ -52,12 +51,18 @@ class UserService {
           }
         );
       } else {
-        sharp(imageObject.data).toFile(publicFolder + "uploads/profileImgs/" + profileImageUrlName,
-          function (err) {
-            if (err) {
-              throw err;
-            }
-          })
+        sharp(imageObject.data).resize(
+          {
+            width: 300,
+            height: 300,
+            fit: sharp.fit.inside,
+            withoutEnlargement: true,
+          }).toFile(publicFolder + "uploads/profileImgs/" + profileImageUrlName,
+            function (err) {
+              if (err) {
+                throw err;
+              }
+            })
       }
 
       return "uploads/profileImgs/" + profileImageUrlName;

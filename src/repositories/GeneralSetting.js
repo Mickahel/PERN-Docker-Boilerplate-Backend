@@ -6,12 +6,12 @@ class GeneralSettingRepository {
     return database.models.generalSetting.findAll();
   }
 
-  async createGeneralSetting(generalSetting) {
-    return await database.models.generalSetting.create(generalSetting);
+  createGeneralSetting(generalSetting) {
+    return database.models.generalSetting.create(generalSetting);
   }
 
-  async updateGeneralSetting(generalSetting, newGeneralSetting) {
-    await generalSetting.update(newGeneralSetting);
+  updateGeneralSetting(generalSetting, newGeneralSetting) {
+    return generalSetting.update(newGeneralSetting);
   }
 
   getGeneralSettingByFeature(feature) {
