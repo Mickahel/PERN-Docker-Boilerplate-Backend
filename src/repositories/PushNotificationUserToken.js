@@ -16,7 +16,6 @@ class PushNotificationUserTokenRepository {
     }
 
     async getUserTokens(user) {
-        //console.log(user)
         try {
             const userToken = await database.models.PushNotificationUserToken.findAll({
                 where: {

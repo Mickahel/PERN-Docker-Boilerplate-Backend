@@ -5,10 +5,11 @@ const { statuses } = require("../../config");
 const { publicFolder } = require("../auxiliaries/server");
 const { v4: uuid } = require("uuid");
 const sharp = require("sharp")
+const axios = require('axios').default;
 class UserService {
   async isUserRegistrated(email) {
     if (!email) return false;
-    const user = await UserRepository.getUserByMail(email);
+    const user = await UserRepository.getUserByEmail(email);
     if (!user) return false;
     // ? the user is registered
     if (user.status === statuses.ACTIVE)
@@ -17,6 +18,7 @@ class UserService {
       return { status: 406, message: "User is not activated" };
     else if (user.status === statuses.DISABLED)
       return { status: 406, message: "User is disabled" };
+    return true
   }
 
   generateRefreshToken(id) {
@@ -32,7 +34,25 @@ class UserService {
     );
   }
 
+  async uploadProfileImageFromUrl(imageUrl) {
+    const imageBuffer = (await axios.get(imageUrl, { responseType: "arraybuffer" })).data;
 
+    // ? Get image type
+    const imageSharp = sharp(imageBuffer)
+    const type = await imageSharp.metadata().then(({ format }) => format)
+    let filename = uuid() + "." + type
+    imageSharp.resize(
+      {
+        width: 300,
+        height: 300,
+        fit: sharp.fit.inside,
+        withoutEnlargement: true,
+      }).toFile(publicFolder + "uploads/profileImgs/" + filename,
+        function (err) {
+          if (err) throw err;
+        })
+    return filename
+  }
   uploadProfileImage(imageObject) {
     // ? Set new image
     if (imageObject) {

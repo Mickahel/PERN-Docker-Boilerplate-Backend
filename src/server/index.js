@@ -47,7 +47,7 @@ module.exports = function createServer() {
 
   // ? Initialize Passport for authentication
   app.use(passport.initialize());
-  //app.use(passport.session()); //* Sessions are not used
+
   // ? Cookie Parser middleware
   app.use(cookieParser());
   // ? Add logger middleware

@@ -19,6 +19,7 @@ const createModel = (database) => {
     hash: DataTypes.STRING,
     firstname: DataTypes.STRING,
     lastname: DataTypes.STRING,
+
     activationCode: DataTypes.UUID,
     profileImageUrl: DataTypes.STRING,
     role: {
@@ -32,6 +33,8 @@ const createModel = (database) => {
       defaultValue: statuses.PENDING,
       allowNull: false,
     },
+    facebookId: DataTypes.STRING,
+    googleId: DataTypes.STRING,
     language: {
       type: DataTypes.STRING,
       defaultValue: "en-EN",
@@ -85,6 +88,12 @@ const createModel = (database) => {
       .toString("hex");
     return this.hash === hash;
   };
+
+  model.prototype.createPassword = function () {
+    const password = uuid().substring(0, 7).replace("-", "")
+    this.setPassword(password)
+    return password;
+  }
 
   model.prototype.toJSON = function () {
     var values = Object.assign({}, this.get());

@@ -26,7 +26,6 @@ router.get("/healthcheck", (req, res, next) => {
  *      tags: [Server]
  */
 /*router.delete("/kill-process", (req, res, next) => {
-  console.log("killing ", process.pid);
   res.send("killing " + process.pid);
   process.exit();
 });

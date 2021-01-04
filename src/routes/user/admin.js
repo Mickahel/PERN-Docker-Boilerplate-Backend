@@ -78,7 +78,7 @@ router.post(
     try {
       user.email = user.email.trim();
       const isIn = await UserService.isUserRegistrated(user.email);
-      if (isIn) next(isIn);
+      if (isIn !== false) next(isIn);
       else {
         let userInDB = await UserRepository.createUser(
           user,

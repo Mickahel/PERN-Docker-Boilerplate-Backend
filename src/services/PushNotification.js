@@ -51,11 +51,8 @@ class PushNotificationUserTokenService {
         try {
             if (!user) return
             let userTokens = await PushNotificationUserTokenRepository.getUsersTokens(user);
-            if (userTokens.length === 0) {
-                //console.log("No tokens found", { user })
-                return
-            }
-            //console.log(`Start sending to ${userTokens.length} clients`)
+            if (userTokens.length === 0) return
+
             // * https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#Notification
             // * https://firebase.google.com/docs/cloud-messaging/send-message#node.js_7
             let result = await this.app.messaging().sendMulticast({

@@ -125,7 +125,7 @@ utilities.trim(utilities.getRealName(user)) %} {% import "button.html" as button
 						</tr>
 						<!-- end copy -->
 						<!-- start button -->
-						{{button.make(frontendUrl + "auth/activate/"+user.activationCode,
+						{{button.make(frontendUrl + "/auth/activate/"+user.activationCode,
 						"Confirm Your Email", color)}}
 						<!-- end button -->
 						<!-- start copy -->

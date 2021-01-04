@@ -21,7 +21,7 @@ class UserRepository {
     }
   }
 
-  getUserByMail(email) {
+  getUserByEmail(email) {
     return database.models.user.findOne({
       where: {
         email,
@@ -33,6 +33,32 @@ class UserRepository {
     return database.models.user.findOne({
       where: {
         id,
+      },
+    });
+  }
+
+  getUserByEmails(emails) {
+    return database.models.user.findOne({
+      where: {
+        email: {
+          [Sequelize.Op.in]: emails
+        }
+      },
+    });
+  }
+
+  getUserByFacebookId(facebookId) {
+    return database.models.user.findOne({
+      where: {
+        facebookId,
+      },
+    });
+  }
+
+  getUserByGoogleId(googleId) {
+    return database.models.user.findOne({
+      where: {
+        googleId,
       },
     });
   }

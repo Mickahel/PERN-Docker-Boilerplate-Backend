@@ -8,6 +8,7 @@ const AuthValidator = require("../validators/auth");
 const jwt = require("jsonwebtoken");
 const { statuses } = require("../../config");
 const { roles } = require("../../config");
+
 /**
  * @swagger
  * /v1/auth/signup:
@@ -34,7 +35,7 @@ router.post("/signup", AuthValidator.signup, async (req, res, next) => {
   try {
     user.email = user.email.trim();
     const isIn = await UserService.isUserRegistrated(user.email);
-    if (isIn) next(isIn);
+    if (isIn !== false) next(isIn);
     else {
       let userInDB = await UserRepository.createUser(user);
       MailerService.sendNewUserActivationMail(userInDB);
@@ -109,77 +110,6 @@ router.post("/login", AuthValidator.login, (req, res, next) => {
 
 /**
  * @swagger
- * /v1/auth/admin/login:
- *    post:
- *      summary: Admin Login endpoint
- *      tags: [Auth]
- *      parameters:
- *      - in: body
- *        name: email
- *        description: Registration email
- *        required: true
- *      - in: body
- *        name: password
- *        description: Password chosen
- *        required: true
- *      responses:
- *        404:
- *          description: User doesn't exist
- *        401:
- *          description: User is disabled / user is not activated
- *        403:
- *          description: Email or password is invalid / User does not have the permission
- */
-router.post("/admin/login", AuthValidator.login, (req, res, next) => {
-  let { body: user } = req;
-  try {
-    user.email = user.email.trim();
-    passport.authenticate(
-      "local",
-      { session: false },
-      async (err, passportUser, info) => {
-        if (err) return next(err);
-        else if (!passportUser && info) return next(info);
-        else {
-          if (
-            roles.getRoleByName(passportUser.role).permissionLevel >=
-            roles.getRoleWithMinimumPermissionLevelByUserType(true)
-              .permissionLevel
-          ) {
-            const accessToken = UserService.generateAccessToken(
-              passportUser.id
-            );
-            const refreshToken = UserService.generateRefreshToken(
-              passportUser.id
-            );
-            await UserRepository.setRefreshToken(passportUser, refreshToken);
-
-            res.cookie("accessToken", accessToken, {
-              httpOnly: true,
-              secure: false,
-              maxAge: process.env.ACCESS_TOKEN_EXPIRATION * 1000 * 60 * 60 * 24,
-            });
-            res.cookie("refreshToken", refreshToken, {
-              httpOnly: true,
-              secure: false,
-            });
-            res.send({
-              accessToken,
-              refreshToken,
-              user: passportUser,
-            });
-          } else
-            next({ message: "User does not have the permission", status: 403 });
-        }
-      }
-    )(req, res, next);
-  } catch (e) {
-    next(e);
-  }
-});
-
-/**
- * @swagger
  * /v1/auth/activation/:activationCode:
  *    post:
  *      summary: Activates the user using the activationCode
@@ -236,7 +166,7 @@ router.post(
   async (req, res, next) => {
     let email = req.body.email.trim();
     try {
-      let user = await UserRepository.getUserByMail(email);
+      let user = await UserRepository.getUserByEmail(email);
       if (user) {
         user.setActivationCode();
         await user.save();
@@ -361,16 +291,7 @@ router.delete("/logout", async (req, res, next) => {
 const loginCallbackOptions = {
   failureRedirect: "/v1/auth/login/callback/failed",
   successRedirect: "/v1/auth/login/callback/success",
-};
-
-const originGetter = (req, res, next) => {
-  if (!req.hostname) {
-    next();
-    return;
-  }
-
-  if (req.session) req.session.hostname = req.headers.referer;
-  next();
+  session: false
 };
 
 const getOrigin = (req, res, next) => {
@@ -382,40 +303,83 @@ const getOrigin = (req, res, next) => {
 
 //? -------------------- Social Login -------------------
 router.get(
-  "/v1/auth/login/facebook",
-  originGetter,
+  "/login/facebook",
   passport.authenticate("facebook", { scope: ["email"] })
 );
+
 router.get(
-  "/v1/auth/login/google",
-  originGetter,
-  passport.authenticate("google")
+  "/login/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
 router.get(
-  "/v1/auth/login/callback/facebook",
-  passport.authenticate("facebook", loginCallbackOptions)
-);
+  "/login/callback/facebook",
+  //  passport.authenticate(
+  //    "facebook",
+  //    loginCallbackOptions),
+  (req, res, next) => {
+    passport.authenticate(
+      "facebook",
+      async (err, passportUser, info) => {
+        if (err) res.redirect(loginCallbackOptions.failureRedirect)
+        else {
+          const accessToken = UserService.generateAccessToken(passportUser.id);
+          const refreshToken = UserService.generateRefreshToken(passportUser.id);
+          await UserRepository.setRefreshToken(passportUser, refreshToken);
+
+          res.cookie("accessToken", accessToken, {
+            httpOnly: true,
+            secure: false,
+            maxAge: process.env.ACCESS_TOKEN_EXPIRATION * 1000 * 60 * 60 * 24,
+          });
+          res.cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            secure: false,
+          });
+          res.redirect(loginCallbackOptions.successRedirect)
+        }
+      }
+    )(req, res, next)
+  }
+  /*(err, req, res, next) => res.redirect(`${getOrigin(req, res, next)}/auth/login/failed?error=${err.message.replace(/\s/g, "").replace(".", "")}`)
+*/
+)
+
 router.get(
-  "/v1/auth/login/callback/google",
-  passport.authenticate("google", loginCallbackOptions)
+  "/login/callback/google",
+  (req, res, next) => {
+    passport.authenticate(
+      "google",
+      async (err, passportUser, info) => {
+        if (err) res.redirect(loginCallbackOptions.failureRedirect)
+        else {
+          const accessToken = UserService.generateAccessToken(passportUser.id);
+          const refreshToken = UserService.generateRefreshToken(passportUser.id);
+          await UserRepository.setRefreshToken(passportUser, refreshToken);
+
+          res.cookie("accessToken", accessToken, {
+            httpOnly: true,
+            secure: false,
+            maxAge: process.env.ACCESS_TOKEN_EXPIRATION * 1000 * 60 * 60 * 24,
+          });
+          res.cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            secure: false,
+          });
+          res.redirect(loginCallbackOptions.successRedirect)
+        }
+      }
+    )(req, res, next)
+  }
 );
 
-router.get("/v1/auth/login/callback/failed", async (req, res, next) => {
+router.get("/login/callback/failed", async (req, res, next) => {
   res.redirect(`${getOrigin(req, res, next)}/auth/login/failed`);
 });
 
-router.get("/v1/auth/login/callback/success", async (req, res, next) => {
-  let user = _.get(req.session, "passport.user");
-  if (!user) {
-    next("Cannot find user");
-    //return;
-  }
-
-  let jwt = User.generateJWT(user.id); //TODO Rivedere
-
+router.get("/login/callback/success", async (req, res, next) => {
   res.redirect(
-    `${getOrigin(req, res, next)}/auth/login/success?token=${jwt.token}`
+    `${getOrigin(req, res, next)}/auth/login/success`
   );
 });
 
