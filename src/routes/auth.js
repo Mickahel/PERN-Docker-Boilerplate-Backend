@@ -1,6 +1,6 @@
 const router = require("express").Router();
-const passport = require("passport");
 const MailerService = require("../services/Mailer");
+const passport = require("passport");
 const _ = require("lodash");
 const UserService = require("../services/User");
 const UserRepository = require("../repositories/User");

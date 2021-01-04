@@ -9,7 +9,7 @@ const { statuses } = require("../../../config");
 const _ = require("lodash");
 const Logger = require("../../services/Logger");
 const logger = new Logger("AUTH", "#2AB7CA");
-
+const MailerService = require("../../services/Mailer");
 
 
 module.exports = function initializeAuthentication() {
@@ -42,6 +42,7 @@ module.exports = function initializeAuthentication() {
       }
 
       newUser.createPassword();
+      MailerService.sendUserActivatedMail(newUser);
       return newUser;
     } catch (e) {
       logger.error(e)
