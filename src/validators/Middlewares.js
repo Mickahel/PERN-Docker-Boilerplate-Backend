@@ -1,6 +1,6 @@
 const Ajv = require("ajv").default;
 const ajv = new Ajv();
-
+require("ajv-formats")(ajv)
 class MiddlewareValidator {
   paginatedResults(req) {
     const paginationData = req.query.data;

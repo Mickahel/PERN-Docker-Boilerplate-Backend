@@ -1,6 +1,6 @@
 const Ajv = require("ajv").default;
 const ajv = new Ajv();
-
+require("ajv-formats")(ajv)
 class GenralSettingsValidator {
   getGeneralSettingByFeature(req, res, next) {
     const feature = req.params.feature;

@@ -104,4 +104,18 @@ router.put(
   }
 );
 
+/**
+ * @swagger
+ * /v1/app/user/disable:
+ *    delete:
+ *      summary: Disable user
+ *      tags: [User]
+ *      security:
+ *          - cookieAuthBasic: []
+ */
+router.delete("/disable", async (req, res, next) => {
+  UserRepository.disableUser(req.user)
+  res.status(204).send()
+})
+
 module.exports = router;

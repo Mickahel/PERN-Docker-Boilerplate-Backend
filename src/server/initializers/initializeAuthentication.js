@@ -50,6 +50,22 @@ module.exports = function initializeAuthentication() {
     }
   }
 
+  const socialLogin = async (user, done, origin, socialId) => {
+    if (user.status == statuses.ACTIVE) {
+      if (origin == "google") user.googleId = socialId
+      else if (origin == "facebook") user.facebookId = socialId
+      await user.save()
+      return done(null, user)
+    }
+    if (user.status == statuses.PENDING || !user.status) {
+      user.status = statuses.ACTIVE
+      if (origin == "google") user.googleId = socialId
+      else if (origin == "facebook") user.facebookId = socialId
+      await user.save()
+      return done(null, user)
+    }
+    if (user.status == statuses.DISABLED) return done("disabledUser")
+  }
   passport.use(
     "local",
     new LocalStrategy(
@@ -105,20 +121,16 @@ module.exports = function initializeAuthentication() {
     try {
       const id = profile.id;
       let user = await UserRepository.getUserByFacebookId(id)
-      if (user) return done(null, user)
+      if (user) return socialLogin(user, done);
 
       // ? If there isn't, check if there is the user by email and attach the facebookId
       let emails = profile?.emails.map(single => single.value);
       if (_.isEmpty(emails) && profile._json.email) emails = [profile._json.email]
       if (_.isEmpty(emails)) return done("No email found")
 
+      // ? Found, I attach the facebook id  
       user = await UserRepository.getUserByEmails(emails);
-      if (user) { // ? Found, I attach the facebook id
-        user.facebookId = id;
-        await user.save()
-        return done(null, user)
-
-      }
+      if (user) return socialLogin(user, done, "facebook", id);
 
       // ? The user is not in the database, I register it
       let newUser = await createUser(profile, "facebook")
@@ -150,19 +162,16 @@ module.exports = function initializeAuthentication() {
         try {
           const id = profile.id;
           let user = await UserRepository.getUserByGoogleId(id)
-          if (user) return done(null, user)
+          if (user) return socialLogin(user, done)
 
           // ? If there isn't, check if there is the user by email and attach the facebookId
           let emails = profile.emails.map((single) => single.value);
           if (_.isEmpty(emails) && profile._json.email) emails = [profile._json.email]
           if (_.isEmpty(emails)) return done("No email found");
 
+          // ? Found, I attach the facebook id
           user = await UserRepository.getUserByEmails(emails);
-          if (user) {  // ? Found, I attach the facebook id
-            user.googleId = id;
-            await user.save();
-            return done(undefined, user);
-          }
+          if (user) return socialLogin(user, done, "google", id);
 
           // ? The user is not in the database, I register it
           let newUser = await createUser(profile, "google");

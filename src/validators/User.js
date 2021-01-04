@@ -1,6 +1,7 @@
 const Ajv = require("ajv").default;
 const ajv = new Ajv();
 const { roles, statuses } = require("../../config");
+require("ajv-formats")(ajv)
 class UserValidator {
   editUser(req, res, next) {
     const newData = {

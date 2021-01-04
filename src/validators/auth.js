@@ -1,5 +1,6 @@
 const Ajv = require("ajv").default;
 const ajv = new Ajv();
+require("ajv-formats")(ajv)
 
 class AuthValidator {
   signup(req, res, next) {

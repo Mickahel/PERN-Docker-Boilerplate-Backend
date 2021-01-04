@@ -321,7 +321,7 @@ router.get(
     passport.authenticate(
       "facebook",
       async (err, passportUser, info) => {
-        if (err) res.redirect(loginCallbackOptions.failureRedirect)
+        if (err) res.redirect(`${loginCallbackOptions.failureRedirect}?failReason=${err}`)
         else {
           const accessToken = UserService.generateAccessToken(passportUser.id);
           const refreshToken = UserService.generateRefreshToken(passportUser.id);
@@ -351,7 +351,7 @@ router.get(
     passport.authenticate(
       "google",
       async (err, passportUser, info) => {
-        if (err) res.redirect(loginCallbackOptions.failureRedirect)
+        if (err) res.redirect(`${loginCallbackOptions.failureRedirect}?failReason=${err}`)
         else {
           const accessToken = UserService.generateAccessToken(passportUser.id);
           const refreshToken = UserService.generateRefreshToken(passportUser.id);
@@ -373,14 +373,8 @@ router.get(
   }
 );
 
-router.get("/login/callback/failed", async (req, res, next) => {
-  res.redirect(`${getOrigin(req, res, next)}/auth/login/failed`);
-});
+router.get("/login/callback/failed", (req, res, next) => res.redirect(`${getOrigin(req, res, next)}/auth/login/failed?failReason=${req.query.failReason}`))
 
-router.get("/login/callback/success", async (req, res, next) => {
-  res.redirect(
-    `${getOrigin(req, res, next)}/auth/login/success`
-  );
-});
+router.get("/login/callback/success", (req, res, next) => res.redirect(`${getOrigin(req, res, next)}/auth/login/success`))
 
 module.exports = router;

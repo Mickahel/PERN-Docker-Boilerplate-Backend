@@ -112,14 +112,10 @@ class UserRepository {
     );
   }
 
-  deleteUser(user) {
-    if (!user) return;
 
-    return database.models.user.destroy({
-      where: {
-        id: user.id,
-      },
-    });
+  async disableUser(user) {
+    user.status = statuses.DISABLED
+    return await user.save()
   }
 
   getUsersByRole(roles) {
