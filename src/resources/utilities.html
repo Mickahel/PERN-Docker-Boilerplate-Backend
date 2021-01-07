@@ -1,0 +1,5 @@
+{% macro getRealName(user) %} {% if user != null %} {% if (user.firstname and
+user.lastname) %} {{user.firstname}} {{user.lastname}} {% elif user.firstname %}
+{{user.firstname}} {% elif user.lastname %} {{user.firstname}} {% elif
+user.email %} {{user.email}} {% endif %} {% endif %} {% endmacro %} {% macro
+trim(string) %} {{ string | trim }} {% endmacro %}
