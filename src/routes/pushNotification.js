@@ -1,8 +1,8 @@
 const router = require("express").Router();
 //const PushNotificationValidator = require("../validators/log");
-const PushNotificationUserTokenRepository = require("../repositories/PushNotificationUserToken");
-const PushNotificationService = require("../services/PushNotification");
-const PushNotificationValidator = require("../validators/PushNotification");
+const PushNotificationUserTokenRepository = require("../repositories/pushNotificationUserToken");
+const PushNotificationService = require("../services/pushNotification");
+const PushNotificationValidator = require("../validators/pushNotification");
 
 
 /**

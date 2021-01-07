@@ -1,5 +1,5 @@
-const BaseRepository = require("../repositories/Base");
-const MiddlewareValidator = require("../validators/Middlewares");
+const BaseRepository = require("../repositories/base");
+const MiddlewareValidator = require("../validators/middlewares");
 
 const paginatedResults = (model, excludeFields, options) => async (
   req,

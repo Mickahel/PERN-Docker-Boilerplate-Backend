@@ -1,3 +1,6 @@
+const _ = require("lodash");
+//const Logger = require("./src/services/Logger");
+//const logger = new Logger("Database", "#FF9A00");
 const config = {
   base: {
     longTitle: "PERN Boilerplate",
@@ -14,16 +17,15 @@ const config = {
   production: {
     databaseConfig: {
       options: {
-        host: "localhost",
         dialect: "postgres",
-        logging: (msg) => logger.silly(msg),
+        //logging: (msg) => logger.silly(msg),
+        logging: false,
       },
     },
   },
   development: {
     databaseConfig: {
       options: {
-        host: "192.168.99.100",
         dialect: "postgres",
         logging: false,
       },
@@ -43,7 +45,7 @@ generateEnum.prototype.names = function () {
     typeof Object.values(this)[0] === "object" &&
     Object.values(this)[0].name
   )
-    return Object.values(this).map((type) => type.name);
+    return Object.values(this).map((type) => type.name).filter(type => !_.isEmpty(type));
   return;
 };
 
@@ -71,8 +73,7 @@ roles.getRoleWithMinimumPermissionLevelByUserType = function (isAdmin) {
   let roleChosen = { permissionLevel: +Infinity };
   for (const role of Object.values(roles)) {
     if (
-      role.permissionLevel < roleChosen?.permissionLevel &&
-      role.isAdmin == isAdmin
+      role.permissionLevel < roleChosen.permissionLevel && role.isAdmin == isAdmin
     )
       roleChosen = role;
   }

@@ -2,19 +2,22 @@ require("./pg-EnumFix");
 const Sequelize = require("sequelize");
 const { isProduction } = require("../auxiliaries/server");
 const { config } = require("../../config");
-const Logger = require("../services/Logger");
+const Logger = require("../services/logger");
 const logger = new Logger("Database", "#FF9A00");
 
-const createUserModel = require("./User");
-const createGeneralSettingModel = require("./GeneralSetting");
-const createPushNotificationUserToken = require("./PushNotificationUserToken")
-const createFeedbackModel = require("./Feedback")
+const createUserModel = require("./user");
+const createGeneralSettingModel = require("./generalSetting");
+const createPushNotificationUserToken = require("./pushNotificationUserToken")
+const createFeedbackModel = require("./feedback")
 
 const database = new Sequelize(
   process.env.DB_NAME,
   process.env.DB_USER,
   process.env.DB_PASSWORD,
-  config.databaseConfig.options
+  {
+    host: process.env.DB_HOST,
+    ...config.databaseConfig.options
+  }
 );
 const initializeDatabase = async () => {
   try {
@@ -45,6 +48,15 @@ const initializeDatabase = async () => {
       foreignKey: 'Feedback'
     });
 
+    process.on('SIGINT', async function () {
+      try {
+        const result = await database.close();
+        logger.info("closed Database", result)
+      }
+      catch (e) {
+        logger.error("Error closing Database", e)
+      }
+    });
 
     if (!isProduction) await database.sync({ alter: true });
     else await database.sync();

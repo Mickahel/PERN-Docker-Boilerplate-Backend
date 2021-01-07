@@ -1,7 +1,7 @@
 require("dotenv").config();
 const nodemailer = require("nodemailer");
 const nunjucks = require("nunjucks");
-const Logger = require("./Logger");
+const Logger = require("./logger");
 const logger = new Logger("Mails", "#cacaca");
 const { config } = require("../../config");
 
@@ -38,7 +38,7 @@ class MailerService {
 
 
   sendNewUserActivationMail(user) {
-    let html = nunjucks.render("NewUserMailActivation.html", {
+    let html = nunjucks.render("newUserMailActivation.html", {
       user,
       appName: config.longTitle,
       frontendUrl: process.env.FRONTEND_URL,
@@ -55,27 +55,9 @@ class MailerService {
     this.sendMail(mailOptions);
   }
 
-  sendNewUserMail(user, plainPassword) {
-    const html = nunjucks.render("NewUserMail.html", {
-      user,
-      plainPassword,
-      appName: config.longTitle,
-      frontendUrl: process.env.FRONTEND_URL,
-      imagesUrl: process.env.BACKEND_IMAGES_URL,
-      color: config.notificationColor,
-    });
-
-    const mailOptions = {
-      to: user.email,
-      subject: `${config.shortTitle} - Welcome`,
-      html
-    };
-
-    this.sendMail(mailOptions);
-  }
 
   sendUserActivatedMail(user) {
-    const html = nunjucks.render("NewUserMailActivated.html", {
+    const html = nunjucks.render("newUserMailActivated.html", {
       user,
       appName: config.longTitle,
       frontendUrl: process.env.FRONTEND_URL,
@@ -92,8 +74,26 @@ class MailerService {
     this.sendMail(mailOptions);
   }
 
+  sendNewUserMail(user, plainPassword) {
+    const html = nunjucks.render('newUserMail.html', {
+      appName: config.longTitle,
+      frontendUrl: process.env.FRONTEND_URL,
+      imagesUrl: process.env.BACKEND_IMAGES_URL,
+      color: config.notificationColor,
+      user,
+      plainPassword
+    });
+
+    const mailOptions = {
+      to: user.email,
+      subject: `${config.shortTitle} - Welcome`,
+      html
+    };
+    this.sendMail(mailOptions)
+  }
+
   sendResetPasswordMail(user) {
-    const html = nunjucks.render("ResetPasswordMail.html", {
+    const html = nunjucks.render("resetPasswordMail.html", {
       user,
       appName: config.longTitle,
       frontendUrl: process.env.FRONTEND_URL,
@@ -114,7 +114,7 @@ class MailerService {
 
   sendNewFeedbackMail(feedback, users) {
     const mails = users.map(user => user.email)
-    const html = nunjucks.render("NewFeedback.html", {
+    const html = nunjucks.render("newFeedback.html", {
       feedback,
       appName: config.longTitle,
       adminUrl: process.env.ADMIN_FRONTEND_URL,

@@ -1,9 +1,9 @@
 const router = require("express").Router();
-const MailerService = require("../services/Mailer");
+const MailerService = require("../services/mailer");
 const passport = require("passport");
 const _ = require("lodash");
-const UserService = require("../services/User");
-const UserRepository = require("../repositories/User");
+const UserService = require("../services/user");
+const UserRepository = require("../repositories/user");
 const AuthValidator = require("../validators/auth");
 const jwt = require("jsonwebtoken");
 const { statuses } = require("../../config");
@@ -373,8 +373,8 @@ router.get(
   }
 );
 
-router.get("/login/callback/failed", (req, res, next) => res.redirect(`${getOrigin(req, res, next)}/auth/login/failed?failReason=${req.query.failReason}`))
+router.get("/login/callback/failed", (req, res, next) => res.redirect(`${getOrigin(req, res, next)}/auth/social/failed?failReason=${req.query.failReason}`))
 
-router.get("/login/callback/success", (req, res, next) => res.redirect(`${getOrigin(req, res, next)}/auth/login/success`))
+router.get("/login/callback/success", (req, res, next) => res.redirect(`${getOrigin(req, res, next)}/auth/social/success`))
 
 module.exports = router;

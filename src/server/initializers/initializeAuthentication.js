@@ -2,14 +2,14 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const passportFacebook = require("passport-facebook");
 const passportGoogle = require("passport-google-oauth20");
-const UserRepository = require("../../repositories/User");
-const UserService = require("../../services/User");
+const UserRepository = require("../../repositories/user");
+const UserService = require("../../services/user");
 const { database } = require("../../models")
 const { statuses } = require("../../../config");
 const _ = require("lodash");
-const Logger = require("../../services/Logger");
+const Logger = require("../../services/logger");
 const logger = new Logger("AUTH", "#2AB7CA");
-const MailerService = require("../../services/Mailer");
+const MailerService = require("../../services/mailer");
 
 
 module.exports = function initializeAuthentication() {

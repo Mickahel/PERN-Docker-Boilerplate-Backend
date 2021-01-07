@@ -4,7 +4,7 @@ const { publicFolder } = require("../../auxiliaries/server");
 const FeedbackRepository = require("../../repositories/feedback");
 const UserRepository = require("../../repositories/user");
 const FeedbackValidator = require("../../validators/feedback");
-const MailerService = require("../../services/Mailer")
+const MailerService = require("../../services/mailer")
 const { roles } = require("../../../config");
 /**
  * @swagger

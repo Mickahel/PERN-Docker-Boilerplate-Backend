@@ -1,5 +1,5 @@
 const admin = require('firebase-admin')
-const PushNotificationUserTokenRepository = require("../repositories/PushNotificationUserToken");
+const PushNotificationUserTokenRepository = require("../repositories/pushNotificationUserToken");
 const { config } = require("../../config");
 
 

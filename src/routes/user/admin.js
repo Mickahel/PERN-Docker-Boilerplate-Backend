@@ -1,8 +1,8 @@
 const router = require("express").Router();
 const UserValidator = require("../../validators/user");
-const UserRepository = require("../../repositories/User");
-const UserService = require("../../services/User");
-
+const UserRepository = require("../../repositories/user");
+const UserService = require("../../services/user");
+const { canAdminActOnUser } = require("../../auxiliaries/permission")
 /**
  * @swagger
  * /v1/admin/user/info/all:
@@ -38,12 +38,12 @@ router.get("/info/all", async (req, res, next) => {
  *      - in: body
  *        name: user
  *        description: user details. Email Required
- *        required: true
  *        schema:
  *          type: object
  *          properties:
  *              firstname:
  *                  type: string
+ *                  required: true
  *              lastname:
  *                  type: string
  *              email:
@@ -64,10 +64,8 @@ router.get("/info/all", async (req, res, next) => {
  *      security:
  *      - cookieAuthAdmin: []
  *      responses:
- *          409:
- *              description: User is already registered
- *          406:
- *              description: User is not activated / User is disabled
+ *          401:
+ *              description: You don't have the permission due to your user role
  */
 router.post(
   "/create",
@@ -75,6 +73,7 @@ router.post(
   async (req, res, next) => {
     //TODO ADD USER IMAGE - REVISE SWAGGER DOCUMENTATION
     let { user, sendActivationEmail } = req.body;
+    if (!canAdminActOnUser(req.user, user)) next({ message: "You don't have the permission due to your user role", status: 401 })
     try {
       user.email = user.email.trim();
       const isIn = await UserService.isUserRegistrated(user.email);
@@ -151,9 +150,11 @@ router.get("/info/:id", UserValidator.getUserById, async (req, res, next) => {
  *      - cookieAuthAdmin: []
  *      responses:
  *          406:
- *              description: User is not activated / User is disabled
+ *            description: User is not activated / User is disabled
  *          404:
- *            description: User notfound
+ *            description: User not found
+ *          401:
+ *            description: You don't have the permission due to your user role
  */
 router.put(
   "/edit/:id",
@@ -164,6 +165,7 @@ router.put(
       const userDB = await UserRepository.getUserById(req.params.id);
       if (userDB) {
         const newUser = await UserRepository.updateUser(userDB, req.body);
+        if (!canAdminActOnUser(req.user, user)) next({ message: "You don't have the permission due to your user role", status: 401 })
         res.send(newUser);
       } else {
         next({ message: "User not found", status: 404 });

@@ -1,6 +1,6 @@
 const router = require("express").Router();
-const GeneralSettingsRepository = require("../repositories/GeneralSetting");
-const GeneralSettingsValidator = require("../validators/GeneralSetting");
+const GeneralSettingsRepository = require("../repositories/generalSetting");
+const GeneralSettingsValidator = require("../validators/generalSetting");
 
 /**
  * @swagger

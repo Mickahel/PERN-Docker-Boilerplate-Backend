@@ -1,7 +1,0 @@
-web:
-  image: nginx
-  volumes:
-    - ./templates:/etc/nginx/templates
-  ports:
-    - "80:80"
-    - "81:81"

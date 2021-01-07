@@ -1,11 +1,11 @@
 const router = require("express").Router();
-const UserValidator = require("../../validators/User");
-const UserRepository = require("../../repositories/User");
+const UserValidator = require("../../validators/user");
+const UserRepository = require("../../repositories/user");
 const { publicFolder } = require("../../auxiliaries/server");
 const fs = require("fs");
-const Logger = require("../../services/Logger");
+const Logger = require("../../services/logger");
 const logger = new Logger("User API", "#9F9A00");
-const UserService = require("../../services/User")
+const UserService = require("../../services/user")
 /**
  * @swagger
  * /v1/app/user/info:
@@ -110,12 +110,23 @@ router.put(
  *    delete:
  *      summary: Disable user
  *      tags: [User]
+ *      parameters:
+ *      - in: body
+ *        name: email
+ *        description: new email
  *      security:
  *          - cookieAuthBasic: []
+ *      responses:
+ *        401:
+ *          description: Password is wrong
  */
 router.delete("/disable", async (req, res, next) => {
-  UserRepository.disableUser(req.user)
-  res.status(204).send()
+  // ? Check password
+  if (req.user.validatePassword(req.body.password)) {
+    UserRepository.disableUser(req.user)
+    res.status(204).send()
+  }
+  else next({ message: "Password is wrong", status: 401 });
 })
 
 module.exports = router;

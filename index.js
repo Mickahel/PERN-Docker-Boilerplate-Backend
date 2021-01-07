@@ -1,5 +1,5 @@
 require("dotenv").config();
-const Logger = require("./src/services/Logger");
+const Logger = require("./src/services/logger");
 const crashLogger = new Logger("CRASH", "#ff0000");
 
 process.on("unhandledRejection", (error) => {
@@ -17,7 +17,6 @@ const createServer = require("./src/server");
 const logger = new Logger("Cluster", "#F2FE");
 const { isProduction } = require("./src/auxiliaries/server");
 const { initializeDatabase } = require("./src/models");
-
 logger.info("Environement: " + process.env.NODE_ENV);
 
 const startCluster = () => {
@@ -33,10 +32,10 @@ const startCluster = () => {
     cluster.on("exit", (worker) => {
       logger.error(
         "worker process " +
-          worker.process.pid +
-          " died." +
-          Object.keys(cluster.workers).length +
-          "worker remaining. Starting new Cluster"
+        worker.process.pid +
+        " died." +
+        Object.keys(cluster.workers).length +
+        "worker remaining. Starting new Cluster"
       );
       cluster.fork();
     });

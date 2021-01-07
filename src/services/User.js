@@ -1,5 +1,5 @@
 //const download = require('image-downloader')
-const UserRepository = require("../repositories/User");
+const UserRepository = require("../repositories/user");
 const jwt = require("jsonwebtoken");
 const { statuses } = require("../../config");
 const { publicFolder } = require("../auxiliaries/server");
