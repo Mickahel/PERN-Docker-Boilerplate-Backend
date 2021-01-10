@@ -16,7 +16,6 @@ const initializeCors = require("./initializers/initializeCors");
 const initializeRoutes = require("./initializers/initializeRoutes");
 const initializeHttp = require("./initializers/initializeHttp");
 //const initializeWebSocket = require('./initializers/initializeWebSocket')
-
 // ? https://itnext.io/make-security-on-your-nodejs-api-the-priority-50da8dc71d68
 
 module.exports = function createServer() {
@@ -24,17 +23,6 @@ module.exports = function createServer() {
   const app = express();
   const router = express.Router();
 
-  // ? Add Session for authentication
-  //* Sessions are not used
-  /*app.use(
-    expressSession({
-      secret: process.env.SESSION_SECRET,
-      resave: false,
-      saveUninitialized: false,
-      store: new pgSessionConnection(),
-      cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }  //? 30 days
-    })
-  );*/
 
   // ? Uploader Middleware
   app.use(
@@ -92,12 +80,13 @@ module.exports = function createServer() {
 
   // ? Add Routes
   initializeRoutes(router);
-  // ? Add https middleware
 
+  // ? Add https middleware
   app.use(router);
 
   // ? Add middleware that replaces null with undefined 
   app.set('json replacer', (k, v) => (v === null ? undefined : v))
+
   //? Error middleware
   app.use((err, req, res, next) => {
     let status = err.status ? err.status : 500;

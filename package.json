@@ -6,7 +6,8 @@
 	"scripts": {
 		"dev": " env-cmd -f .env.development nodemon ./index.js -L",
 		"deployOnDocker": "env-cmd -f .env.production ./index.js",
-		"deployWithPM2": "env-cmd -f .env.production pm2 start ecosystem.config.js"
+		"deployWithPM2": "env-cmd -f .env.production pm2 start ecosystem.config.js",
+		"deployWithNode": "env-cmd -f .env.production node ./index.js"
 	},
 	"author": "Michelangelo De Francesco",
 	"license": "ISC",
@@ -25,6 +26,7 @@
 		"express": "^4.17.1",
 		"express-fileupload": "^1.2.0",
 		"express-rate-limit": "^5.2.3",
+		"express-session": "^1.17.1",
 		"firebase-admin": "^9.4.2",
 		"helmet": "^4.3.1",
 		"jsonwebtoken": "^8.5.1",

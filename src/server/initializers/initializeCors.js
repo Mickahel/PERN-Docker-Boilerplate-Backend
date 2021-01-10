@@ -7,10 +7,13 @@ const initializeCors = (app) => {
   if (isProduction) whitelist = [process.env.FRONTEND_URL, `http//${host}`];
   else
     whitelist = [
-      `http://localhost:3000`,
-      `http//${host}`,
+      `http://localhost:3000`,  // ? Dev App
+      `https://localhost:3000`,  // ? Dev App
+      `http//${host}`,          // ? Backend
       `http://localhost:9000`,
-      `https://localhost:3000`
+      `http://localhost:1000`,  // ? Dev Admin
+      `https://localhost:1000`, // ? Dev Admin
+
     ];
   const corsOptions = {
     credentials: true,

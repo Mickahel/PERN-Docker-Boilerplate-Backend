@@ -294,21 +294,40 @@ const loginCallbackOptions = {
   session: false
 };
 
+const originGetter = (req, res, next) => {
+  if (!req.hostname) return next()
+  res.cookie("socialRedirect",
+    req.headers.referer.slice(-1) == "/" ? req.headers.referer.slice(0, -1) : req.headers.referer,
+    {
+      httpOnly: true,
+      secure: false,
+    }
+  )
+  next()
+}
+
+
 const getOrigin = (req, res, next) => {
-  if (!req.session) return process.env.FRONTEND_URL;
-  if (_.includes(req.session.hostname, "admin"))
-    return process.env.ADMIN_FRONTEND_URL;
-  return process.env.FRONTEND_URL;
+  if (req.cookies.socialRedirect) {
+    const redirect = req.cookies.socialRedirect
+    res.clearCookie("socialRedirect")
+    return redirect
+  }
+  return process.env.FRONTEND_URL
 };
 
 //? -------------------- Social Login -------------------
+// TODO ADD SWAGGER
 router.get(
   "/login/facebook",
+  originGetter,
   passport.authenticate("facebook", { scope: ["email"] })
 );
 
+// TODO ADD SWAGGER
 router.get(
   "/login/google",
+  originGetter,
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
