@@ -5,7 +5,6 @@
 	"main": "index.js",
 	"scripts": {
 		"dev": " env-cmd -f .env.development nodemon ./index.js -L",
-		"deployOnDocker": "env-cmd -f .env.production ./index.js",
 		"deployWithPM2": "env-cmd -f .env.production pm2 start ecosystem.config.js",
 		"deployWithNode": "env-cmd -f .env.production node ./index.js"
 	},

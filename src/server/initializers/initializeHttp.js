@@ -3,7 +3,7 @@ const http = require("http");
 const fs = require("fs");
 const path = require("path");
 const Logger = require("../../services/logger");
-const logger = new Logger("App", "green");
+const logger = new Logger("App", "#3FA34D");
 
 const {
   port,
