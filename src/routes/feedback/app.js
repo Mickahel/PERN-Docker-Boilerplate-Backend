@@ -25,6 +25,10 @@ const { roles } = require("../../../config");
  *        name: description
  *        description: description of the feedback
  *        required: true
+ *      - in: body
+ *        name: createdBy
+ *        description: id of the user who created the feedback
+ *        required: true
  *      - in: formData
  *        name: screenshot
  *        type: file

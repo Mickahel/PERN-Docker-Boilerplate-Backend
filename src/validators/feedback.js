@@ -15,7 +15,10 @@ class FeedbackValidator {
                 type: { enum: ["BUG", "FEATURE"] },
                 description: { type: "string" },
                 path: { type: "string" },
-                screenshot: { type: "object" }
+                screenshot: { type: "object" },
+                createdBy: {
+                    type: "string", format: "uuid"
+                }
             },
             additionalProperties: false,
         };

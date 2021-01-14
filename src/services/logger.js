@@ -4,6 +4,8 @@ const _ = require("lodash");
 const standardTimestampData = { format: "DD/MM/YYYY h:mm:ss:SSS" };
 const cj = require("color-json");
 const chalk = require("chalk");
+const { v4: uuid } = require("uuid");
+
 
 const rotationTransport = new winston.transports.DailyRotateFile({
   format: winston.format.combine(
@@ -108,6 +110,7 @@ function ModularLogger(module, bgColor, otherOptions) {
 
 ModularLogger.prototype.writeLogToFile = function (func, parsedMessage, arg) {
   let logToFile = {
+    id: uuid(),
     ...this.otherOptions,
   };
 
