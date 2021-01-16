@@ -30,33 +30,21 @@ const initializeDatabase = async () => {
     const GeneralSetting = createGeneralSettingModel(database);
     const PushNotificationUserToken = createPushNotificationUserToken(database)
     const Feedback = createFeedbackModel(database)
-
+    
     // ? --------- Relationships ---------
     // ? One To Many relationship between user and push notification tokens
     User.hasMany(PushNotificationUserToken, {
-      foreignKey: 'userId'
+      foreignKey: 'userId',
+      as: 'userId'
     });
-    PushNotificationUserToken.belongsTo(User, {
-      foreignKey: 'userId'
-    });
+    PushNotificationUserToken.belongsTo(User,{foreignKey: 'userId'});
 
     // ? One To Many relationship between user and push notification tokens
     User.hasMany(Feedback, {
-      foreignKey: 'createdBy'
+      foreignKey: 'createdBy',
+      as: 'createdBy'
     });
-    Feedback.belongsTo(User, {
-      foreignKey: 'Feedback'
-    });
-
-    process.on('SIGINT', async function () {
-      try {
-        const result = await database.close();
-        logger.info("closed Database", result)
-      }
-      catch (e) {
-        logger.error("Error closing Database", e)
-      }
-    });
+    Feedback.belongsTo(User,{foreignKey: 'createdBy'});
 
     if (!isProduction) await database.sync({ alter: true });
     else await database.sync();

@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 
 const createModel = (database) => {
-    const model = database.define("PushNotificationUserToken", {
+    const model = database.define("pushNotificationUserToken", {
         token: {
             type: DataTypes.STRING,
             allowNull: false,

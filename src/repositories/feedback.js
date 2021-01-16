@@ -3,7 +3,10 @@ const _ = require("lodash");
 
 class FeedbackRepository {
     getAll() {
-        return database.models.feedback.findAll();
+        return database.models.feedback.findAll(
+            
+            { include: database.models.user}
+            );
     }
 
     createFeedback(feedback) {
