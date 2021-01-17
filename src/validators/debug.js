@@ -1,6 +1,5 @@
-const Ajv = require("ajv").default;
-const ajv = new Ajv();
-require("ajv-formats")(ajv)
+const ajv = require("./AJVInstance")
+
 class DebugValidator {
   status(req, res, next) {
     const status = req.params.status;

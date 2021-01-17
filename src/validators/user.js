@@ -1,7 +1,6 @@
-const Ajv = require("ajv").default;
-const ajv = new Ajv();
+const ajv = require("./AJVInstance")
 const { roles, statuses } = require("../../config");
-require("ajv-formats")(ajv)
+
 class UserValidator {
   editUser(req, res, next) {
     const newData = {
@@ -67,9 +66,7 @@ class UserValidator {
   getUserById(req, res, next) {
     const schema = {
       type: "string",
-      format: "uuid",
-      required: ["id"],
-      additionalProperties: false,
+      format: "uuid"
     };
     const valid = ajv.validate(schema, req.params.id);
     if (valid) next();

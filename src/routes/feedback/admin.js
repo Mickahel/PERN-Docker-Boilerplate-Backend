@@ -23,7 +23,7 @@ router.get("/all", async (req, res, next) => {
 
 /**
  * @swagger
- * /v1/admin/feedback/:id:
+ * /v1/admin/feedback/info/:id:
  *    get:
  *      summary: Gets feedback by id
  *      tags: [Feedback]
@@ -38,7 +38,7 @@ router.get("/all", async (req, res, next) => {
  *        404:
  *          description: Cannot find data
  */
-router.get("/:id", FeedbackValidator.getFeedbackById, async (req, res, next) => {
+router.get("/info/:id", FeedbackValidator.getFeedbackById, async (req, res, next) => {
     try {
         const result = await FeedbackRepository.getFeedbackById(
             req.params.id
@@ -69,6 +69,10 @@ router.get("/:id", FeedbackValidator.getFeedbackById, async (req, res, next) => 
  *          type: string
  *          enum: [BUG, FEATURE]
  *      - in: body
+ *        name: handled
+ *        schema:
+ *          type: boolean
+ *      - in: body
  *        name: description
  *        description: description of the feedback
  *      responses:
@@ -90,7 +94,7 @@ router.put("/edit", FeedbackValidator.editFeedback, async (req, res, next) => {
 
 /**
  * @swagger
- * /v1/admin/feedback/:id:
+ * /v1/admin/feedback/delete/:id:
  *    delete:
  *      summary: deletes feedback by id
  *      tags: [Feedback]
@@ -105,22 +109,15 @@ router.put("/edit", FeedbackValidator.editFeedback, async (req, res, next) => {
  *        404:
  *          description: Cannot find data
  */
-router.delete("/:id", FeedbackValidator.getFeedbackById, async (req, res, next) => {
+router.delete("/delete/:id", FeedbackValidator.getFeedbackById, async (req, res, next) => {
     try {
-
-        const result = await FeedbackRepository.getFeedbackById(
-            req.params.id
-        );
-
+        const result = await FeedbackRepository.getFeedbackById(req.params.id);
         if (!result) next({ message: "Cannot find data", status: 404 });
         else {
-            fs.unlink(publicFolder + result.screenshotUrl, (err) => {
-                if (err) throw err;
-            });
+            fs.unlinkSync(publicFolder + result.screenshotUrl)
             await FeedbackRepository.deleteFeedback(req.params.id)
-            res.status(204)
+            res.status(204).send()
         }
-
     } catch (e) {
         next(e);
     }

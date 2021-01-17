@@ -1,6 +1,4 @@
-const Ajv = require("ajv").default;
-const ajv = new Ajv();
-require("ajv-formats")(ajv)
+const ajv = require("./AJVInstance")
 class FeedbackValidator {
 
     createFeedback(req, res, next) {
@@ -31,7 +29,7 @@ class FeedbackValidator {
         const feature = req.params.id;
         const schema = {
             type: "string",
-            additionalProperties: false,
+            format: "uuid",
         };
         const valid = ajv.validate(schema, feature);
         if (valid) next();
@@ -39,7 +37,8 @@ class FeedbackValidator {
     }
 
     editFeedback(req, res, next) {
-        const data = req.bodyd
+        const data = req.body
+
         const schema = {
             type: "object",
             required: ["id"],
@@ -47,10 +46,13 @@ class FeedbackValidator {
                 id: { type: "string", format: "uuid" },
                 type: { enum: ["BUG", "FEATURE"] },
                 description: { type: "string" },
+                handled: { type: "boolean" },
+
             },
             additionalProperties: false,
         };
         const valid = ajv.validate(schema, data);
+        console.log(ajv.errors)
         if (valid) next();
         else next({ message: "Validation Error", errors: ajv.errors, status: 400 });
     }

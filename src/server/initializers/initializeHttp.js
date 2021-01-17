@@ -4,7 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const Logger = require("../../services/logger");
 const logger = new Logger("App", "#3FA34D");
-
+const { database } = require("../../models/index")
 const {
   port,
   isProduction,
@@ -35,6 +35,12 @@ const initializeHttp = (app) => {
   server.listen(port, () => {
     logger.info(`App listening on http${isProduction ? `` : `s`}://${host}`);
   });
+
+  async function closeGracefully(signal) {
+    await database.close()
+    await server.close()
+  }
+  process.on('SIGINT', closeGracefully)
 
   return server;
 };
