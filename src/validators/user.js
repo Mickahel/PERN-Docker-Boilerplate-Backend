@@ -14,7 +14,7 @@ class UserValidator {
         lastname: { type: "string" },
         email: { type: "string", format: "email" },
         language: { type: "string" },
-        removeBackgroundImage: { enum: [true, false] },
+        removeBackgroundImage: { type: "boolean" },
         theme: { enum: ["light", "dark"] },
         profileImageUrl: { type: "object" }
       },
@@ -41,24 +41,29 @@ class UserValidator {
 
   editUserByAdmin(req, res, next) {
     const newData = req.body;
-    const id = req.params;
     const schema = {
       type: "object",
       required: ["id"],
       properties: {
         id: { type: "string", format: "uuid" },
-        firstnama: { type: "string" },
+        firstname: { type: "string" },
         lastname: { type: "string" },
+        facebookId: { type: "string" },
+        googleId: { type: "string" },
+        updatedAt: { type: "string" },
+        createdAt: { type: "string" },
+        theme: { enum: ["light", "dark"] },
+        language: { type: "string" },
         password: { type: "string" },
         email: { type: "string", format: "email" },
-        language: { type: "string" },
-        theme: { enum: ["light", "dark"] },
+        profileImageUrl: { type: "string" },
+        removeProfileImageUrl: { type: "boolean" },
         status: { enum: statuses.names() },
         role: { enum: roles.names() },
       },
       additionalProperties: false,
     };
-    const valid = ajv.validate(schema, { ...newData, ...id });
+    const valid = ajv.validate(schema, newData);
     if (valid) next();
     else next({ message: "Validation Error", errors: ajv.errors, status: 400 });
   }

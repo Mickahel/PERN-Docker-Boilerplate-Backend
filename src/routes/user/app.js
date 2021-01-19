@@ -45,11 +45,12 @@ router.get("/info", (req, res, next) => {
  *        type: file
  *        description: The file of the profile image
  */
-router.put("/edit", UserValidator.editUser, async (req, res, next) => {
+router.put("/edit", async (req, res, next) => {
   const newData = req.body;
+
   try {
     // ? Only Remove old image
-    if (newData.removeProfileImageUrl) {
+    if (Boolean(newData.removeProfileImageUrl) == true) {
       fs.unlink(publicFolder + req.user.profileImageUrl, (err) => {
         if (err) throw err;
       });

@@ -15,7 +15,8 @@ const initializeSwagger = require("./initializers/initializeSwagger");
 const initializeCors = require("./initializers/initializeCors");
 const initializeRoutes = require("./initializers/initializeRoutes");
 const initializeHttp = require("./initializers/initializeHttp");
-
+const Logger = require("../services/logger")
+const logger = new Logger("API Error", "#FFFF00")
 //const initializeWebSocket = require('./initializers/initializeWebSocket')
 // ? https://itnext.io/make-security-on-your-nodejs-api-the-priority-50da8dc71d68
 
@@ -93,6 +94,7 @@ module.exports = function createServer() {
 
   //? Error middleware
   app.use((err, req, res, next) => {
+    if (err.status != 404 && err.status != 403 && err.status != 400 && err.status != 401) logger.error(err.message, err.errors)
     let status = err.status ? err.status : 500;
     let errorMessage = {
       response: "error",

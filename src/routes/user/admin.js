@@ -3,6 +3,8 @@ const UserValidator = require("../../validators/user");
 const UserRepository = require("../../repositories/user");
 const UserService = require("../../services/user");
 const { canAdminActOnUser } = require("../../auxiliaries/permission")
+const { publicFolder } = require("../../auxiliaries/server");
+const fs = require("fs");
 /**
  * @swagger
  * /v1/admin/user/info/all:
@@ -74,21 +76,25 @@ router.post(
     //TODO ADD USER IMAGE - REVISE SWAGGER DOCUMENTATION
     let { user, sendActivationEmail } = req.body;
     if (!canAdminActOnUser(req.user, user)) next({ message: "You don't have the permission due to your user role", status: 401 })
-    try {
-      user.email = user.email.trim();
-      const isIn = await UserService.isUserRegistrated(user.email);
-      if (isIn !== false) next(isIn);
-      else {
-        let userInDB = await UserRepository.createUser(
-          user,
-          sendActivationEmail
-        );
-        if (sendActivationEmail) sendNewUserActivationMail(userInDB.dataValues);
-        if (!user.password) sendNewUserSetPasswordMail(userInDB.dataValues);
-        res.status(201).send(userInDB);
+    else {
+      try {
+        user.email = user.email.trim();
+        const isIn = await UserService.isUserRegistrated(user.email);
+        if (isIn !== false) next(isIn);
+        else {
+          let userInDB = await UserRepository.createUser(
+            user,
+            sendActivationEmail
+          );
+
+          if (sendActivationEmail) sendNewUserActivationMail(userInDB.dataValues);
+          if (!user.password) sendNewUserSetPasswordMail(userInDB.dataValues);
+          res.status(201).send(userInDB);
+        }
+
+      } catch (e) {
+        next(e);
       }
-    } catch (e) {
-      next(e);
     }
   }
 );
@@ -125,12 +131,12 @@ router.get("/info/:id", UserValidator.getUserById, async (req, res, next) => {
 
 /**
  * @swagger
- * /v1/admin/user/edit/:id:
+ * /v1/admin/user/edit:
  *    put:
  *      summary: Edit user info
  *      tags: [User]
  *      parameters:
- *      - in: path
+ *      - in: body
  *        name: id
  *        description: id of the user
  *        required: true
@@ -145,7 +151,24 @@ router.get("/info/:id", UserValidator.getUserById, async (req, res, next) => {
  *      - in: body
  *        name: status
  *      - in: body
+ *        name: theme
+ *      - in: body
+ *        name: language
+ *      - in: body
+ *        name: createdAt
+ *      - in: body
+ *        name: updatedAt
+ *      - in: body
+ *        name: password
+ *      - in: body
  *        name: role
+ *      - in: body
+ *        name: removeBackgroundImage
+ *        description: if set true, removes the profile image
+ *      - in: formData
+ *        name: profileImageUrl
+ *        type: file
+ *        description: The file of the profile image
  *      security:
  *      - cookieAuthAdmin: []
  *      responses:
@@ -157,16 +180,37 @@ router.get("/info/:id", UserValidator.getUserById, async (req, res, next) => {
  *            description: You don't have the permission due to your user role
  */
 router.put(
-  "/edit/:id",
+  "/edit",
   UserValidator.editUserByAdmin,
   async (req, res, next) => {
-    //TODO ADD USER IMAGE - REVISE SWAGGER DOCUMENTATION
+    // TODO  REVISE SWAGGER DOCUMENTATION
+    const newData = req.body;
+    console.log(newData)
     try {
-      const userDB = await UserRepository.getUserById(req.params.id);
+      const userDB = await UserRepository.getUserById(newData.id);
       if (userDB) {
-        const newUser = await UserRepository.updateUser(userDB, req.body);
-        if (!canAdminActOnUser(req.user, user)) next({ message: "You don't have the permission due to your user role", status: 401 })
-        res.send(newUser);
+        if (!canAdminActOnUser(req.user, userDB)) next({ message: "You don't have the permission due to your user role", status: 401 })
+        else {
+          // ? Only Remove old image
+          if (newData.removeProfileImageUrl == true) {
+            fs.unlink(publicFolder + req.user.profileImageUrl, (err) => {
+              if (err) throw err;
+            });
+            newData.profileImageUrl = null;
+          } else if (req.files?.profileImageUrl) {
+            // ? Set new image - Remove old image
+            if (req.user?.profileImageUrl) {
+              fs.unlink(publicFolder + req.user.profileImageUrl, (err) => {
+                if (err) throw err;
+              });
+            }
+            newData.profileImageUrl = UserService.uploadProfileImage(req.files?.profileImageUrl)
+          }
+
+
+          const newUser = await UserRepository.updateUser(userDB, newData);
+          res.send(newUser);
+        }
       } else {
         next({ message: "User not found", status: 404 });
       }

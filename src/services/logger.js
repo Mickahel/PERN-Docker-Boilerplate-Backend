@@ -17,9 +17,8 @@ const rotationTransport = new winston.transports.DailyRotateFile({
   datePattern: "DD-MM-YYYY",
   zippedArchive: true,
   maxSize: "20m",
-  maxFiles: "30d",
+  maxFiles: "1d",
   auditFile: process.env.LOG_DIRECTORY + "/audit.json",
-
   dirname: process.env.LOG_DIRECTORY,
 });
 

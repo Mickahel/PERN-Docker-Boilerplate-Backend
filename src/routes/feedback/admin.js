@@ -114,8 +114,8 @@ router.delete("/delete/:id", FeedbackValidator.getFeedbackById, async (req, res,
         const result = await FeedbackRepository.getFeedbackById(req.params.id);
         if (!result) next({ message: "Cannot find data", status: 404 });
         else {
-            fs.unlinkSync(publicFolder + result.screenshotUrl)
             await FeedbackRepository.deleteFeedback(req.params.id)
+            fs.unlinkSync(publicFolder + result.screenshotUrl)
             res.status(204).send()
         }
     } catch (e) {
