@@ -4,6 +4,7 @@ const UserRepository = require("../../repositories/user");
 const UserService = require("../../services/user");
 const { canAdminActOnUser } = require("../../auxiliaries/permission")
 const { publicFolder } = require("../../auxiliaries/server");
+const MailerService = require("../../services/mailer")
 const fs = require("fs");
 /**
  * @swagger
@@ -29,6 +30,46 @@ router.get("/info/all", async (req, res, next) => {
     next(e);
   }
 });
+
+// TODO DO SWAGGER
+router.post(
+  "/send-activation-email/:id",
+  UserValidator.sendActivationEmail,
+  async (req, res, next) => {
+    try {
+      const userDB = await UserRepository.getUserById(req.params.id);
+      if (userDB) {
+        userDB.setActivationCode();
+        await userDB.save()
+        MailerService.sendNewUserActivationMail(userDB);
+        res.send({ message: "ok" });
+      } else {
+        next({ message: "User not found", status: 404 });
+      }
+    } catch (e) {
+      next(e);
+    }
+  })
+
+// TODO DO SWAGGER
+router.post(
+  "/send-lost-password-email/:id",
+  UserValidator.sendPasswordRemindEmail,
+  async (req, res, next) => {
+    try {
+      const userDB = await UserRepository.getUserById(req.params.id);
+      if (userDB) {
+        userDB.setActivationCode();
+        await userDB.save()
+        MailerService.sendResetPasswordMail(userDB);
+        res.send({ message: "ok" });
+      } else {
+        next({ message: "User not found", status: 404 });
+      }
+    } catch (e) {
+      next(e);
+    }
+  })
 
 /**
  * @swagger
@@ -73,8 +114,10 @@ router.post(
   "/create",
   UserValidator.createUserByAdmin,
   async (req, res, next) => {
-    //TODO ADD USER IMAGE - REVISE SWAGGER DOCUMENTATION
-    let { user, sendActivationEmail } = req.body;
+    //TODO REVISE SWAGGER DOCUMENTATION
+    const sendActivationEmail = req.body.sendActivationEmail;
+    const user = req.body;
+    delete user.sendActivationEmail
     if (!canAdminActOnUser(req.user, user)) next({ message: "You don't have the permission due to your user role", status: 401 })
     else {
       try {
@@ -82,13 +125,10 @@ router.post(
         const isIn = await UserService.isUserRegistrated(user.email);
         if (isIn !== false) next(isIn);
         else {
-          let userInDB = await UserRepository.createUser(
-            user,
-            sendActivationEmail
-          );
-
-          if (sendActivationEmail) sendNewUserActivationMail(userInDB.dataValues);
-          if (!user.password) sendNewUserSetPasswordMail(userInDB.dataValues);
+          // ? Set new image
+          if (req.files?.profileImageUrl) user.profileImageUrl = UserService.uploadProfileImage(req.files?.profileImageUrl)
+          let userInDB = await UserRepository.createUser(user, sendActivationEmail);
+          if (sendActivationEmail == true) sendNewUserActivationMail(userInDB)
           res.status(201).send(userInDB);
         }
 
@@ -185,7 +225,7 @@ router.put(
   async (req, res, next) => {
     // TODO  REVISE SWAGGER DOCUMENTATION
     const newData = req.body;
-    console.log(newData)
+    newData.email = newData.email.trim();
     try {
       const userDB = await UserRepository.getUserById(newData.id);
       if (userDB) {
@@ -193,17 +233,15 @@ router.put(
         else {
           // ? Only Remove old image
           if (newData.removeProfileImageUrl == true) {
-            fs.unlink(publicFolder + req.user.profileImageUrl, (err) => {
+            fs.unlink(publicFolder + newData.profileImageUrl, (err) => {
               if (err) throw err;
             });
             newData.profileImageUrl = null;
           } else if (req.files?.profileImageUrl) {
             // ? Set new image - Remove old image
-            if (req.user?.profileImageUrl) {
-              fs.unlink(publicFolder + req.user.profileImageUrl, (err) => {
-                if (err) throw err;
-              });
-            }
+            fs.unlink(publicFolder + newData.profileImageUrl, (err) => {
+              if (err) throw err;
+            });
             newData.profileImageUrl = UserService.uploadProfileImage(req.files?.profileImageUrl)
           }
 

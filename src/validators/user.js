@@ -78,26 +78,41 @@ class UserValidator {
     else next({ message: "Validation Error", errors: ajv.errors, status: 400 });
   }
 
+
+  sendActivationEmail(req, res, next) {
+    const schema = {
+      type: "string",
+      format: "uuid"
+    };
+    const valid = ajv.validate(schema, req.params.id);
+    if (valid) next();
+    else next({ message: "Validation Error", errors: ajv.errors, status: 400 });
+  }
+
+
+  sendPasswordRemindEmail(req, res, next) {
+    const schema = {
+      type: "string",
+      format: "uuid"
+    };
+    const valid = ajv.validate(schema, req.params.id);
+    if (valid) next();
+    else next({ message: "Validation Error", errors: ajv.errors, status: 400 });
+  }
+
   createUserByAdmin(req, res, next) {
     const schema = {
       type: "object",
-      required: ["user"],
+      required: ["email"],
       properties: {
-        user: {
-          type: "object",
-          required: ["email"],
-          additionalProperties: false,
-          properties: {
-            firstname: { type: "string" },
-            lastname: { type: "string" },
-            email: { type: "string", format: "email" },
-            password: { type: "string" },
-            status: { enum: statuses.names() },
-            role: { enum: roles.names() },
-            language: { type: "string" },
-            theme: { enum: ["light", "dark"] },
-          },
-        },
+        firstname: { type: "string" },
+        lastname: { type: "string" },
+        email: { type: "string", format: "email" },
+        password: { type: "string" },
+        status: { enum: statuses.names() },
+        role: { enum: roles.names() },
+        language: { type: "string" },
+        theme: { enum: ["light", "dark"] },
         sendActivationEmail: { type: "boolean" },
       },
       additionalProperties: false,
