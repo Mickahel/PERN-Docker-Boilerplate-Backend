@@ -10,6 +10,9 @@
 		"deployOnDocker": "env-cmd -f .env.production ./index.js",
 		"start": "node ./index.js"
 	},
+	"engines": {
+		"node": "14.4"
+	},
 	"author": "Michelangelo De Francesco",
 	"license": "ISC",
 	"dependencies": {
