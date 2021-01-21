@@ -114,7 +114,7 @@ router.put(
  *      parameters:
  *      - in: body
  *        name: email
- *        description: new email
+ *        description: email
  *      security:
  *          - cookieAuthBasic: []
  *      responses:

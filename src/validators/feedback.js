@@ -52,7 +52,6 @@ class FeedbackValidator {
             additionalProperties: false,
         };
         const valid = ajv.validate(schema, data);
-        console.log(ajv.errors)
         if (valid) next();
         else next({ message: "Validation Error", errors: ajv.errors, status: 400 });
     }

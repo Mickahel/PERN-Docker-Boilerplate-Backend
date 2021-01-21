@@ -225,7 +225,7 @@ router.put(
   async (req, res, next) => {
     // TODO  REVISE SWAGGER DOCUMENTATION
     const newData = req.body;
-    newData.email = newData.email.trim();
+    if (newData.email) newData.email = newData.email.trim();
     try {
       const userDB = await UserRepository.getUserById(newData.id);
       if (userDB) {
@@ -239,9 +239,11 @@ router.put(
             newData.profileImageUrl = null;
           } else if (req.files?.profileImageUrl) {
             // ? Set new image - Remove old image
-            fs.unlink(publicFolder + newData.profileImageUrl, (err) => {
-              if (err) throw err;
-            });
+            if (newData.profileImageUrl) {
+              fs.unlink(publicFolder + newData.profileImageUrl, (err) => {
+                if (err) throw err;
+              });
+            }
             newData.profileImageUrl = UserService.uploadProfileImage(req.files?.profileImageUrl)
           }
 

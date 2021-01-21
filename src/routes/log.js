@@ -43,7 +43,6 @@ router.get("/", LogValidator.getLogs, async (req, res, next) => {
     })
     res.send(logsJSON)
   } catch (e) {
-    console.log(e)
     next(e)
   }
 
