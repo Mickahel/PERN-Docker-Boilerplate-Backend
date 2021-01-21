@@ -260,4 +260,43 @@ router.put(
   }
 );
 
+
+// TODO SWAGGER and VALIDATOR
+router.post(
+  "/impersonificate/:id",
+  async (req, res, next) => {
+    try {
+      // ? Get user
+      const userDB = await UserRepository.getUserById(req.params.id);
+      if (userDB) {
+        if (!canAdminActOnUser(req.user, userDB)) next({ message: "You don't have the permission due to your user role", status: 401 })
+        else {
+          let refreshToken
+          if (!userDB.refreshToken) {
+            const refreshToken = UserService.generateRefreshToken(userDB.id);
+            await UserRepository.setRefreshToken(userDB, refreshToken);
+          } else refreshToken = userDB.refreshToken
+          const accessToken = UserService.generateAccessToken(userDB.id);
+
+
+          res.cookie("accessToken", accessToken, {
+            httpOnly: true,
+            secure: false,
+            maxAge: process.env.ACCESS_TOKEN_EXPIRATION * 1000 * 60 * 60 * 24,
+          });
+          res.cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            secure: false,
+          });
+          res.send({
+            accessToken,
+            refreshToken,
+            user: userDB,
+          });
+        }
+      } else {
+        next({ message: "User not found", status: 404 });
+      }
+    } catch (e) { next(e) }
+  })
 module.exports = router;

@@ -10,6 +10,7 @@ process.on("uncaughtException", (error) => {
   crashLogger.error("uncaughtException", error);
 });
 
+const fs = require('fs');
 const { config } = require("./config");
 const cluster = require("cluster");
 const os = require("os");
@@ -18,6 +19,7 @@ const logger = new Logger("Cluster", "#F2FE");
 const { isProduction } = require("./src/auxiliaries/server");
 const { initializeDatabase } = require("./src/models");
 logger.info("Environement: " + process.env.NODE_ENV);
+const { publicFolder } = require("./src/auxiliaries/server");
 
 const startCluster = () => {
   // ? Check if current process is master.
@@ -81,4 +83,17 @@ async function start() {
   }
 }
 
+const createFolders = () => {
+  if (!fs.existsSync(publicFolder + "/uploads/feedbacks")) {
+    fs.mkdirSync(publicFolder + "/uploads/feedbacks", { recursive: true })
+    logger.info("Created Feedbacks Folder")
+  }
+  if (!fs.existsSync(publicFolder + "/uploads/profileImgs")) {
+    fs.mkdirSync(publicFolder + "/uploads/profileImgs", { recursive: true })
+    logger.info("Created ProfileImgs Folder")
+  }
+
+}
+
+createFolders()
 start();

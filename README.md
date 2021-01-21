@@ -1,6 +1,6 @@
-![PERN Header](https://github.com/Mickahel/Mickahel/blob/master/media/PERN%20Header.png)
+# PERN Docker Boilerplate Backend
 
-# PERN Docker Boilerplate
+![PERN Header](https://github.com/Mickahel/Mickahel/blob/master/media/PERN%20Header.png)
 
 a PERN (Postgres, Express, React, Node) Boilerplate for developing and go-prod with Docker
 
@@ -9,15 +9,24 @@ a PERN (Postgres, Express, React, Node) Boilerplate for developing and go-prod w
 - 🖥️ Node
 - 🖼️ React
 - 🐋 Docker
-- 🤹 Nginx
 - 📊 PM2
 - 🐘 PostgreSQL / mySQL
 
 ## Platforms
 
-- 🖥️ Backend
-- 🖼️ Webapp/App/PWA - Client Side
-- 🎛️ Admin - Admin Side
+- 🖥️ [Backend](https://github.com/Mickahel/PERN-Docker-Boilerplate-Backend)
+- 🖼️ [Webapp/App/PWA - Client Side](https://github.com/Mickahel/PERN-Docker-Boilerplate-WebApp)
+- 🎛️ [Admin - Admin Side](https://github.com/Mickahel/PERN-Docker-Boilerplate-Admin)
+
+## Features
+
+- 🖼️ Basic Frontend Theme
+- 🧑‍🤝‍🧑 User Management System
+- 📱 Multiplatform
+- ➡️ Authentication through Refresh Token
+- 📘 Social Login (Google and Facebook)
+- 💥 Logs System and Rotation
+- 💬 Push Notifications
 
 ## Roadmap
 
@@ -29,12 +38,10 @@ a PERN (Postgres, Express, React, Node) Boilerplate for developing and go-prod w
 | ⌛    | September 2020 | Frontend Development                   |
 | ⌛    | October 2020   | No Development                         |
 | ⏳    | November 2020  | Backend & Frontend Development         |
-| 🔮    | December 2020  | Backend & Frontend Development         |
-| 🔮    | January 2021   | Backend & Frontend Development         |
-| 🔮    | February 2021  | Devops                                 |
+| ⏳    | December 2020  | Backend & Frontend Development         |
+| ⏳    | January 2021   | Backend & Frontend Development         |
+| 🔮    | February 2021  | Miscellaneous Implementations          |
 | 🔮    | March 2021     |                                        |
-
-## Milestones
 
 ### 🖥️ Backend
 
