@@ -355,6 +355,7 @@ router.get(
           res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
             secure: false,
+            maxAge: process.env.ACCESS_TOKEN_EXPIRATION * 1000 * 60 * 60 * 24 * 10,
           });
           res.redirect(loginCallbackOptions.successRedirect)
         }
@@ -385,6 +386,7 @@ router.get(
           res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
             secure: false,
+            maxAge: process.env.ACCESS_TOKEN_EXPIRATION * 1000 * 60 * 60 * 24 * 10,
           });
           res.redirect(loginCallbackOptions.successRedirect)
         }
