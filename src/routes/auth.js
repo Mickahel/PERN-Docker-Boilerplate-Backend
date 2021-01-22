@@ -94,6 +94,7 @@ router.post("/login", AuthValidator.login, (req, res, next) => {
           res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
             secure: false,
+            maxAge: process.env.ACCESS_TOKEN_EXPIRATION * 1000 * 60 * 60 * 24 * 10,
           });
           res.send({
             accessToken,
@@ -354,6 +355,7 @@ router.get(
           res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
             secure: false,
+            maxAge: process.env.ACCESS_TOKEN_EXPIRATION * 1000 * 60 * 60 * 24 * 10,
           });
           res.redirect(loginCallbackOptions.successRedirect)
         }
@@ -384,6 +386,7 @@ router.get(
           res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
             secure: false,
+            maxAge: process.env.ACCESS_TOKEN_EXPIRATION * 1000 * 60 * 60 * 24 * 10,
           });
           res.redirect(loginCallbackOptions.successRedirect)
         }

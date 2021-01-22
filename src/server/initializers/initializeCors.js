@@ -4,7 +4,7 @@ const { isProduction, host } = require("../../auxiliaries/server");
 
 const initializeCors = (app) => {
   let whitelist;
-  if (isProduction) whitelist = [process.env.FRONTEND_URL, `http//${host}`];
+  if (isProduction) whitelist = [process.env.FRONTEND_URL, process.env.ADMIN_FRONTEND_URL, `http//${host}`];
   else
     whitelist = [
       `http://localhost:3000`,  // ? Dev App
@@ -15,6 +15,7 @@ const initializeCors = (app) => {
       `https://localhost:1000`, // ? Dev Admin
 
     ];
+
   const corsOptions = {
     credentials: true,
     origin: function (origin, callback) {

@@ -8,7 +8,10 @@
 		"deployWithPM2": "env-cmd -f .env.production pm2 start ecosystem.config.js",
 		"deployWithNode": "env-cmd -f .env.production node ./index.js",
 		"deployOnDocker": "env-cmd -f .env.production ./index.js",
-		"web": "node ./index.js"
+		"start": "node ./index.js"
+	},
+	"engines": {
+		"node": "14.4"
 	},
 	"author": "Michelangelo De Francesco",
 	"license": "ISC",
