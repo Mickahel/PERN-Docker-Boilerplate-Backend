@@ -88,12 +88,12 @@ router.post("/login", AuthValidator.login, (req, res, next) => {
 
           res.cookie("accessToken", accessToken, {
             httpOnly: true,
-            secure: false,
+            secure: true,
             maxAge: process.env.ACCESS_TOKEN_EXPIRATION * 1000 * 60 * 60 * 24,
           });
           res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
-            secure: false,
+            secure: true,
             maxAge: process.env.ACCESS_TOKEN_EXPIRATION * 1000 * 60 * 60 * 24 * 10,
           });
           res.send({
@@ -254,7 +254,7 @@ router.post("/token", async (req, res, next) => {
           const accessToken = UserService.generateAccessToken(data.id);
           res.cookie("accessToken", accessToken, {
             httpOnly: true,
-            secure: false,
+            secure: true,
             maxAge: process.env.ACCESS_TOKEN_EXPIRATION * 1000 * 60 * 60 * 24,
           });
           res.send({ accessToken });
@@ -349,12 +349,12 @@ router.get(
 
           res.cookie("accessToken", accessToken, {
             httpOnly: true,
-            secure: false,
+            secure: true,
             maxAge: process.env.ACCESS_TOKEN_EXPIRATION * 1000 * 60 * 60 * 24,
           });
           res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
-            secure: false,
+            secure: true,
             maxAge: process.env.ACCESS_TOKEN_EXPIRATION * 1000 * 60 * 60 * 24 * 10,
           });
           res.redirect(loginCallbackOptions.successRedirect)
@@ -380,12 +380,12 @@ router.get(
 
           res.cookie("accessToken", accessToken, {
             httpOnly: true,
-            secure: false,
+            secure: true,
             maxAge: process.env.ACCESS_TOKEN_EXPIRATION * 1000 * 60 * 60 * 24,
           });
           res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
-            secure: false,
+            secure: true,
             maxAge: process.env.ACCESS_TOKEN_EXPIRATION * 1000 * 60 * 60 * 24 * 10,
           });
           res.redirect(loginCallbackOptions.successRedirect)

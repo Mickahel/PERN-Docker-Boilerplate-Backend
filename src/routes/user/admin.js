@@ -281,12 +281,13 @@ router.post(
 
           res.cookie("accessToken", accessToken, {
             httpOnly: true,
-            secure: false,
+            secure: true,
             maxAge: process.env.ACCESS_TOKEN_EXPIRATION * 1000 * 60 * 60 * 24,
           });
           res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
-            secure: false,
+            secure: true,
+            maxAge: process.env.ACCESS_TOKEN_EXPIRATION * 1000 * 60 * 60 * 24 * 10,
           });
           res.send({
             accessToken,
