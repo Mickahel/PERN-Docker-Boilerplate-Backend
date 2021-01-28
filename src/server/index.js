@@ -43,8 +43,10 @@ module.exports = function createServer() {
 
   // ? Cookie Parser middleware
   app.use(cookieParser());
+
   // ? Add logger middleware
   app.use(morgan("dev"));
+
 
   // ? Add error handler middleware
   app.use(errorHandler());

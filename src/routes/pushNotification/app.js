@@ -1,8 +1,6 @@
 const router = require("express").Router();
-//const PushNotificationValidator = require("../validators/log");
-const PushNotificationUserTokenRepository = require("../repositories/pushNotificationUserToken");
-const PushNotificationService = require("../services/pushNotification");
-const PushNotificationValidator = require("../validators/pushNotification");
+const PushNotificationUserTokenRepository = require("../../repositories/pushNotificationUserToken");
+const PushNotificationValidator = require("../../validators/pushNotification");
 
 
 /**
@@ -20,11 +18,13 @@ const PushNotificationValidator = require("../validators/pushNotification");
  *          - cookieAuthBasic: []
  */
 router.post('/:token', PushNotificationValidator.setPushNotificationUserToken, async (req, res, next) => {
+
     try {
         let ut = {
             token: req.params.token,
             userId: req.user.id
         }
+
         const result = await PushNotificationUserTokenRepository.registerUserToken(ut)
         res.send(result)
     } catch (err) {

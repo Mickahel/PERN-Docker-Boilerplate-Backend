@@ -38,7 +38,7 @@ router.get("/info", (req, res, next) => {
  *        name: lastname
  *        description: new lastname
  *      - in: body
- *        name: removeBackgroundImage
+ *        name: removeProfileImageUrl
  *        description: if set true, removes the profile image
  *      - in: formData
  *        name: profileImageUrl

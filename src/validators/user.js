@@ -14,7 +14,7 @@ class UserValidator {
         lastname: { type: "string" },
         email: { type: "string", format: "email" },
         language: { type: "string" },
-        removeBackgroundImage: { type: "boolean" },
+        removeProfileImageUrl: { type: "boolean" },
         theme: { enum: ["light", "dark"] },
         profileImageUrl: { type: "object" }
       },

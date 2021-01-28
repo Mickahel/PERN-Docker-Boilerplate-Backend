@@ -47,6 +47,9 @@ const initializeRoutes = (router) => {
   router.use("/v1/admin/user", require("../../routes/user/admin"));
   router.use("/v1/admin/logs", require("../../routes/log"));
   router.use("/v1/admin/feedback", require("../../routes/feedback/admin"));
+  router.use("/v1/admin/pushNotification", require("../../routes/pushNotification/admin"));
+  router.use("/v1/admin/database", require("../../routes/database"));
+
 
   // ? App Routes
   router.use(
@@ -55,7 +58,7 @@ const initializeRoutes = (router) => {
   );
   router.use("/v1/app/user", require("../../routes/user/app"));
   router.use("/v1/app/feedback", require("../../routes/feedback/app"));
-  router.use("/v1/app/pushNotification", require("../../routes/pushNotification"));
+  router.use("/v1/app/pushNotification", require("../../routes/pushNotification/app"));
 
   // ? Development routes
   if (!isProduction) {

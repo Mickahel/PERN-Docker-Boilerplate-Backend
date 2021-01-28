@@ -6,18 +6,17 @@ class PushNotificationUserTokenRepository {
 
     async registerUserToken(data) {
         let tokenData = await this.findPushToken(data.token)
-
         if (tokenData) { // ? qui update
             const newUserForToken = await tokenData.update(data)
             return newUserForToken
         } else { // ? non ho trovato il token quindi faccio l'inserimento
-            return await database.models.PushNotificationUserToken.create(data)
+            return await database.models.pushNotificationUserToken.create(data)
         }
     }
 
     async getUserTokens(user) {
         try {
-            const userToken = await database.models.PushNotificationUserToken.findAll({
+            const userToken = await database.models.pushNotificationUserToken.findAll({
                 where: {
                     userId: user.id
                 }
@@ -34,7 +33,7 @@ class PushNotificationUserTokenRepository {
 
         const ids = users.map(single => single.id)
         try {
-            let result = await database.models.PushNotificationUserToken.findAll({
+            let result = await database.models.pushNotificationUserToken.findAll({
                 attributes: ["token"],
                 where: {
                     userId: {
@@ -67,7 +66,7 @@ class PushNotificationUserTokenRepository {
     }*/
 
     findPushToken(token) {
-        return database.models.PushNotificationUserToken.findOne({
+        return database.models.pushNotificationUserToken.findOne({
             where: {
                 token
             }

@@ -203,7 +203,7 @@ router.get("/info/:id", UserValidator.getUserById, async (req, res, next) => {
  *      - in: body
  *        name: role
  *      - in: body
- *        name: removeBackgroundImage
+ *        name: removeProfileImageUrl
  *        description: if set true, removes the profile image
  *      - in: formData
  *        name: profileImageUrl
