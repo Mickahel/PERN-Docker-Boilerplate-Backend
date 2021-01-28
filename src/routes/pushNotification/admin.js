@@ -22,11 +22,11 @@ router.post('/sendNotification', PushNotificationValidator.sendPushNotification,
     }
 
     const result = await PushNotificationService.sendNotification(ids, title, body, null, notificationImageLink, { click_action: clickAction })
-    if (req?.files?.image) {
+    /*if (req?.files?.image) {
         fs.unlink(notificationImagePath, (err) => {
             if (err) throw err;
         });
-    }
+    }*/
     res.send(result)
 })
 
