@@ -17,7 +17,7 @@ const PushNotificationValidator = require("../../validators/pushNotification");
  *      security:
  *          - cookieAuthBasic: []
  */
-router.post('/:token', PushNotificationValidator.setPushNotificationUserToken, async (req, res, next) => {
+router.post('/registerToken/:token', PushNotificationValidator.setPushNotificationUserToken, async (req, res, next) => {
 
     try {
         let ut = {

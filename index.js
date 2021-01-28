@@ -92,7 +92,10 @@ const createFolders = () => {
     fs.mkdirSync(publicFolder + "/uploads/profileImgs", { recursive: true })
     logger.info("Created ProfileImgs Folder")
   }
-
+  if (!fs.existsSync(publicFolder + "/uploads/pushNotificationImages")) {
+    fs.mkdirSync(publicFolder + "/uploads/pushNotificationImages", { recursive: true })
+    logger.info("Created pushNotificationImages Folder")
+  }
 }
 
 createFolders()

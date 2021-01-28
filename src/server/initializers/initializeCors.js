@@ -9,7 +9,7 @@ const initializeCors = (app) => {
     whitelist = [
       `http://localhost:3000`,  // ? Dev App
       `https://localhost:3000`,  // ? Dev App
-      `http//${host}`,          // ? Backend
+      host,          // ? Backend
       `http://localhost:9000`,
       `http://localhost:1000`,  // ? Dev Admin
       `https://localhost:1000`, // ? Dev Admin

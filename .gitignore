@@ -14,6 +14,7 @@
 # uploads
 /public/uploads/feedbacks/*
 /public/uploads/profileImgs/*
+/public/uploads/pushNotificationImages/*
 
 # misc
 .DS_Store

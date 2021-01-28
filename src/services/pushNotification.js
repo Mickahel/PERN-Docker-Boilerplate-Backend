@@ -82,10 +82,10 @@ class PushNotificationUserTokenService {
                             }
                         ]*/
                     },
-                    data,
-                    fcmOptions: {
-                        link: data?.click_action,
-                    },
+                    //data,
+                    //fcmOptions: {
+                    //    link: data?.click_action,
+                    //},
                 },
                 android: {
                     priority: "high",
