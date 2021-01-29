@@ -52,21 +52,23 @@ class PushNotificationUserTokenService {
             if (!user) return
             let userTokens = await PushNotificationUserTokenRepository.getUsersTokens(user);
             if (userTokens.length === 0) return
-
             // * https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#Notification
             // * https://firebase.google.com/docs/cloud-messaging/send-message#node.js_7
             let result = await this.app.messaging().sendMulticast({
                 tokens: userTokens,
                 webpush: {
                     notification: {
+                        priority: "high",
                         // ? https://developer.mozilla.org/en-US/docs/Web/API/Notification/requireInteraction
                         //requireInteraction: true,
                         image,
                         //color: config.notificationColor,
                         icon: logoImage || 'img/icons/icon-96.png',
                         silent: false, // ? https://developer.mozilla.org/en-US/docs/Web/API/Notification/silent
-                        title,
-                        body,
+                        title: title || "",
+                        body: body || "",
+                        data,
+                        //click_action: data.click_action, // ? useless
                         sound: "default",
                         // ? https://firebase.googleblog.com/2018/05/web-notifications-api-support-now.html
                         /*"actions": [
@@ -83,9 +85,9 @@ class PushNotificationUserTokenService {
                         ]*/
                     },
                     //data,
-                    //fcmOptions: {
-                    //    link: data?.click_action,
-                    //},
+                    fcmOptions: {
+                        link: data?.click_action,
+                    },
                 },
                 android: {
                     priority: "high",

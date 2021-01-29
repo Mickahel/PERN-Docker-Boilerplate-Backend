@@ -21,7 +21,7 @@ router.post('/sendNotification', PushNotificationValidator.sendPushNotification,
         notificationImageLink = process.env.BACKEND_URL + "/public/uploads/pushNotificationImages/" + notificationImageName
     }
 
-    const result = await PushNotificationService.sendNotification(ids, title, body, null, notificationImageLink, { click_action: clickAction })
+    const result = await PushNotificationService.sendNotification(ids, title, body, null, notificationImageLink, { click_action: clickAction || "" })
     /*if (req?.files?.image) {
         fs.unlink(notificationImagePath, (err) => {
             if (err) throw err;
