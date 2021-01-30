@@ -78,6 +78,15 @@ class UserValidator {
     else next({ message: "Validation Error", errors: ajv.errors, status: 400 });
   }
 
+  impersonificate(req, res, next) {
+    const schema = {
+      type: "string",
+      format: "uuid"
+    };
+    const valid = ajv.validate(schema, req.params.id);
+    if (valid) next();
+    else next({ message: "Validation Error", errors: ajv.errors, status: 400 });
+  }
 
   sendActivationEmail(req, res, next) {
     const schema = {

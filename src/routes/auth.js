@@ -321,14 +321,26 @@ const getOrigin = (req, res, next) => {
 };
 
 //? -------------------- Social Login -------------------
-// TODO ADD SWAGGER
+/**
+ * @swagger
+ * /v1/auth/login/facebook:
+ *    get:
+ *      summary: facebook social login  
+ *      tags: [Auth]
+ */
 router.get(
   "/login/facebook",
   originGetter,
   passport.authenticate("facebook", { scope: ["email"] })
 );
 
-// TODO ADD SWAGGER
+/**
+ * @swagger
+ * /v1/auth/login/google:
+ *    get:
+ *      summary: google social login  
+ *      tags: [Auth]
+ */
 router.get(
   "/login/google",
   originGetter,
@@ -337,9 +349,6 @@ router.get(
 
 router.get(
   "/login/callback/facebook",
-  //  passport.authenticate(
-  //    "facebook",
-  //    loginCallbackOptions),
   (req, res, next) => {
     passport.authenticate(
       "facebook",

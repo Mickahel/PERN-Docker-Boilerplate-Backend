@@ -31,7 +31,18 @@ router.get("/info/all", async (req, res, next) => {
   }
 });
 
-// TODO DO SWAGGER
+/**
+ * @swagger
+ * /v1/admin/user/send-activation-email/:id:
+ *    post:
+ *      summary: sends a send activation email
+ *      tags: [User]
+ *      parameters:
+ *      - in: path
+ *        name: id
+ *        type: string
+ *        description: id of the user
+ */
 router.post(
   "/send-activation-email/:id",
   UserValidator.sendActivationEmail,
@@ -51,7 +62,18 @@ router.post(
     }
   })
 
-// TODO DO SWAGGER
+/**
+ * @swagger
+ * /v1/admin/user/send-lost-password-email/:id:
+ *    post:
+ *      summary: sends a lost password email
+ *      tags: [User]
+ *      parameters:
+ *      - in: path
+ *        name: id
+ *        type: string
+ *        description: id of the user
+ */
 router.post(
   "/send-lost-password-email/:id",
   UserValidator.sendPasswordRemindEmail,
@@ -79,29 +101,34 @@ router.post(
  *      tags: [User]
  *      parameters:
  *      - in: body
- *        name: user
- *        description: user details. Email Required
- *        schema:
- *          type: object
- *          properties:
- *              firstname:
- *                  type: string
- *                  required: true
- *              lastname:
- *                  type: string
- *              email:
- *                  type: string
- *              password:
- *                  type: string
- *              status:
- *                  type: string
- *              role:
- *                  type: string
+ *        name: id
+ *        description: id of the user
+ *        required: true
  *      - in: body
- *        name: sendActivationEmail
- *        description: Send Activation Email
+ *        name: firstname
+ *      - in: body
+ *        name: lastname
+ *      - in: body
+ *        name: email
+ *      - in: body
+ *        name: password
+ *      - in: body
+ *        name: status
+ *      - in: body
+ *        name: theme
+ *      - in: body
+ *        name: language
+ *      - in: body
+ *        name: createdAt
+ *      - in: body
+ *        name: updatedAt
+ *      - in: body
+ *        name: role
+ *      - in: body
+ *        name: removeProfileImageUrl
+ *        description: if set true, removes the profile image
  *      - in: formData
- *        name: profileImage
+ *        name: profileImageUrl
  *        type: file
  *        description: The file of the profile image
  *      security:
@@ -114,7 +141,6 @@ router.post(
   "/create",
   UserValidator.createUserByAdmin,
   async (req, res, next) => {
-    //TODO REVISE SWAGGER DOCUMENTATION
     const sendActivationEmail = req.body.sendActivationEmail;
     const user = req.body;
     delete user.sendActivationEmail
@@ -199,8 +225,6 @@ router.get("/info/:id", UserValidator.getUserById, async (req, res, next) => {
  *      - in: body
  *        name: updatedAt
  *      - in: body
- *        name: password
- *      - in: body
  *        name: role
  *      - in: body
  *        name: removeProfileImageUrl
@@ -223,7 +247,6 @@ router.put(
   "/edit",
   UserValidator.editUserByAdmin,
   async (req, res, next) => {
-    // TODO  REVISE SWAGGER DOCUMENTATION
     const newData = req.body;
     if (newData.email) newData.email = newData.email.trim();
     try {
@@ -246,14 +269,10 @@ router.put(
             }
             newData.profileImageUrl = UserService.uploadProfileImage(req.files?.profileImageUrl)
           }
-
-
           const newUser = await UserRepository.updateUser(userDB, newData);
           res.send(newUser);
         }
-      } else {
-        next({ message: "User not found", status: 404 });
-      }
+      } else next({ message: "User not found", status: 404 });
     } catch (e) {
       next(e);
     }
@@ -261,9 +280,27 @@ router.put(
 );
 
 
-// TODO SWAGGER and VALIDATOR
+/**
+ * @swagger
+ * /v1/admin/user/impersonificate/:id:
+ *    post:
+ *      summary: impersonificate user
+ *      tags: [User]
+ *      parameters:
+ *      - in: path
+ *        name: id
+ *        description: id of the user
+ *      security:
+ *      - cookieAuthAdmin: []
+ *      responses:
+ *          404:
+ *            description: User not found
+ *          401:
+ *            description: You don't have the permission due to your user role
+ */
 router.post(
   "/impersonificate/:id",
+  UserValidator.impersonificate,
   async (req, res, next) => {
     try {
       // ? Get user
