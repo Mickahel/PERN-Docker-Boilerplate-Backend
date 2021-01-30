@@ -58,17 +58,17 @@ async function start() {
   // ? Start services
   try {
     //const jobs = new jobs()
-    /* if (isProduction) {
-      await initializeDatabase();
+    if (isProduction) {
+      // await initializeDatabase();
       //await jobs.create()
       //await initializeAgendaJS();
       //await initializeExthernalServices();
     } else {
-      initializeDatabase();
+      //initializeDatabase();
       // jobs.create()
       // initializeAgendaJS();
       // await initializeExthernalServices();
-    }*/
+    }
 
     await initializeDatabase();
 
