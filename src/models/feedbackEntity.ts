@@ -1,10 +1,10 @@
 import { v4 as uuid } from "uuid";
 import { feedbackTypes, TfeedbackTypes } from "../enums";
 import { PrimaryGeneratedColumn, ManyToOne, Entity, PrimaryColumn, Column, BaseEntity, CreateDateColumn, UpdateDateColumn } from "typeorm";
-import { User } from "./userEntity";
+import User from "./userEntity";
 
 @Entity("feedbacks")
-export class Feedback extends BaseEntity {
+export default class Feedback extends BaseEntity {
 	@PrimaryGeneratedColumn("uuid")
 	id!: string;
 	@ManyToOne(() => User, (user) => user.id)

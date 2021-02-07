@@ -11,7 +11,7 @@ const crashLogger = new Logger("CRASH", "#ff0000");
 });*/
 
 import fs from "fs";
-import { config } from "./src/config";
+import config from "./src/config";
 import cluster from "cluster";
 import os from "os";
 import createServer from "./src/server";

@@ -13,8 +13,8 @@ import { publicFolder, isProduction } from "../auxiliaries/server";
 import initializeAuthentication from "./initializers/initializeAuthentication"; //TODO add typescript
 import initializeSwagger from "./initializers/initializeSwagger";
 import initializeCors from "./initializers/initializeCors";
-//import initializeRoutes = require("./initializers/initializeRoutes");//TODO add typescript
-import initializeHttp from "./initializers/initializeHttp"; //TODO add typescript
+import initializeRoutes from "./initializers/initializeRoutes"; //TODO add typescript
+import initializeHttp from "./initializers/initializeHttp";
 import Logger from "../services/logger";
 const logger = new Logger("API Error", "#FFFF00");
 //const initializeWebSocket = require('./initializers/initializeWebSocket')
@@ -78,7 +78,7 @@ export default function createServer() {
 	initializeSwagger(app, router);
 
 	// ? Add Routes
-	//initializeRoutes(router);  // TODO TS
+	initializeRoutes(router); // TODO TS
 
 	// ? Add https middleware
 	app.use(router);

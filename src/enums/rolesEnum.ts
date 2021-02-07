@@ -1,6 +1,6 @@
 import genericEnum from "./genericEnum";
 import { genericEnumInterface, enumObjectType, roleInterface, rolesEnumInterface, singleRoleInterface } from "../interfacesAndTypes/enum";
-
+import { Troles } from "./index";
 export default class rolesEnum extends genericEnum implements rolesEnumInterface {
 	constructor(enumObject: roleInterface) {
 		super(enumObject);
@@ -15,9 +15,9 @@ export default class rolesEnum extends genericEnum implements rolesEnumInterface
 		);
 	}
 
-	getRoleByName(name: string): null | singleRoleInterface {
+	getRoleByName(name: Troles): singleRoleInterface | undefined {
 		for (const role of Object.values(this.values())) if (name == role.name) return role;
-		return null;
+		return undefined;
 	}
 
 	getRoleWithMinimumPermissionLevelByUserType(isAdmin: boolean): singleRoleInterface {

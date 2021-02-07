@@ -1,7 +1,7 @@
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { isProduction } from "../../auxiliaries/server";
-import { config } from "../../config";
+import config from "../../config";
 import { Express, Router } from "express";
 const swaggerOptions = {
 	swaggerDefinition: {

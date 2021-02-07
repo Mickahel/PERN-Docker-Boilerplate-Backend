@@ -42,13 +42,17 @@ devDependencies:
   '@types/express': 4.17.11
   '@types/express-fileupload': 1.1.6
   '@types/express-rate-limit': 5.1.1
+  '@types/jsonwebtoken': 8.5.0
   '@types/lodash': 4.14.168
   '@types/morgan': 1.9.2
   '@types/node': 14.14.22
+  '@types/nodemailer': 6.4.0
+  '@types/nunjucks': 3.1.4
   '@types/passport': 1.0.5
   '@types/passport-facebook': 2.1.10
   '@types/passport-google-oauth20': 2.0.6
   '@types/passport-local': 1.0.33
+  '@types/sharp': 0.27.1
   '@types/swagger-jsdoc': 6.0.0
   '@types/swagger-ui-express': 4.1.2
   '@types/uuid': 8.3.0
@@ -394,6 +398,12 @@ packages:
     dev: true
     resolution:
       integrity: sha512-no+R6rW60JEc59977wIxreQVsIEOAYwgCqldrA/vkpCnbD7MqTefO97lmoBe4WE0F156bC4uLSP1XHDOySnChg==
+  /@types/jsonwebtoken/8.5.0:
+    dependencies:
+      '@types/node': 14.14.25
+    dev: true
+    resolution:
+      integrity: sha512-9bVao7LvyorRGZCw0VmH/dr7Og+NdjYSsKAxB43OQoComFbBgsEpoR9JW6+qSq/ogwVBg8GI2MfAlk4SYI4OLg==
   /@types/lodash/4.14.168:
     dev: true
     resolution:
@@ -431,6 +441,20 @@ packages:
     dev: true
     resolution:
       integrity: sha512-g+f/qj/cNcqKkc3tFqlXOYjrmZA+jNBiDzbP3kH+B+otKFqAdPgVTGP1IeKRdMml/aE69as5S4FqtxAbl+LaMw==
+  /@types/node/14.14.25:
+    dev: true
+    resolution:
+      integrity: sha512-EPpXLOVqDvisVxtlbvzfyqSsFeQxltFbluZNRndIb8tr9KiBnYNLzrc1N3pyKUCww2RNrfHDViqDWWE1LCJQtQ==
+  /@types/nodemailer/6.4.0:
+    dependencies:
+      '@types/node': 14.14.25
+    dev: true
+    resolution:
+      integrity: sha512-KY7bFWB0MahRZvVW4CuW83qcCDny59pJJ0MQ5ifvfcjNwPlIT0vW4uARO4u1gtkYnWdhSvURegecY/tzcukJcA==
+  /@types/nunjucks/3.1.4:
+    dev: true
+    resolution:
+      integrity: sha512-cR65PLlHKW/qxxj840dbNb3ICO+iAVQzaNKJ8TcKOVKFi+QcAkhw9SCY8VFAyU41SmJMs+2nrIN2JGhX+jYb7A==
   /@types/oauth/0.9.1:
     dependencies:
       '@types/node': 14.14.22
@@ -496,6 +520,12 @@ packages:
     dev: true
     resolution:
       integrity: sha512-ZFqF6qa48XsPdjXV5Gsz0Zqmux2PerNd3a/ktL45mHpa19cuMi/cL8tcxdAx497yRh+QtYPuofjT9oWw9P7nkA==
+  /@types/sharp/0.27.1:
+    dependencies:
+      '@types/node': 14.14.25
+    dev: true
+    resolution:
+      integrity: sha512-RbYmyPjDUzi3lI9Qm68I+82I+DNOe/jW5w+EC1FvpT/f2TYXDG6mmPZQQohy98ufq+u6OB6pQkqpcNMDxzVclg==
   /@types/strip-bom/3.0.0:
     dev: true
     resolution:
@@ -4090,13 +4120,17 @@ specifiers:
   '@types/express': ^4.17.11
   '@types/express-fileupload': ^1.1.6
   '@types/express-rate-limit': ^5.1.1
+  '@types/jsonwebtoken': ^8.5.0
   '@types/lodash': ^4.14.168
   '@types/morgan': ^1.9.2
   '@types/node': ^14.14.22
+  '@types/nodemailer': ^6.4.0
+  '@types/nunjucks': ^3.1.4
   '@types/passport': ^1.0.5
   '@types/passport-facebook': ^2.1.10
   '@types/passport-google-oauth20': ^2.0.6
   '@types/passport-local': ^1.0.33
+  '@types/sharp': ^0.27.1
   '@types/swagger-jsdoc': ^6.0.0
   '@types/swagger-ui-express': ^4.1.2
   '@types/uuid': ^8.3.0

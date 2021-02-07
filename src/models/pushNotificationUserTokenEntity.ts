@@ -1,8 +1,8 @@
 import { ManyToOne, Entity, PrimaryColumn, Column, BaseEntity, CreateDateColumn, UpdateDateColumn } from "typeorm";
-import { User } from "./userEntity";
+import User from "./userEntity";
 
 @Entity("pushNotificationUserTokens")
-export class PushNotificationUserToken extends BaseEntity {
+export default class PushNotificationUserToken extends BaseEntity {
 	@PrimaryColumn()
 	token!: string;
 

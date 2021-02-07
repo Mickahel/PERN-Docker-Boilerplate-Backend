@@ -1,3 +1,4 @@
+import { Troles } from "../enums";
 export interface genericEnumInterface {
 	names: () => string[];
 	values: () => object;
@@ -27,7 +28,7 @@ export interface roleInterface {
 
 export interface rolesEnumInterface extends genericEnumInterface {
 	getPermissionLevelByName: (name: string) => number;
-	getRoleByName: (name: string) => null | singleRoleInterface;
+	getRoleByName: (name: Troles) => singleRoleInterface | undefined;
 	getRoleWithMinimumPermissionLevelByUserType: (isAdmin: boolean) => singleRoleInterface;
 	getAdminRoles: () => string[];
 }

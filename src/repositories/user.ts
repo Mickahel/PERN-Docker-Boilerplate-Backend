@@ -1,8 +1,5 @@
-import { database } from "../models";
-import Sequelize from "sequelize";
 import _ from "lodash";
 import { statuses } from "../enums";
-import { UserModel, User } from "../interfacesAndTypes/user";
 // TODO ADD RETURN FUNCTION TYPESCRIPT
 class UserRepository {
 	getTotal() {

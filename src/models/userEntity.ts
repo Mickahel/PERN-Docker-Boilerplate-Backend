@@ -3,11 +3,11 @@ import { v4 as uuid } from "uuid";
 
 import { statuses, Tstatuses, Tthemes, themes, roles, Troles } from "../enums";
 import { Generated, PrimaryGeneratedColumn, OneToMany, Entity, PrimaryColumn, Column, BaseEntity, CreateDateColumn, UpdateDateColumn } from "typeorm";
-import { PushNotificationUserToken } from "./pushNotificationUserTokenEntity";
-import { Feedback } from "./feedbackEntity";
+import PushNotificationUserToken from "./pushNotificationUserTokenEntity";
+import Feedback from "./feedbackEntity";
 
 @Entity("users")
-export class User extends BaseEntity {
+export default class User extends BaseEntity {
 	@PrimaryGeneratedColumn("uuid")
 	id?: string;
 

@@ -1,7 +1,4 @@
-import rolesEnum from "./enums/rolesEnum";
-import Logger from "./services/logger";
-const logger = new Logger("Database", "#FF9A00");
-const config = {
+const configuration = {
 	base: {
 		longTitle: "PERN Boilerplate",
 		shortTitle: "PERNB",
@@ -15,28 +12,13 @@ const config = {
 			email: "df.michelangelo@gmail.com",
 		},
 	},
-	production: {
-		databaseConfig: {
-			options: {
-				type: "postgres",
-				//logging: (msg) => logger.silly(msg),
-				//logging: false,
-			},
-		},
-	},
-	development: {
-		databaseConfig: {
-			options: {
-				type: "postgres",
-				//logging: false,
-			},
-		},
-	},
+	production: {},
+	development: {},
 };
 
-const exportConfig = {
-	...(process.env.NODE_ENV === "production" ? config.production : config.development),
-	...config.base,
+const config = {
+	...(process.env.NODE_ENV === "production" ? configuration.production : configuration.development),
+	...configuration.base,
 };
 
-export { exportConfig as config };
+export default config;
