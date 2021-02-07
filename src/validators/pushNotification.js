@@ -2,7 +2,7 @@ const ajv = require("./AJVInstance")
 
 class PushNotificationValidator {
 
-    setPushNotificationUserToken(req, res, next) {
+    setPushNotificationUserToken(req, res, next): void {
         const { token } = req.params
         const schema = {
             type: "string",
@@ -12,7 +12,7 @@ class PushNotificationValidator {
         else next({ message: "Validation Error", errors: ajv.errors, status: 400 });
     }
 
-    sendPushNotification(req, res, next) {
+    sendPushNotification(req, res, next): void {
         const schema = {
             type: "object",
             properties: {

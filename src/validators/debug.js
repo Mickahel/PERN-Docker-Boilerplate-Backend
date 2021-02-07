@@ -1,7 +1,7 @@
 const ajv = require("./AJVInstance")
 
 class DebugValidator {
-  status(req, res, next) {
+  status(req, res, next): void {
     const status = req.params.status;
     status = parseInt(status);
     const schema = {

@@ -1,8 +1,8 @@
-const { isProduction } = require("../../auxiliaries/server");
-const { config, roles } = require("../../../config");
-const paginatedResults = require("../../middlewares/paginatedResults");
-const { database } = require("../../models");
-const authRequired = require("../../middlewares/authRequired");
+import { isProduction } from "../../auxiliaries/server";
+import { config, roles } from "../../../config";
+import paginatedResults from "../../middlewares/paginatedResults";
+import { database } from "../../models";
+import authRequired from "../../middlewares/authRequired";
 
 
 const initializeRoutes = (router) => {
@@ -70,4 +70,4 @@ const initializeRoutes = (router) => {
   });
 };
 
-module.exports = initializeRoutes;
+export default initializeRoutes;

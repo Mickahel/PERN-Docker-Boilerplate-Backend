@@ -2,7 +2,7 @@ const ajv = require("./AJVInstance")
 const { roles, statuses } = require("../../config");
 
 class UserValidator {
-  editUser(req, res, next) {
+  editUser(req, res, next): void {
     const newData = {
       ...req.body,
       ...req.files
@@ -25,7 +25,7 @@ class UserValidator {
     else next({ message: "Validation Error", errors: ajv.errors, status: 400 });
   }
 
-  resetPassword(req, res, next) {
+  resetPassword(req, res, next): void {
     const schema = {
       type: "object",
       properties: {
@@ -39,7 +39,7 @@ class UserValidator {
     else next({ message: "Validation Error", errors: ajv.errors, status: 400 });
   }
 
-  editUserByAdmin(req, res, next) {
+  editUserByAdmin(req, res, next): void {
     const newData = req.body;
     const schema = {
       type: "object",
@@ -68,7 +68,7 @@ class UserValidator {
     else next({ message: "Validation Error", errors: ajv.errors, status: 400 });
   }
 
-  getUserById(req, res, next) {
+  getUserById(req, res, next): void {
     const schema = {
       type: "string",
       format: "uuid"
@@ -78,7 +78,7 @@ class UserValidator {
     else next({ message: "Validation Error", errors: ajv.errors, status: 400 });
   }
 
-  impersonificate(req, res, next) {
+  impersonificate(req, res, next): void {
     const schema = {
       type: "string",
       format: "uuid"
@@ -88,7 +88,7 @@ class UserValidator {
     else next({ message: "Validation Error", errors: ajv.errors, status: 400 });
   }
 
-  sendActivationEmail(req, res, next) {
+  sendActivationEmail(req, res, next): void {
     const schema = {
       type: "string",
       format: "uuid"
@@ -99,7 +99,7 @@ class UserValidator {
   }
 
 
-  sendPasswordRemindEmail(req, res, next) {
+  sendPasswordRemindEmail(req, res, next): void {
     const schema = {
       type: "string",
       format: "uuid"
@@ -109,7 +109,7 @@ class UserValidator {
     else next({ message: "Validation Error", errors: ajv.errors, status: 400 });
   }
 
-  createUserByAdmin(req, res, next) {
+  createUserByAdmin(req, res, next): void {
     const schema = {
       type: "object",
       required: ["email"],

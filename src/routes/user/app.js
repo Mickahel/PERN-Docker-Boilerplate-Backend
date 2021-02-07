@@ -124,7 +124,7 @@ router.put(
 router.delete("/disable", async (req, res, next) => {
   // ? Check password
   if (req.user.validatePassword(req.body.password)) {
-    UserRepository.disableUser(req.user)
+    await UserRepository.disableUser(req.user)
     res.status(204).send()
   }
   else next({ message: "Password is wrong", status: 401 });

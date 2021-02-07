@@ -1,4 +1,3 @@
-require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const { roles } = require("../../config");
 const UserRepository = require("../repositories/user");

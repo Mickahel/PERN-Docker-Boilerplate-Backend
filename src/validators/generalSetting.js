@@ -2,7 +2,7 @@ const ajv = require("./AJVInstance")
 
 
 class GenralSettingsValidator {
-  getGeneralSettingByFeature(req, res, next) {
+  getGeneralSettingByFeature(req, res, next): void {
     const feature = req.params.feature;
     const schema = {
       type: "string",
@@ -13,7 +13,7 @@ class GenralSettingsValidator {
     else next({ message: "Validation Error", errors: ajv.errors, status: 400 });
   }
 
-  createGeneralSetting(req, res, next) {
+  createGeneralSetting(req, res, next): void {
     const data = req.body;
     const schema = {
       type: "object",
@@ -29,7 +29,7 @@ class GenralSettingsValidator {
     else next({ message: "Validation Error", errors: ajv.errors, status: 400 });
   }
 
-  updateGeneralSetting(req, res, next) {
+  updateGeneralSetting(req, res, next): void {
     const data = req.body;
     const schema = {
       type: "object",

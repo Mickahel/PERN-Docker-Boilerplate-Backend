@@ -1,7 +1,7 @@
 const ajv = require("./AJVInstance")
 
 class LogValidator {
-    getLogs(req, res, next) {
+    getLogs(req, res, next): void {
         const newData = req.body;
         const schema = {
             type: "object",

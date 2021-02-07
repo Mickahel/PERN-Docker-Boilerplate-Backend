@@ -1,7 +1,7 @@
 const ajv = require("./AJVInstance")
 class FeedbackValidator {
 
-    createFeedback(req, res, next) {
+    createFeedback(req, res, next): void {
         const data = {
             ...req.body,
             ...req.files
@@ -25,7 +25,7 @@ class FeedbackValidator {
         else next({ message: "Validation Error", errors: ajv.errors, status: 400 });
     }
 
-    getFeedbackById(req, res, next) {
+    getFeedbackById(req, res, next): void {
         const feature = req.params.id;
         const schema = {
             type: "string",
@@ -36,7 +36,7 @@ class FeedbackValidator {
         else next({ message: "Validation Error", errors: ajv.errors, status: 400 });
     }
 
-    editFeedback(req, res, next) {
+    editFeedback(req, res, next): void {
         const data = req.body
 
         const schema = {

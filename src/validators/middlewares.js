@@ -1,7 +1,7 @@
 const ajv = require("./AJVInstance")
 
 class MiddlewareValidator {
-  paginatedResults(req) {
+  paginatedResults(req): void {
     const paginationData = req.query.data;
     let data;
     data.page = parseInt(paginationData.page);
