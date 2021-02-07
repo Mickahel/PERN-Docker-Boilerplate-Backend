@@ -1,20 +1,22 @@
 import passport from "passport";
-import * as LocalStrategy from "passport-local";
+import * as passportLocal from "passport-local";
 import * as passportFacebook from "passport-facebook";
 import * as passportGoogle from "passport-google-oauth20";
 import UserRepository from "../../repositories/user";
-//import UserService from "../../services/user";
+import UserService from "../../services/user";
 import { statuses } from "../../enums";
 import _ from "lodash";
 import Logger from "../../services/logger";
+import User from "../../models/userEntity";
 const logger = new Logger("AUTH", "#2AB7CA");
-//import MailerService from "../../services/mailer";
+
+import MailerService from "../../services/mailer";
 
 export default function initializeAuthentication(): void {
-	/*	const createUser = async (profile: passport.Profile, origin: string): Promise<User> => {
+	const createUser = async (profile: passport.Profile, origin: string): Promise<User> => {
 		try {
-			let newUser = database.models.user.build();
-			newUser.status = statuses.ACTIVE;
+			const newUser = new User();
+			newUser.status = statuses.values().ACTIVE as string;
 
 			if (profile.emails) newUser.email = profile.emails[0].value;
 
@@ -44,63 +46,63 @@ export default function initializeAuthentication(): void {
 		}
 	};
 
-	const socialLogin = async (user, done, origin, socialId) => {
-		if (user.status == statuses.ACTIVE) {
+	/*const socialLogin = async (user, done, origin, socialId) => {
+		if (user.status == statuses.values().ACTIVE) {
 			if (origin == "google") user.googleId = socialId;
 			else if (origin == "facebook") user.facebookId = socialId;
 			await user.save();
 			return done(null, user);
 		}
-		if (user.status == statuses.PENDING || !user.status) {
-			user.status = statuses.ACTIVE;
+		if (user.status == statuses.values().PENDING || !user.status) {
+			user.status = statuses.values().ACTIVE;
 			if (origin == "google") user.googleId = socialId;
 			else if (origin == "facebook") user.facebookId = socialId;
 			await user.save();
 			return done(null, user);
 		}
 		if (user.status == statuses.DISABLED) return done("disabledUser");
-	};
+	};*/
+
 	passport.use(
 		"local",
-		new LocalStrategy(
+		new passportLocal.Strategy(
 			{
 				usernameField: "email",
 				passwordField: "password",
 			},
-			function (email, password, done) {
-				UserRepository.getUserByEmail(email)
-					.then((user) => {
-						if (!user)
+			async function (email: string, password: string, done: Function) {
+				try{
+				await user = UserRepository.getUserByEmail(email);
+				if (!user)
 							return done(null, false, {
 								message: "user doesn't exist",
 								status: 404,
 							});
-						else if (user.status == statuses.DISABLED)
+						else if (user.status == statuses.values().DISABLED)
 							return done(null, false, {
 								message: "user is disabled",
 								status: 401,
 							});
-						else if (user.status == statuses.PENDING)
+						else if (user.status == statuses.values().PENDING)
 							return done(null, false, {
 								message: "user is not activated",
 								status: 401,
 							});
-						else if (!user.validatePassword(password) && user.status == statuses.ACTIVE)
+						else if (!user.validatePassword(password) && user.status == statuses.values().ACTIVE)
 							return done(null, false, {
 								message: "email or password is invalid",
 								status: 403,
 							});
 						return done(null, user);
-					})
-					.catch((e) => {
-						done(null, false, e);
-					});
+			} catch(e){
+				done(null, false, e);
+			}
 			}
 		)
 	);
 
 	// ? http://www.passportjs.org/docs/facebook/
-	passport.use(
+	/*passport.use(
 		new passportFacebook.Strategy(
 			{
 				clientID: process.env.FACEBOOK_CLIENT_ID,
@@ -176,6 +178,5 @@ export default function initializeAuthentication(): void {
 				}
 			}
 		)
-	);
-*/
+	);*/
 }
