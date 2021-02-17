@@ -13,6 +13,9 @@ const databaseConfig: ConnectionOptions = {
 	logging: false,
 	synchronize: true,
 	entities: ["src/models/*Entity.js", "src/models/*Entity.ts"],
+	poolErrorHandler: (error) => {
+		console.log(error);
+	},
 };
 let connection: Connection;
 
@@ -25,7 +28,7 @@ async function initializeDatabase(): Promise<void> {
 	} catch (error) {
 		logger.error("Unable to connect to the database:", error);
 		logger.error("Closing app");
-		process.exit(1);
+		//process.exit(1);
 	}
 }
 

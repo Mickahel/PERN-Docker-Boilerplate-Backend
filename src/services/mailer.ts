@@ -3,10 +3,14 @@ import nunjucks from "nunjucks";
 import Logger from "./logger";
 const logger = new Logger("Mails", "#cacaca");
 import config from "../config";
+import SMTPTransport from "nodemailer/lib/smtp-transport";
+import Mail from "nodemailer/lib/mailer";
+import User from "../models/userEntity";
+import Feedback from "../models/feedbackEntity";
 // TODO Add typescript
 nunjucks.configure("src/resources", { autoescape: true });
 
-const transporter = nodemailer.createTransport({
+const transporter: Mail = nodemailer.createTransport(<SMTPTransport.Options>{
 	//service: process.env.MAILER_TRANSPORT,
 	host: process.env.MAILER_HOST,
 	port: process.env.MAILER_PORT,
@@ -19,14 +23,17 @@ const transporter = nodemailer.createTransport({
 	},
 });
 
+interface mailOptions {
+	to?: string;
+	subject: string;
+	html: string;
+	bcc?: string | string[];
+}
 const MailerService = {
-	sendMail: (options): void => {
-		const mailOptions = {
+	sendMail(options: mailOptions): void {
+		const mailOptions: Mail.Options = {
 			from: process.env.MAILER_USER,
 			priority: "high",
-			/*to,
-      subject,
-      html,*/
 			...options,
 		};
 
@@ -35,7 +42,7 @@ const MailerService = {
 		});
 	},
 
-	sendNewUserActivationMail: (user): void => {
+	sendNewUserActivationMail(user: User): void {
 		let html = nunjucks.render("newUserMailActivation.html", {
 			user,
 			appName: config.longTitle,
@@ -43,7 +50,7 @@ const MailerService = {
 			imagesUrl: process.env.BACKEND_IMAGES_URL,
 			color: config.notificationColor,
 		});
-		const mailOptions = {
+		const mailOptions: mailOptions = {
 			to: user.email,
 			subject: `${config.shortTitle} - Account Activation`,
 			html,
@@ -52,7 +59,7 @@ const MailerService = {
 		this.sendMail(mailOptions);
 	},
 
-	sendUserActivatedMail: (user): void => {
+	sendUserActivatedMail(user: User): void {
 		const html = nunjucks.render("newUserMailActivated.html", {
 			user,
 			appName: config.longTitle,
@@ -61,7 +68,7 @@ const MailerService = {
 			color: config.notificationColor,
 		});
 
-		const mailOptions = {
+		const mailOptions: mailOptions = {
 			to: user.email,
 			subject: `${config.shortTitle} - Account Activated`,
 			html,
@@ -70,7 +77,7 @@ const MailerService = {
 		this.sendMail(mailOptions);
 	},
 
-	sendNewUserMail: (user, plainPassword): void => {
+	sendNewUserMail(user: User, plainPassword: string): void {
 		const html = nunjucks.render("newUserMail.html", {
 			appName: config.longTitle,
 			frontendUrl: process.env.FRONTEND_URL,
@@ -80,7 +87,7 @@ const MailerService = {
 			plainPassword,
 		});
 
-		const mailOptions = {
+		const mailOptions: mailOptions = {
 			to: user.email,
 			subject: `${config.shortTitle} - Welcome`,
 			html,
@@ -88,7 +95,7 @@ const MailerService = {
 		this.sendMail(mailOptions);
 	},
 
-	sendResetPasswordMail: (user): void => {
+	sendResetPasswordMail(user: User): void {
 		const html = nunjucks.render("resetPasswordMail.html", {
 			user,
 			appName: config.longTitle,
@@ -97,7 +104,7 @@ const MailerService = {
 			color: config.notificationColor,
 		});
 
-		const mailOptions = {
+		const mailOptions: mailOptions = {
 			to: user.email,
 			subject: `${config.shortTitle} - Reset your password`,
 			html,
@@ -106,7 +113,7 @@ const MailerService = {
 		this.sendMail(mailOptions);
 	},
 
-	sendNewFeedbackMail: (feedback, users): void => {
+	sendNewFeedbackMail(feedback: Feedback, users: User[]): void {
 		const mails = users.map((user) => user.email);
 		const html = nunjucks.render("newFeedback.html", {
 			feedback,
@@ -116,7 +123,7 @@ const MailerService = {
 			color: config.notificationColor,
 		});
 
-		const mailOptions = {
+		const mailOptions: mailOptions = {
 			bcc: mails,
 			subject: `${config.shortTitle} - A New Feedback has been received`,
 			html: html,

@@ -46,7 +46,8 @@ export default function initializeAuthentication(): void {
 		}
 	};
 
-	/*const socialLogin = async (user, done, origin, socialId) => {
+	const socialLogin = async (user: User, done: Function, origin?: string, socialId?: string) => {
+		// TODO Add typescript
 		if (user.status == statuses.values().ACTIVE) {
 			if (origin == "google") user.googleId = socialId;
 			else if (origin == "facebook") user.facebookId = socialId;
@@ -54,14 +55,14 @@ export default function initializeAuthentication(): void {
 			return done(null, user);
 		}
 		if (user.status == statuses.values().PENDING || !user.status) {
-			user.status = statuses.values().ACTIVE;
+			user.status = statuses.values().ACTIVE as string;
 			if (origin == "google") user.googleId = socialId;
 			else if (origin == "facebook") user.facebookId = socialId;
 			await user.save();
 			return done(null, user);
 		}
-		if (user.status == statuses.DISABLED) return done("disabledUser");
-	};*/
+		if (user.status == statuses.values().DISABLED) return done("disabledUser");
+	};
 
 	passport.use(
 		"local",
@@ -71,69 +72,73 @@ export default function initializeAuthentication(): void {
 				passwordField: "password",
 			},
 			async function (email: string, password: string, done: Function) {
-				try{
-				await user = UserRepository.getUserByEmail(email);
-				if (!user)
-							return done(null, false, {
-								message: "user doesn't exist",
-								status: 404,
-							});
-						else if (user.status == statuses.values().DISABLED)
-							return done(null, false, {
-								message: "user is disabled",
-								status: 401,
-							});
-						else if (user.status == statuses.values().PENDING)
-							return done(null, false, {
-								message: "user is not activated",
-								status: 401,
-							});
-						else if (!user.validatePassword(password) && user.status == statuses.values().ACTIVE)
-							return done(null, false, {
-								message: "email or password is invalid",
-								status: 403,
-							});
-						return done(null, user);
-			} catch(e){
-				done(null, false, e);
-			}
+				try {
+					const userRepository = new UserRepository();
+					const user = await userRepository.getBy({ where: { email } });
+					if (!user)
+						return done(null, false, {
+							message: "user doesn't exist",
+							status: 404,
+						});
+					else if (user.status == statuses.values().DISABLED)
+						return done(null, false, {
+							message: "user is disabled",
+							status: 401,
+						});
+					else if (user.status == statuses.values().PENDING)
+						return done(null, false, {
+							message: "user is not activated",
+							status: 401,
+						});
+					else if (!user.validatePassword(password) && user.status == statuses.values().ACTIVE)
+						return done(null, false, {
+							message: "email or password is invalid",
+							status: 403,
+						});
+					return done(null, user);
+				} catch (e) {
+					done(null, false, e);
+				}
 			}
 		)
 	);
 
 	// ? http://www.passportjs.org/docs/facebook/
-	/*passport.use(
+	passport.use(
 		new passportFacebook.Strategy(
 			{
-				clientID: process.env.FACEBOOK_CLIENT_ID,
-				clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+				clientID: process.env.FACEBOOK_CLIENT_ID as string,
+				clientSecret: process.env.FACEBOOK_CLIENT_SECRET as string,
 				callbackURL: process.env.BACKEND_URL + "/v1/auth/login/callback/facebook",
 				profileFields: ["id", "displayName", "email", "first_name", "last_name", "picture.type(large)"],
 				//scope: ['email'],
 				//enableProof: true,
 			},
-			async (accessToken, refreshToken, profile, done) => {
+			async (accessToken: string, refreshToken: string, profile: passportFacebook.Profile, done: Function) => {
 				// ? Check if there is a user inside the database by Facebook ID
 				try {
-					const id = profile.id;
-					let user = await UserRepository.getUserByFacebookId(id);
+					const facebookId = profile.id;
+					const userRepository = new UserRepository();
+					let user = await userRepository.getBy({ where: { facebookId } });
 					if (user) return socialLogin(user, done);
 
 					// ? If there isn't, check if there is the user by email and attach the facebookId
-					let emails = profile?.emails.map((single) => single.value);
-					if (_.isEmpty(emails) && profile._json.email) emails = [profile._json.email];
-					if (_.isEmpty(emails)) return done("No email found");
+					if (profile.emails) {
+						let emails = profile.emails.map((single) => single.value);
+						if (_.isEmpty(emails) && profile._json.email) emails = [profile._json.email];
+						if (_.isEmpty(emails)) return done("No email found");
 
-					// ? Found, I attach the facebook id
-					user = await UserRepository.getUserByEmails(emails);
-					if (user) return socialLogin(user, done, "facebook", id);
+						// ? Found, I attach the facebook id
+						user = await userRepository.getUserByEmail(emails);
+						if (user) return socialLogin(user, done, "facebook", facebookId);
 
-					// ? The user is not in the database, I register it
-					let newUser = await createUser(profile, "facebook");
-					newUser.facebookId = id;
-					await newUser.save();
+						// ? The user is not in the database, I register it
+						let newUser = await createUser(profile, "facebook");
+						newUser.facebookId = facebookId;
+						await newUser.save();
 
-					return done(null, newUser);
+						return done(null, newUser);
+					}
 				} catch (e) {
 					return done(e, false);
 				}
@@ -146,37 +151,41 @@ export default function initializeAuthentication(): void {
 	passport.use(
 		new passportGoogle.Strategy(
 			{
-				clientID: process.env.GOOGLE_CLIENT_ID,
-				clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+				clientID: process.env.GOOGLE_CLIENT_ID as string,
+				clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
 				callbackURL: process.env.BACKEND_URL + "/v1/auth/login/callback/google",
 			},
-			async (accessToken, refreshToken, profile, done) => {
+			async (accessToken: string, refreshToken: string, profile: passportGoogle.Profile, done: Function) => {
+				// TODO ADD Typescript
 				// ? Check if there is a user inside the database by Google ID
 				try {
-					const id = profile.id;
-					let user = await UserRepository.getUserByGoogleId(id);
+					const googleId = profile.id;
+					const userRepository = new UserRepository();
+					let user = await userRepository.getBy({ where: { googleId } });
 					if (user) return socialLogin(user, done);
 
 					// ? If there isn't, check if there is the user by email and attach the facebookId
-					let emails = profile.emails.map((single) => single.value);
-					if (_.isEmpty(emails) && profile._json.email) emails = [profile._json.email];
-					if (_.isEmpty(emails)) return done("No email found");
+					if (profile.emails) {
+						let emails = profile.emails.map((single) => single.value);
+						if (_.isEmpty(emails) && profile._json.email) emails = [profile._json.email];
+						if (_.isEmpty(emails)) return done("No email found");
 
-					// ? Found, I attach the facebook id
-					user = await UserRepository.getUserByEmails(emails);
-					if (user) return socialLogin(user, done, "google", id);
+						// ? Found, I attach the facebook id
+						user = await userRepository.getUserByEmail(emails);
+						if (user) return socialLogin(user, done, "google", googleId);
 
-					// ? The user is not in the database, I register it
-					let newUser = await createUser(profile, "google");
-					newUser.googleId = id;
-					await newUser.save();
+						// ? The user is not in the database, I register it
+						let newUser = await createUser(profile, "google");
+						newUser.googleId = googleId;
+						await newUser.save();
 
-					return done(undefined, newUser);
+						return done(undefined, newUser);
+					}
 				} catch (e) {
 					logger.error(e);
 					done(e, false);
 				}
 			}
 		)
-	);*/
+	);
 }

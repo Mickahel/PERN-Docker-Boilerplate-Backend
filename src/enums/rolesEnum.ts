@@ -1,7 +1,7 @@
 import genericEnum from "./genericEnum";
-import { genericEnumInterface, enumObjectType, roleInterface, rolesEnumInterface, singleRoleInterface } from "../interfacesAndTypes/enum";
+import { roleInterface, rolesEnumInterface, singleRoleInterface } from "../interfacesAndTypes/enum";
 import { Troles } from "./index";
-export default class rolesEnum extends genericEnum implements rolesEnumInterface {
+export default class rolesEnum extends genericEnum<singleRoleInterface> implements rolesEnumInterface {
 	constructor(enumObject: roleInterface) {
 		super(enumObject);
 	}

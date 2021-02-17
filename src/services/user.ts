@@ -10,7 +10,9 @@ import { UploadedFile } from "express-fileupload";
 const UserService = {
 	isUserRegistrated: async (email: string): Promise<boolean | object> => {
 		if (!email) return false;
-		const user = await UserRepository.getUserByEmail(email);
+		const userRepository = new UserRepository();
+
+		const user = await userRepository.getBy({ where: { email } });
 		if (!user) return false;
 		// ? the user is registered
 		if (user.status === statuses.values().ACTIVE) return { status: 409, message: "User is already registered" };

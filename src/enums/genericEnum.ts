@@ -1,20 +1,20 @@
 import _ from "lodash";
-import { genericEnumInterface, enumObjectType } from "../interfacesAndTypes/enum";
+import { IGenericEnumClass, IGenericEnum } from "../interfacesAndTypes/enum";
 
-export default class genericEnum implements genericEnumInterface {
-	constructor(private enumObject: enumObjectType) {}
+export default class genericEnum<T> implements IGenericEnumClass {
+	constructor(private enumObject: IGenericEnum<T>) {}
 
-	values(): enumObjectType {
+	values(): IGenericEnum<T> {
 		return this.enumObject;
 	}
 	names(): string[] {
-		if (typeof Object.values(this.enumObject)[0] === "object" && Object.values(this.enumObject)[0].name) {
+		if (typeof Object.values(this.enumObject)[0] === "object") {
 			const names: string[] = Object.values(this.enumObject)
-				.map((type) => type.name)
-				.filter((type: string) => !_.isEmpty(type));
+				.map((type: any) => type.name)
+				.filter((type) => !_.isEmpty(type));
 			return names;
 		}
-		const names: string[] = Object.values(this.enumObject);
+		const names: string[] = (Object.values(this.enumObject) as unknown) as string[];
 		return names;
 	}
 }

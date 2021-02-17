@@ -39,7 +39,6 @@ const AuthValidator = {
 		const schema = {
 			type: "string",
 			format: "uuid",
-			additionalProperties: false,
 		};
 		const valid = ajv.validate(schema, activationCode);
 		if (valid) next();
@@ -51,7 +50,6 @@ const AuthValidator = {
 		const schema = {
 			type: "string",
 			format: "email",
-			additionalProperties: false,
 		};
 		const valid = ajv.validate(schema, email);
 		if (valid) next();

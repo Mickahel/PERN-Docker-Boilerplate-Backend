@@ -1,4 +1,5 @@
-const router = require("express").Router();
+import express, { Response, Request, NextFunction } from "express";
+const router: express.Router = express.Router();
 /**
  * @swagger
  * /v1/admin/server/healthcheck:
@@ -8,12 +9,12 @@ const router = require("express").Router();
  *          - cookieAuthAdmin: []
  *      tags: [Server]
  */
-router.get("/healthcheck", (req, res, next) => {
-  res.send({
-    pid: process.pid,
-    uptime: Math.floor(process.uptime()) + " Seconds",
-    timestamp: Date.now(),
-  });
+router.get("/healthcheck", (req: Request, res: Response, next: NextFunction) => {
+	res.send({
+		pid: process.pid,
+		uptime: Math.floor(process.uptime()) + " Seconds",
+		timestamp: Date.now(),
+	});
 });
 
 /**
@@ -30,4 +31,5 @@ router.get("/healthcheck", (req, res, next) => {
   process.exit();
 });
 */
-module.exports = router;
+
+export default router;

@@ -8,10 +8,11 @@ import Feedback from "./feedbackEntity";
 
 @Entity("users")
 export default class User extends BaseEntity {
+	password?: string;
 	@PrimaryGeneratedColumn("uuid")
 	id?: string;
 
-	@Column()
+	@Column({ nullable: true })
 	@Generated("uuid")
 	activationCode?: string;
 

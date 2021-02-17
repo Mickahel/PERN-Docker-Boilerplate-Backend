@@ -7,10 +7,12 @@ import { roles } from "../../enums";
 
 // ? import routes
 import debugRoutes from "../../routes/debug";
-//import authRoutes from "../../routes/auth";
-//import serverRoutes from "../../routes/server";
+import authRoutes from "../../routes/auth";
+import serverRoutes from "../../routes/server";
+import logsRoutes from "../../routes/log";
+import databaseRoutes from "../../routes/database";
 //import generalSettingRoutes from "../../routes/generalSetting";
-//import userAdminRoutes from "../../routes/user/admin"
+import userAdminRoutes from "../../routes/user/admin";
 export default function initializeRoutes(router: Router): void {
 	//router.get('/', (req, res, next) => { // Echo route
 	//res.redirect(301, process.env.FRONTEND_URL)
@@ -32,20 +34,20 @@ export default function initializeRoutes(router: Router): void {
 	// ? Import Routes & Add Middlewares
 
 	// ? Public Routes
-	//router.use("/v1/auth", authRoutes);
+	router.use("/v1/auth", authRoutes);
 
 	// ? Admin Routes
-	//router.use("/v1/admin*", authRequired(roles.getRoleWithMinimumPermissionLevelByUserType(true)));
-	//router.use("/v1/admin/server", serverRoutes);
+	router.use("/v1/admin*", authRequired(roles.getRoleWithMinimumPermissionLevelByUserType(true)));
+	router.use("/v1/admin/server", serverRoutes);
 	//router.use("/v1/admin/general-settings", generalSettingRoutes);
-	//router.use("/v1/admin/user", userAdminRoutes);
-	//	router.use("/v1/admin/logs", require("../../routes/log"));
+	router.use("/v1/admin/user", userAdminRoutes);
+	router.use("/v1/admin/logs", logsRoutes);
 	//	router.use("/v1/admin/feedback", require("../../routes/feedback/admin"));
 	//	router.use("/v1/admin/pushNotification", require("../../routes/pushNotification/admin"));
-	//	router.use("/v1/admin/database", require("../../routes/database"));
+	router.use("/v1/admin/database", databaseRoutes);
 
 	// ? App Routes
-	//	router.use("/v1/app*", authRequired(roles.getRoleWithMinimumPermissionLevelByUserType(false)));
+	router.use("/v1/app*", authRequired(roles.getRoleWithMinimumPermissionLevelByUserType(false)));
 	//	router.use("/v1/app/user", require("../../routes/user/app"));
 	//	router.use("/v1/app/feedback", require("../../routes/feedback/app"));
 	//	router.use("/v1/app/pushNotification", require("../../routes/pushNotification/app"));

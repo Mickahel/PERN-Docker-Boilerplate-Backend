@@ -15,14 +15,15 @@ const authRequired = (role?: Troles | singleRoleInterface) => (req: Request, res
 			if (error) return next({ message: "Token expired", status: 403 });
 			try {
 				// ? Check if the role is right
-				let userDB = await UserRepository.getUserById(user.id);
+				const userRepository = new UserRepository();
+				let userDB = await userRepository.getById(user.id);
 				if (userDB) {
 					let isAuthorized = isAllowed(true, userDB.role, role);
 					if (isAuthorized) {
-						if (roles.getRoleByName(userDB.role)?.isAdmin === false) {
-							delete userDB.dataValues.role;
-							delete userDB.dataValues.status;
-						}
+						/*if (roles.getRoleByName(userDB.role)?.isAdmin === false) {
+							delete userDB.role;
+							delete userDB.status;
+						}*/
 						req.user = userDB;
 						next();
 					} else next({ message: "User doesn't have right permission", status: 401 });

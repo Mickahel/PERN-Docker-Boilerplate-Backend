@@ -1,12 +1,12 @@
 import { Troles } from "../enums";
-export interface genericEnumInterface {
+export interface IGenericEnumClass {
 	names: () => string[];
 	values: () => object;
 }
 
 export interface singleEnumObjectInterface {
 	name: string;
-	[x: string]: any;
+	[key: string]: any;
 }
 
 export interface singleStringEnumObjectInterface {
@@ -16,6 +16,9 @@ export interface enumObjectInterface {
 	[key: string]: singleEnumObjectInterface;
 }
 
+export interface IGenericEnum<T> {
+	[key: string]: T;
+}
 export interface singleRoleInterface extends singleEnumObjectInterface {
 	name: string;
 	permissionLevel: number;
@@ -32,5 +35,3 @@ export interface rolesEnumInterface extends genericEnumInterface {
 	getRoleWithMinimumPermissionLevelByUserType: (isAdmin: boolean) => singleRoleInterface;
 	getAdminRoles: () => string[];
 }
-
-export type enumObjectType = enumObjectInterface | singleStringEnumObjectInterface;
