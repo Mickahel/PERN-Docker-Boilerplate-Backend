@@ -6,7 +6,10 @@ import UserRepository from "../../repositories/user";
 import FeedbackValidator from "../../validators/feedback";
 import MailerService from "../../services/mailer";
 import { roles } from "../../enums";
+import { UploadedFile } from "express-fileupload";
 const router: express.Router = express.Router();
+const feedbackRepository = new FeedbackRepository();
+const userRepository = new UserRepository();
 
 /**
  * @swagger
@@ -43,19 +46,19 @@ router.post("/create", FeedbackValidator.createFeedback, async (req: Request, re
 			...req.body,
 			createdBy: req.user.id,
 		};
-
-		if (req.files?.screenshot) {
-			let extension = "." + req.files.screenshot.name.split(".")[req.files.screenshot.name.split(".").length - 1];
-			screenshotName = uuid() + extension;
-			req.files.screenshot.mv(publicFolder + "uploads/feedbacks/" + screenshotName, (err) => {
+		let screenshotFile: UploadedFile = req.files?.screenshot as UploadedFile;
+		if (screenshotFile) {
+			let extension = "." + screenshotFile.name.split(".")[screenshotFile.name.split(".").length - 1];
+			let screenshotName = uuid() + extension;
+			screenshotFile.mv(publicFolder + "uploads/feedbacks/" + screenshotName, (err) => {
 				if (err) throw err;
 			});
 			feedbackData.screenshotUrl = "uploads/feedbacks/" + screenshotName;
 		}
-		const newFeedback = await FeedbackRepository.createFeedback(feedbackData);
+		const newFeedback = await feedbackRepository.create(feedbackData);
 
 		// ? Get Admins
-		const adminUsers = await UserRepository.getUsersByRole(roles.getAdminRoles());
+		const adminUsers = await userRepository.getUsersByRole(roles.getAdminRoles());
 		// ? Send Emails to Admins
 		MailerService.sendNewFeedbackMail(newFeedback, adminUsers);
 		res.send(newFeedback);

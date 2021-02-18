@@ -10,10 +10,10 @@ import _ from "lodash";
 import cookieParser from "cookie-parser";
 import passport from "passport";
 import { publicFolder, isProduction } from "../auxiliaries/server";
-import initializeAuthentication from "./initializers/initializeAuthentication"; //TODO add typescript
+import initializeAuthentication from "./initializers/initializeAuthentication";
 import initializeSwagger from "./initializers/initializeSwagger";
 import initializeCors from "./initializers/initializeCors";
-import initializeRoutes from "./initializers/initializeRoutes"; //TODO add typescript
+import initializeRoutes from "./initializers/initializeRoutes";
 import initializeHttp from "./initializers/initializeHttp";
 import Logger from "../services/logger";
 const logger = new Logger("API Error", "#FFFF00");

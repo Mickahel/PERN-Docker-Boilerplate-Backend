@@ -6,6 +6,7 @@ import { canAdminActOnUser } from "../../auxiliaries/permission";
 import { publicFolder } from "../../auxiliaries/server";
 import MailerService from "../../services/mailer";
 import fs from "fs";
+import { UploadedFile } from "express-fileupload";
 const router: express.Router = express.Router();
 
 const userRepository = new UserRepository();
@@ -144,9 +145,9 @@ router.post("/create", UserValidator.createUserByAdmin, async (req: Request, res
 			if (isIn !== false) next(isIn);
 			else {
 				// ? Set new image
-				if (req.files?.profileImageUrl) user.profileImageUrl = UserService.uploadProfileImage(req.files?.profileImageUrl);
-				let userInDB = await UserRepository.createUser(user, sendActivationEmail);
-				if (sendActivationEmail == true) sendNewUserActivationMail(userInDB);
+				if (req.files?.profileImageUrl) user.profileImageUrl = UserService.uploadProfileImage(req.files?.profileImageUrl as UploadedFile);
+				let userInDB = await userRepository.createUser(user, sendActivationEmail);
+				if (sendActivationEmail == true) MailerService.sendNewUserActivationMail(userInDB);
 				res.status(201).send(userInDB);
 			}
 		} catch (e) {
@@ -234,7 +235,7 @@ router.put("/edit", UserValidator.editUserByAdmin, async (req: Request, res: Res
 	const newData = req.body;
 	if (newData.email) newData.email = newData.email.trim();
 	try {
-		const userDB = await UserRepository.getUserById(newData.id);
+		const userDB = await userRepository.getById(newData.id);
 		if (userDB) {
 			if (!canAdminActOnUser(req.user, userDB)) next({ message: "You don't have the permission due to your user role", status: 401 });
 			else {
@@ -251,9 +252,9 @@ router.put("/edit", UserValidator.editUserByAdmin, async (req: Request, res: Res
 							if (err) throw err;
 						});
 					}
-					newData.profileImageUrl = UserService.uploadProfileImage(req.files?.profileImageUrl);
+					newData.profileImageUrl = UserService.uploadProfileImage(req.files?.profileImageUrl as UploadedFile);
 				}
-				const newUser = await UserRepository.updateUser(userDB, newData);
+				const newUser = await userRepository.update(userDB.id, newData);
 				res.send(newUser);
 			}
 		} else next({ message: "User not found", status: 404 });
@@ -283,14 +284,15 @@ router.put("/edit", UserValidator.editUserByAdmin, async (req: Request, res: Res
 router.post("/impersonificate/:id", UserValidator.impersonificate, async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		// ? Get user
-		const userDB = await UserRepository.getUserById(req.params.id);
+		const userDB = await userRepository.getById(req.params.id);
 		if (userDB) {
 			if (!canAdminActOnUser(req.user, userDB)) next({ message: "You don't have the permission due to your user role", status: 401 });
 			else {
 				let refreshToken;
 				if (!userDB.refreshToken) {
 					const refreshToken = UserService.generateRefreshToken(userDB.id);
-					await UserRepository.setRefreshToken(userDB, refreshToken);
+					userDB.refreshToken = refreshToken;
+					await userDB.save();
 				} else refreshToken = userDB.refreshToken;
 				const accessToken = UserService.generateAccessToken(userDB.id);
 

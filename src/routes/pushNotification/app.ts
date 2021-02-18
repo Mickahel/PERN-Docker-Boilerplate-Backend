@@ -2,7 +2,7 @@ import express, { Response, Request, NextFunction } from "express";
 import PushNotificationUserTokenRepository from "../../repositories/pushNotificationUserToken";
 import PushNotificationValidator from "../../validators/pushNotification";
 const router: express.Router = express.Router();
-
+const pushNotificationUserTokenRepository = new PushNotificationUserTokenRepository();
 /**
  * @swagger
  * /v1/app/pushNotification/:token:
@@ -24,7 +24,7 @@ router.post("/registerToken/:token", PushNotificationValidator.setPushNotificati
 			userId: req.user.id,
 		};
 
-		const result = await PushNotificationUserTokenRepository.registerUserToken(ut);
+		const result = await pushNotificationUserTokenRepository.create(ut);
 		res.send(result);
 	} catch (err) {
 		next(err);

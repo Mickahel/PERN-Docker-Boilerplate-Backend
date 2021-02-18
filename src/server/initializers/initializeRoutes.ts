@@ -11,8 +11,13 @@ import authRoutes from "../../routes/auth";
 import serverRoutes from "../../routes/server";
 import logsRoutes from "../../routes/log";
 import databaseRoutes from "../../routes/database";
-//import generalSettingRoutes from "../../routes/generalSetting";
+import generalSettingRoutes from "../../routes/generalSetting";
 import userAdminRoutes from "../../routes/user/admin";
+import userAppRoutes from "../../routes/user/app";
+import pushNotificationAdminRoutes from "../../routes/pushNotification/admin";
+import pushNotificationAppRoutes from "../../routes/pushNotification/app";
+import feedbackAdminRoutes from "../../routes/feedback/admin";
+import feedbackAppRoutes from "../../routes/feedback/app";
 export default function initializeRoutes(router: Router): void {
 	//router.get('/', (req, res, next) => { // Echo route
 	//res.redirect(301, process.env.FRONTEND_URL)
@@ -39,18 +44,18 @@ export default function initializeRoutes(router: Router): void {
 	// ? Admin Routes
 	router.use("/v1/admin*", authRequired(roles.getRoleWithMinimumPermissionLevelByUserType(true)));
 	router.use("/v1/admin/server", serverRoutes);
-	//router.use("/v1/admin/general-settings", generalSettingRoutes);
+	router.use("/v1/admin/general-settings", generalSettingRoutes);
 	router.use("/v1/admin/user", userAdminRoutes);
 	router.use("/v1/admin/logs", logsRoutes);
-	//	router.use("/v1/admin/feedback", require("../../routes/feedback/admin"));
-	//	router.use("/v1/admin/pushNotification", require("../../routes/pushNotification/admin"));
+	router.use("/v1/admin/feedback", feedbackAdminRoutes);
+	router.use("/v1/admin/pushNotification", pushNotificationAdminRoutes);
 	router.use("/v1/admin/database", databaseRoutes);
 
 	// ? App Routes
 	router.use("/v1/app*", authRequired(roles.getRoleWithMinimumPermissionLevelByUserType(false)));
-	//	router.use("/v1/app/user", require("../../routes/user/app"));
-	//	router.use("/v1/app/feedback", require("../../routes/feedback/app"));
-	//	router.use("/v1/app/pushNotification", require("../../routes/pushNotification/app"));
+	router.use("/v1/app/user", userAppRoutes);
+	router.use("/v1/app/feedback", feedbackAppRoutes);
+	router.use("/v1/app/pushNotification", pushNotificationAppRoutes);
 
 	// ? Development routes
 	if (!isProduction) router.use("/v1/debug", debugRoutes);

@@ -10,7 +10,7 @@ import Feedback from "./feedbackEntity";
 export default class User extends BaseEntity {
 	password?: string;
 	@PrimaryGeneratedColumn("uuid")
-	id?: string;
+	id!: string;
 
 	@Column({ nullable: true })
 	@Generated("uuid")

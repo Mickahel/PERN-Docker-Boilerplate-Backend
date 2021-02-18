@@ -6,7 +6,12 @@ import fs from "fs";
 import Logger from "../../services/logger";
 const logger = new Logger("User API", "#9F9A00");
 import UserService from "../../services/user";
+import { roles } from "../../enums";
+import { UploadedFile } from "express-fileupload";
+import { statuses } from "../../enums";
 const router: express.Router = express.Router();
+
+const userRepository = new UserRepository();
 /**
  * @swagger
  * /v1/app/user/info:
@@ -17,7 +22,13 @@ const router: express.Router = express.Router();
  *          - cookieAuthBasic: []
  */
 router.get("/info", (req: Request, res: Response, next: NextFunction) => {
-	res.send(req.user);
+	const user: any = req.user;
+
+	if (roles.getRoleByName(user.role)?.isAdmin === false) {
+		delete user.role;
+		delete user.status;
+	}
+	res.send(user);
 });
 
 /**
@@ -48,7 +59,6 @@ router.get("/info", (req: Request, res: Response, next: NextFunction) => {
  */
 router.put("/edit", async (req: Request, res: Response, next: NextFunction) => {
 	const newData = req.body;
-
 	try {
 		// ? Only Remove old image
 		if (Boolean(newData.removeProfileImageUrl) == true) {
@@ -63,9 +73,11 @@ router.put("/edit", async (req: Request, res: Response, next: NextFunction) => {
 					if (err) throw err;
 				});
 			}
-			newData.profileImageUrl = UserService.uploadProfileImage(req.files?.profileImageUrl);
+			if (req.files?.profileImageUrl) {
+				newData.profileImageUrl = UserService.uploadProfileImage(req.files.profileImageUrl as UploadedFile);
+			}
 		}
-		const newUser = await UserRepository.updateUser(req.user, newData);
+		const newUser = await userRepository.update(req.user.id, newData);
 		res.send(newUser);
 	} catch (e) {
 		next(e);
@@ -90,9 +102,8 @@ router.put("/edit", async (req: Request, res: Response, next: NextFunction) => {
 router.put("/reset-password", UserValidator.resetPassword, async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		if (req.user.validatePassword(req.body.currentPassword)) {
-			await UserRepository.updateUser(req.user, {
-				password: req.body.password,
-			});
+			req.user.setPassword(req.body.password);
+			await req.user.save();
 			res.send({ message: "ok" });
 		} else {
 			next({ message: "Current Password is Wrong", status: 401 });
@@ -121,7 +132,8 @@ router.put("/reset-password", UserValidator.resetPassword, async (req: Request, 
 router.delete("/disable", async (req: Request, res: Response, next: NextFunction) => {
 	// ? Check password
 	if (req.user.validatePassword(req.body.password)) {
-		await UserRepository.disableUser(req.user);
+		req.user.status = statuses.values().DISABLED;
+		await req.user.save();
 		res.status(204).send();
 	} else next({ message: "Password is wrong", status: 401 });
 });

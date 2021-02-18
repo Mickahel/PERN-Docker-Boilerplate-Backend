@@ -5,7 +5,7 @@ import FeedbackRepository from "../../repositories/feedback";
 import FeedbackValidator from "../../validators/feedback";
 import fs from "fs";
 const router: express.Router = express.Router();
-
+const feedbackRepository = new FeedbackRepository();
 /**
  * @swagger
  * /v1/admin/feedback/all:
@@ -16,7 +16,7 @@ const router: express.Router = express.Router();
  *          - cookieAuthAdmin: []
  */
 router.get("/all", async (req: Request, res: Response, next: NextFunction) => {
-	const feedbacks = await FeedbackRepository.getAll();
+	const feedbacks = await feedbackRepository.getAll();
 	res.send(feedbacks);
 });
 
@@ -39,7 +39,7 @@ router.get("/all", async (req: Request, res: Response, next: NextFunction) => {
  */
 router.get("/info/:id", FeedbackValidator.getFeedbackById, async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const result = await FeedbackRepository.getFeedbackById(req.params.id);
+		const result = await feedbackRepository.getById(req.params.id);
 		if (!result) next({ message: "Cannot find data", status: 404 });
 		else res.send(result);
 	} catch (e) {
@@ -78,10 +78,10 @@ router.get("/info/:id", FeedbackValidator.getFeedbackById, async (req: Request, 
  */
 router.put("/edit", FeedbackValidator.editFeedback, async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const feedback = await FeedbackRepository.getFeedbackById(req.body.id);
+		const feedback = await feedbackRepository.getById(req.body.id);
 		if (!feedback) next({ message: "Cannot find data", status: 404 });
 		else {
-			const newFeedback = await FeedbackRepository.editFeedback(feedback, req.body);
+			const newFeedback = await feedbackRepository.update(feedback.id, req.body);
 			res.send(newFeedback);
 		}
 	} catch (e) {
@@ -108,10 +108,10 @@ router.put("/edit", FeedbackValidator.editFeedback, async (req: Request, res: Re
  */
 router.delete("/delete/:id", FeedbackValidator.getFeedbackById, async (req: Request, res: Response, next: NextFunction) => {
 	try {
-		const result = await FeedbackRepository.getFeedbackById(req.params.id);
+		const result = await feedbackRepository.getById(req.params.id);
 		if (!result) next({ message: "Cannot find data", status: 404 });
 		else {
-			await FeedbackRepository.deleteFeedback(req.params.id);
+			await feedbackRepository.deletePhysical(req.params.id);
 			fs.unlinkSync(publicFolder + result.screenshotUrl);
 			res.status(204).send();
 		}

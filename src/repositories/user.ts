@@ -1,9 +1,7 @@
 import _ from "lodash";
-import { statuses } from "../enums";
-import { getRepository, FindConditions, In, Not, Brackets, FindManyOptions } from "typeorm";
+import { getRepository, In } from "typeorm";
 import BaseRepository from "./base";
 import User from "../models/userEntity";
-// TODO ADD RETURN FUNCTION TYPESCRIPT
 
 export default class UserRepository extends BaseRepository<User> {
 	constructor() {
@@ -22,6 +20,11 @@ export default class UserRepository extends BaseRepository<User> {
 			email: In(emails),
 		});
 	}
+
+	getUsersByRole(roles: string[]) {
+		return this.getAll({ where: { role: In(roles) } });
+	}
+
 	/*getUserList(includeDisabledUsers: boolean = false) {
 		if (includeDisabledUsers) {
 			return database.models.user.findAll({});
@@ -40,7 +43,7 @@ export default class UserRepository extends BaseRepository<User> {
 		if (generateActivationCode) newUser.setActivationCode();
 		return await newUser.save();
 	}
-
+User
 	async updateUser(user: UserModel, newData: User) {
 		if (newData.password) {
 			user.setPassword(newData.password);
@@ -58,13 +61,5 @@ export default class UserRepository extends BaseRepository<User> {
 		return user.save();
 	}
 
-	getUsersByRole(roles: string[]) {
-		return database.models.user.findAll({
-			where: {
-				role: {
-					[Sequelize.Op.in]: roles,
-				},
-			},
-		});
-	}*/
+*/
 }

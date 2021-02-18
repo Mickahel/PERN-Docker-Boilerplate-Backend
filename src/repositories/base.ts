@@ -50,7 +50,7 @@ export default class BaseRepository<Entity extends BaseEntity> {
 		return getRepository(this._type).create(data).save();
 	}
 
-	update(id: string, data: QueryDeepPartialEntity<Entity>): Promise<UpdateResult> {
+	update(id: string | FindConditions<Entity>, data: QueryDeepPartialEntity<Entity>): Promise<UpdateResult> {
 		return getRepository(this._type).update(id, data);
 	}
 
@@ -65,6 +65,7 @@ export default class BaseRepository<Entity extends BaseEntity> {
 	getGeneric(where: FindConditions<Entity>): Promise<Entity | undefined> {
 		return getRepository(this._type).findOne({ where });
 	}
+
 	genericChangeBoolean(id: string | string[], value: boolean, field: string = "status"): Promise<any> {
 		if (!Array.isArray(id)) id = [id];
 		return getManager().query(`UPDATE ${this._table} SET ${field} = ${value} WHERE id IN (${this.getFields(id)})`, id);
@@ -79,14 +80,14 @@ export default class BaseRepository<Entity extends BaseEntity> {
 	deleteLogical(entity: string | string[] | Entity): Promise<any> {
 		let finalIds = [];
 		if (entity instanceof BaseEntity) finalIds = [_.get(entity, "id")];
-		// Grande pezza
+		// TODO needs refactor
 		else if (!Array.isArray(entity)) finalIds = [entity];
 		else finalIds = entity;
 
 		return getRepository(this._type).query(`UPDATE ${this._table} SET status = "DELETED" WHERE id IN (${this.getFields(finalIds)})`, finalIds);
 	}
 
-	deletePhysical(entity: string | string[] | Entity | Entity[]): Promise<DeleteResult | Entity | Entity[] | undefined> {
+	deletePhysical(entity: string | string[] | Entity | Entity[] | FindConditions<Entity>): Promise<DeleteResult | Entity | Entity[] | undefined> {
 		let finalIds: string[] = [];
 		if (Array.isArray(entity)) {
 			if (entity.length === 0) return Promise.resolve(undefined);

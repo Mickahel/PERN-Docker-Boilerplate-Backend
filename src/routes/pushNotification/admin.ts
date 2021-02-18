@@ -4,8 +4,9 @@ import PushNotificationValidator from "../../validators/pushNotification";
 import { v4 as uuid } from "uuid";
 import { publicFolder } from "../../auxiliaries/server";
 import sharp from "sharp";
+import { UploadedFile } from "express-fileupload";
 const router: express.Router = express.Router();
-
+const pushNotificationService = new PushNotificationService();
 /**
  * @swagger
  * /v1/admin/pushNotification/sendNotification:
@@ -43,7 +44,7 @@ router.post("/sendNotification", PushNotificationValidator.sendPushNotification,
 	let notificationImageName;
 	let notificationImageLink;
 	if (req?.files?.image) {
-		const { image } = req.files;
+		const image = req.files.image as UploadedFile;
 		notificationImageName = uuid() + "." + image.name.split(".")[image.name.split(".").length - 1];
 		notificationImagePath = publicFolder + "uploads/pushNotificationImages/" + notificationImageName;
 		sharp(image.data).toFile(notificationImagePath, (err, info) => {
@@ -52,7 +53,7 @@ router.post("/sendNotification", PushNotificationValidator.sendPushNotification,
 		notificationImageLink = process.env.BACKEND_URL + "/public/uploads/pushNotificationImages/" + notificationImageName;
 	}
 
-	const result = await PushNotificationService.sendNotification(ids, title, body, null, notificationImageLink, { click_action: clickAction || "" });
+	const result = await pushNotificationService.sendNotification(ids, title, body, undefined, notificationImageLink, { click_action: clickAction || undefined });
 	res.send(result);
 });
 

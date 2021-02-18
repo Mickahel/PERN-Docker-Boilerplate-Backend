@@ -47,7 +47,6 @@ export default function initializeAuthentication(): void {
 	};
 
 	const socialLogin = async (user: User, done: Function, origin?: string, socialId?: string) => {
-		// TODO Add typescript
 		if (user.status == statuses.values().ACTIVE) {
 			if (origin == "google") user.googleId = socialId;
 			else if (origin == "facebook") user.facebookId = socialId;
@@ -156,7 +155,6 @@ export default function initializeAuthentication(): void {
 				callbackURL: process.env.BACKEND_URL + "/v1/auth/login/callback/google",
 			},
 			async (accessToken: string, refreshToken: string, profile: passportGoogle.Profile, done: Function) => {
-				// TODO ADD Typescript
 				// ? Check if there is a user inside the database by Google ID
 				try {
 					const googleId = profile.id;

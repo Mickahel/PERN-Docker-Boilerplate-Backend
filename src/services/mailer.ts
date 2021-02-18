@@ -7,7 +7,7 @@ import SMTPTransport from "nodemailer/lib/smtp-transport";
 import Mail from "nodemailer/lib/mailer";
 import User from "../models/userEntity";
 import Feedback from "../models/feedbackEntity";
-// TODO Add typescript
+
 nunjucks.configure("src/resources", { autoescape: true });
 
 const transporter: Mail = nodemailer.createTransport(<SMTPTransport.Options>{
