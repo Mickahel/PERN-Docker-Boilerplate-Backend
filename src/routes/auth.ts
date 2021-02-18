@@ -6,7 +6,7 @@ import UserService from "../services/user";
 import UserRepository from "../repositories/user";
 import AuthValidator from "../validators/auth";
 import jwt from "jsonwebtoken";
-import { statuses } from "../enums";
+import { roles, statuses } from "../enums";
 const router: express.Router = express.Router();
 
 const userRepository = new UserRepository();
@@ -82,7 +82,10 @@ router.post("/login", AuthValidator.login, (req: Request, res: Response, next: N
 				const accessToken = UserService.generateAccessToken(passportUser.id);
 				const refreshToken = UserService.generateRefreshToken(passportUser.id);
 				await userRepository.update(passportUser.id, { refreshToken });
-
+				if (roles.getRoleByName(user.role)?.isAdmin === false) {
+					delete passportUser.role;
+					delete passportUser.status;
+				}
 				res.cookie("accessToken", accessToken, {
 					httpOnly: true,
 					secure: true,
@@ -126,11 +129,10 @@ router.post("/activation/:activationCode", AuthValidator.activation, async (req:
 	const { activationCode } = req.params;
 	try {
 		let user = await userRepository.getBy({ where: { activationCode } });
-		if (user && user.id) {
-			await userRepository.update(user.id, {
-				status: statuses.values().ACTIVE,
-				activationCode: undefined,
-			});
+		if (user) {
+			user.status = statuses.values().ACTIVE;
+			user.activationCode = undefined;
+			await user.save();
 			MailerService.sendUserActivatedMail(user);
 			res.send({ message: "ok" });
 		} else {
@@ -193,7 +195,7 @@ router.post("/lost-password-mail", AuthValidator.lostPasswordMail, async (req: R
  *          description: User not found
  *
  */
-router.post("/password-reset", AuthValidator.passwordReset, async (req: Request, res: Response, next: NextFunction) => {
+router.put("/password-reset", AuthValidator.passwordReset, async (req: Request, res: Response, next: NextFunction) => {
 	const { activationCode, password } = req.body;
 	try {
 		const user = await userRepository.getBy({ where: { activationCode } });
