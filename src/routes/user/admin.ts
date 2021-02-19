@@ -254,6 +254,7 @@ router.put("/edit", UserValidator.editUserByAdmin, async (req: Request, res: Res
 					}
 					newData.profileImageUrl = UserService.uploadProfileImage(req.files?.profileImageUrl as UploadedFile);
 				}
+				delete newData.removeProfileImageUrl;
 				const newUser = await userRepository.update(userDB.id, newData);
 				res.send(newUser);
 			}

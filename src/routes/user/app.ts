@@ -73,10 +73,9 @@ router.put("/edit", async (req: Request, res: Response, next: NextFunction) => {
 					if (err) throw err;
 				});
 			}
-			if (req.files?.profileImageUrl) {
-				newData.profileImageUrl = UserService.uploadProfileImage(req.files.profileImageUrl as UploadedFile);
-			}
+			if (req.files?.profileImageUrl) newData.profileImageUrl = UserService.uploadProfileImage(req.files.profileImageUrl as UploadedFile);
 		}
+		delete newData.removeProfileImageUrl;
 		const newUser = await userRepository.update(req.user.id, newData);
 		res.send(newUser);
 	} catch (e) {

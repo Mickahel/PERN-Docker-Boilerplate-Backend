@@ -44,7 +44,7 @@ router.post("/create", FeedbackValidator.createFeedback, async (req: Request, re
 	try {
 		let feedbackData = {
 			...req.body,
-			createdBy: req.user.id,
+			user: req.user,
 		};
 		let screenshotFile: UploadedFile = req.files?.screenshot as UploadedFile;
 		if (screenshotFile) {
@@ -60,7 +60,7 @@ router.post("/create", FeedbackValidator.createFeedback, async (req: Request, re
 		// ? Get Admins
 		const adminUsers = await userRepository.getUsersByRole(roles.getAdminRoles());
 		// ? Send Emails to Admins
-		MailerService.sendNewFeedbackMail(newFeedback, adminUsers);
+		if (adminUsers.length > 0) MailerService.sendNewFeedbackMail(newFeedback, adminUsers);
 		res.send(newFeedback);
 	} catch (e) {
 		next(e);

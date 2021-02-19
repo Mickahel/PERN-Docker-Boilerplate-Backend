@@ -15,7 +15,7 @@ export default class UserRepository extends BaseRepository<User> {
 		return newUser.save();
 	}
 
-	getUserByEmail(emails: string[]): Promise<User | undefined> {
+	getUserByEmails(emails: string[]): Promise<User | undefined> {
 		return this.getGeneric({
 			email: In(emails),
 		});

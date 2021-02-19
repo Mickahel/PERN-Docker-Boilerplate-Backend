@@ -78,7 +78,7 @@ export default function createServer() {
 	initializeSwagger(app, router);
 
 	// ? Add Routes
-	initializeRoutes(router); // TODO TS
+	initializeRoutes(router);
 
 	// ? Add https middleware
 	app.use(router);
@@ -88,7 +88,7 @@ export default function createServer() {
 
 	//? Error middleware
 	app.use((err: any, req: Request, res: Response, next: NextFunction): void => {
-		if (err.status != 404 && err.status != 403 && err.status != 400 && err.status != 401) logger.error(err.message, err.errors);
+		if (err.status != 404 && err.status != 403 && err.status != 400 && err.status != 401) logger.error(err);
 		let status = err.status ? err.status : 500;
 		let errorMessage: { response: string; message: any; errors: any; status: any; stack?: any } = {
 			response: "error",
@@ -97,7 +97,6 @@ export default function createServer() {
 			status,
 		};
 		if (!isProduction) errorMessage.stack = _.get(err, "stack");
-		logger.error(err);
 		res.status(status).send(errorMessage);
 	});
 	initializeHttp(app);

@@ -1,6 +1,6 @@
 import { randomBytes, pbkdf2Sync } from "crypto";
 import { v4 as uuid } from "uuid";
-
+import _ from "lodash";
 import { statuses, Tstatuses, Tthemes, themes, roles, Troles } from "../enums";
 import { Generated, PrimaryGeneratedColumn, OneToMany, Entity, PrimaryColumn, Column, BaseEntity, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import PushNotificationUserToken from "./pushNotificationUserTokenEntity";
@@ -9,6 +9,15 @@ import Feedback from "./feedbackEntity";
 @Entity("users")
 export default class User extends BaseEntity {
 	password?: string;
+
+	toJSON(): User {
+		delete this.salt;
+		delete this.hash;
+		delete this.activationCode;
+		delete this.refreshToken;
+		return this;
+	}
+
 	@PrimaryGeneratedColumn("uuid")
 	id!: string;
 
@@ -26,10 +35,10 @@ export default class User extends BaseEntity {
 	email!: string;
 
 	@Column()
-	salt!: string;
+	salt?: string;
 
 	@Column()
-	hash!: string;
+	hash?: string;
 
 	@Column({ nullable: true })
 	firstname?: string;
@@ -95,7 +104,7 @@ export default class User extends BaseEntity {
 	}
 
 	validatePassword(password: string): boolean {
-		const hash = pbkdf2Sync(password, this.salt, 10, 64, "sha512").toString("hex");
+		const hash = pbkdf2Sync(password, this.salt as string, 10, 64, "sha512").toString("hex");
 		return this.hash === hash;
 	}
 

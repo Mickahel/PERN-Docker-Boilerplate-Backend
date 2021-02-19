@@ -129,10 +129,9 @@ router.post("/activation/:activationCode", AuthValidator.activation, async (req:
 	const { activationCode } = req.params;
 	try {
 		let user = await userRepository.getBy({ where: { activationCode } });
+
 		if (user) {
-			user.status = statuses.values().ACTIVE;
-			user.activationCode = undefined;
-			await user.save();
+			await userRepository.update(user.id, { status: statuses.values().ACTIVE, activationCode: undefined });
 			MailerService.sendUserActivatedMail(user);
 			res.send({ message: "ok" });
 		} else {
@@ -161,7 +160,7 @@ router.post("/activation/:activationCode", AuthValidator.activation, async (req:
 router.post("/lost-password-mail", AuthValidator.lostPasswordMail, async (req: Request, res: Response, next: NextFunction) => {
 	let email = req.body.email.trim();
 	try {
-		const user = await userRepository.getUserByEmail(email);
+		const user = await userRepository.getBy({ where: { email } });
 		if (user) {
 			user.setActivationCode();
 			await user.save();
@@ -195,7 +194,8 @@ router.post("/lost-password-mail", AuthValidator.lostPasswordMail, async (req: R
  *          description: User not found
  *
  */
-router.put("/password-reset", AuthValidator.passwordReset, async (req: Request, res: Response, next: NextFunction) => {
+
+router.post("/password-reset", AuthValidator.passwordReset, async (req: Request, res: Response, next: NextFunction) => {
 	const { activationCode, password } = req.body;
 	try {
 		const user = await userRepository.getBy({ where: { activationCode } });
@@ -266,9 +266,9 @@ router.delete("/logout", async (req: Request, res: Response, next: NextFunction)
 	let refreshToken = req.cookies.refreshToken;
 	try {
 		// ? Delete Refresh Token
-		if (refreshToken) await userRepository.update(refreshToken, { refreshToken: undefined });
 		res.clearCookie("refreshToken");
 		res.clearCookie("accessToken");
+		if (refreshToken) await userRepository.update({ refreshToken }, { refreshToken: undefined });
 		res.sendStatus(204);
 	} catch (e) {
 		next(e);

@@ -1,5 +1,5 @@
 dependencies:
-  ajv: 7.0.4
+  ajv: 7.1.1
   ajv-formats: 1.5.1
   axios: 0.21.1
   chalk: 4.1.0
@@ -11,16 +11,16 @@ dependencies:
   env-cmd: 10.1.0
   errorhandler: 1.5.1
   express: 4.17.1
-  express-rate-limit: 5.2.3
+  express-rate-limit: 5.2.6
   express-session: 1.17.1
-  firebase-admin: 9.4.2
+  firebase-admin: 9.5.0
   helmet: 4.4.1
   jsonwebtoken: 8.5.1
   lodash: 4.17.20
   morgan: 1.10.0
-  nodemailer: 6.4.17
+  nodemailer: 6.4.18
   nodemon: 2.0.7
-  nunjucks: 3.2.2
+  nunjucks: 3.2.3
   passport: 0.4.1
   passport-facebook: 3.0.0
   passport-google-oauth20: 2.0.0
@@ -28,16 +28,16 @@ dependencies:
   pg: 8.5.1
   reflect-metadata: 0.1.13
   sharp: 0.27.1
-  swagger-jsdoc: 6.0.2
+  swagger-jsdoc: 6.0.6
   swagger-ui-express: 4.1.6_express@4.17.1
-  typeorm: 0.2.30
+  typeorm: 0.2.31
   uuid: 8.3.2
   winston: 3.3.3
   winston-daily-rotate-file: 4.5.0_winston@3.3.3
 devDependencies:
   '@types/compression': 1.7.0
   '@types/cookie-parser': 1.4.2
-  '@types/cors': 2.8.9
+  '@types/cors': 2.8.10
   '@types/errorhandler': 1.5.0
   '@types/express': 4.17.11
   '@types/express-fileupload': 1.1.6
@@ -45,10 +45,10 @@ devDependencies:
   '@types/jsonwebtoken': 8.5.0
   '@types/lodash': 4.14.168
   '@types/morgan': 1.9.2
-  '@types/node': 14.14.22
+  '@types/node': 14.14.31
   '@types/nodemailer': 6.4.0
   '@types/nunjucks': 3.1.4
-  '@types/passport': 1.0.5
+  '@types/passport': 1.0.6
   '@types/passport-facebook': 2.1.10
   '@types/passport-google-oauth20': 2.0.6
   '@types/passport-local': 1.0.33
@@ -58,9 +58,9 @@ devDependencies:
   '@types/uuid': 8.3.0
   '@types/validator': 13.1.3
   express-fileupload: 1.2.1
-  ts-node: 9.1.1_typescript@4.1.3
-  ts-node-dev: 1.1.1_typescript@4.1.3
-  typescript: 4.1.3
+  ts-node: 9.1.1_typescript@4.1.5
+  ts-node-dev: 1.1.1_typescript@4.1.5
+  typescript: 4.1.5
 lockfileVersion: 5.2
 packages:
   /@apidevtools/json-schema-ref-parser/9.0.7:
@@ -359,10 +359,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-uwcY8m6SDQqciHsqcKDGbo10GdasYsPCYkH3hVegj9qAah6pX5HivOnOuI3WYmyQMnOATV39zv/Ybs0bC/6iVg==
-  /@types/cors/2.8.9:
+  /@types/cors/2.8.10:
     dev: true
     resolution:
-      integrity: sha512-zurD1ibz21BRlAOIKP8yhrxlqKx6L9VCwkB5kMiP6nZAhoF5MvC7qS1qPA7nRcr1GJolfkQC7/EAL4hdYejLtg==
+      integrity: sha512-C7srjHiVG3Ey1nR6d511dtDkCEjxuN9W1HWAEjGq8kpcwmNM6JJkpC0xvabM7BXTG2wDq8Eu33iH9aQKa7IvLQ==
   /@types/errorhandler/1.5.0:
     dependencies:
       '@types/express': 4.17.11
@@ -445,6 +445,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-EPpXLOVqDvisVxtlbvzfyqSsFeQxltFbluZNRndIb8tr9KiBnYNLzrc1N3pyKUCww2RNrfHDViqDWWE1LCJQtQ==
+  /@types/node/14.14.31:
+    dev: true
+    resolution:
+      integrity: sha512-vFHy/ezP5qI0rFgJ7aQnjDXwAMrG0KqqIH7tQG5PPv3BWBayOPIQNBjVc/P6hhdZfMx51REc6tfDNXHUio893g==
   /@types/nodemailer/6.4.0:
     dependencies:
       '@types/node': 14.14.25
@@ -505,6 +509,12 @@ packages:
     dev: true
     resolution:
       integrity: sha512-wNL4kT/5rnZgyGkqX7V2qH/R/te+bklv+nXcvHzyX99vNggx9DGN+F8CEOW3P/gRi7Cjm991uidRgTHsYkSuMg==
+  /@types/passport/1.0.6:
+    dependencies:
+      '@types/express': 4.17.11
+    dev: true
+    resolution:
+      integrity: sha512-9oKfrJXuAxvyxdrtMCxKkHgmd6DMO8NDOLvMJ1LvIWd6/xP+i81PAkpTaEca7VhJX9S009RciwZL/j6dsLsHrA==
   /@types/qs/6.9.5:
     dev: true
     resolution:
@@ -603,6 +613,15 @@ packages:
     dev: false
     resolution:
       integrity: sha512-xzzzaqgEQfmuhbhAoqjJ8T/1okb6gAzXn/eQRNpAN1AEUoHJTNF9xCDRTtf/s3SKldtZfa+RJeTs+BQq+eZ/sw==
+  /ajv/7.1.1:
+    dependencies:
+      fast-deep-equal: 3.1.3
+      json-schema-traverse: 1.0.0
+      require-from-string: 2.0.2
+      uri-js: 4.4.1
+    dev: false
+    resolution:
+      integrity: sha512-ga/aqDYnUy/o7vbsRTFhhTsNeXiYb5JWDIcRIeZfwRNCefwjNTVYCGdGSUrEmiu3yDK3vFvNbgJxvrQW4JXrYQ==
   /ansi-align/3.0.0:
     dependencies:
       string-width: 3.1.0
@@ -1465,10 +1484,10 @@ packages:
       node: '>=8.0.0'
     resolution:
       integrity: sha512-fWPNAkBj+Azt9Itmcz/Reqdg3LeBfaXptDEev2JM8bCC0yDptglCnlizhf0YZauyU5X/g6v7v4Xxqhg8tmEfEA==
-  /express-rate-limit/5.2.3:
+  /express-rate-limit/5.2.6:
     dev: false
     resolution:
-      integrity: sha512-cjQH+oDrEPXxc569XvxhHC6QXqJiuBT6BhZ70X3bdAImcnHnTNMVuMAJaT0TXPoRiEErUrVPRcOTpZpM36VbOQ==
+      integrity: sha512-nE96xaxGfxiS5jP3tD3kIW1Jg9yQgX0rXCs3rCkZtmbWHEGyotwaezkLj7bnB41Z0uaOLM8W4AX6qHao4IZ2YA==
   /express-session/1.17.1:
     dependencies:
       cookie: 0.4.0
@@ -1593,7 +1612,7 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-ay6YIrGizgpgq2TWEOzK1TyyTQ8=
-  /firebase-admin/9.4.2:
+  /firebase-admin/9.5.0:
     dependencies:
       '@firebase/database': 0.8.3
       '@firebase/database-types': 0.6.1
@@ -1608,7 +1627,7 @@ packages:
       '@google-cloud/firestore': 4.9.1
       '@google-cloud/storage': 5.7.4
     resolution:
-      integrity: sha512-mRnBJbW6BAz6DJkZ0GOUTkmnmCrwVzMreMc6O+RXWukFydOzi5Xr6TKSiPKxoOQw41r9IluP2AZ3Qzvlx2SR+g==
+      integrity: sha512-OPXFOTDcAE+NORpfhq7YMEDk+vFClBtjfpkrjm2JHRxb8DpMm+K3AcusonFPU/WOH4FhiVN9JHB0+NPE20S3gQ==
   /fn.name/1.1.0:
     dev: false
     resolution:
@@ -2545,12 +2564,12 @@ packages:
       node: '>= 6.0.0'
     resolution:
       integrity: sha512-PPmu8eEeG9saEUvI97fm4OYxXVB6bFvyNTyiUOBichBpFG8A1Ljw3bY62+5oOjDEMHRnd0Y7HQ+x7uzxOzC6JA==
-  /nodemailer/6.4.17:
+  /nodemailer/6.4.18:
     dev: false
     engines:
       node: '>=6.0.0'
     resolution:
-      integrity: sha512-89ps+SBGpo0D4Bi5ZrxcrCiRFaMmkCt+gItMXQGzEtZVR3uAD3QAQIDoxTWnx3ky0Dwwy/dhFrQ+6NNGXpw/qQ==
+      integrity: sha512-ht9cXxQ+lTC+t00vkSIpKHIyM4aXIsQ1tcbQCn5IOnxYHi81W2XOaU66EQBFFpbtzLEBTC94gmkbD4mGZQzVpA==
   /nodemon/2.0.7:
     dependencies:
       chokidar: 3.5.1
@@ -2616,7 +2635,7 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-CXtgK1NCKlIsGvuHkDGDNpQaAR0=
-  /nunjucks/3.2.2:
+  /nunjucks/3.2.3:
     dependencies:
       a-sync-waterfall: 1.0.1
       asap: 2.0.6
@@ -2625,10 +2644,13 @@ packages:
     engines:
       node: '>= 6.9.0'
     hasBin: true
-    optionalDependencies:
-      chokidar: 3.5.1
+    peerDependencies:
+      chokidar: ^3.3.0
+    peerDependenciesMeta:
+      chokidar:
+        optional: true
     resolution:
-      integrity: sha512-KUi85OoF2NMygwODAy28Lh9qHmq5hO3rBlbkYoC8v377h4l8Pt5qFjILl0LWpMbOrZ18CzfVVUvIHUIrtED3sA==
+      integrity: sha512-psb6xjLj47+fE76JdZwskvwG4MYsQKXUtMsPh6U0YMvmyjRtKRFcxnlXGWglNybtNTNVmGdp94K62/+NjF5FDQ==
   /oauth/0.9.15:
     dev: false
     resolution:
@@ -3565,7 +3587,7 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==
-  /swagger-jsdoc/6.0.2:
+  /swagger-jsdoc/6.0.6:
     dependencies:
       commander: 6.2.0
       doctrine: 3.0.0
@@ -3577,7 +3599,7 @@ packages:
       node: '>=12.0.0'
     hasBin: true
     resolution:
-      integrity: sha512-2BxDpcL2t440xym1Y2lKxjI6OPe7DOggNBkA9zW1rE+f0G6CFkp4TMSwizaN22USLlw8WYzx0XgS2UAzq/qZzg==
+      integrity: sha512-YZ36PDYLVboInie2yF91XNUwPC2spm8beZKciqNZ78sO61k5HadREn9rml1hQykPE5uKjZN7Z863F5wlTAF+JA==
   /swagger-parser/10.0.2:
     dependencies:
       '@apidevtools/swagger-parser': 10.0.2
@@ -3700,7 +3722,7 @@ packages:
     dev: false
     resolution:
       integrity: sha512-XrHUvV5HpdLmIj4uVMxHggLbFSZYIn7HEWsqePZcI50pco+MPqJ50wMGY794X7AOOhxOBAjbkqfAbEe/QMp2Lw==
-  /ts-node-dev/1.1.1_typescript@4.1.3:
+  /ts-node-dev/1.1.1_typescript@4.1.5:
     dependencies:
       chokidar: 3.5.1
       dateformat: 1.0.12
@@ -3711,9 +3733,9 @@ packages:
       rimraf: 2.7.1
       source-map-support: 0.5.19
       tree-kill: 1.2.2
-      ts-node: 9.1.1_typescript@4.1.3
+      ts-node: 9.1.1_typescript@4.1.5
       tsconfig: 7.0.0
-      typescript: 4.1.3
+      typescript: 4.1.5
     dev: true
     engines:
       node: '>=0.8.0'
@@ -3726,14 +3748,14 @@ packages:
         optional: true
     resolution:
       integrity: sha512-kAO8LUZgXZSY0+PucMPsQ0Bbdv0x+lgbN7j8gcD4PuTI4uKC6YchekaspmYTBNilkiu+rQYkWJA7cK+Q8/B0tQ==
-  /ts-node/9.1.1_typescript@4.1.3:
+  /ts-node/9.1.1_typescript@4.1.5:
     dependencies:
       arg: 4.1.3
       create-require: 1.1.1
       diff: 4.0.2
       make-error: 1.3.6
       source-map-support: 0.5.19
-      typescript: 4.1.3
+      typescript: 4.1.5
       yn: 3.1.1
     dev: true
     engines:
@@ -3783,7 +3805,7 @@ packages:
     dev: false
     resolution:
       integrity: sha512-zdu8XMNEDepKKR+XYOXAVPtWui0ly0NtohUscw+UmaHiAWT8hrV1rr//H6V+0DvJ3OQ19S979M0laLfX8rm82Q==
-  /typeorm/0.2.30:
+  /typeorm/0.2.31:
     dependencies:
       '@sqltools/formatter': 1.2.2
       app-root-path: 3.0.0
@@ -3804,14 +3826,14 @@ packages:
     dev: false
     hasBin: true
     resolution:
-      integrity: sha512-qpr8AO3Phi6ZF7qMHOrRdNisVt8jE1KfmW0ooLFcXscA87aJ12aBPyB9cJfxGNjNwd7B3WIK9ZlBveWiqd74QA==
-  /typescript/4.1.3:
+      integrity: sha512-dVvCEVHH48DG0QPXAKfo0l6ecQrl3A8ucGP4Yw4myz4YEDMProebTQo8as83uyES+nrwCbu3qdkL4ncC2+qcMA==
+  /typescript/4.1.5:
     dev: true
     engines:
       node: '>=4.2.0'
     hasBin: true
     resolution:
-      integrity: sha512-B3ZIOf1IKeH2ixgHhj6la6xdwR9QrLC5d1VKeCSY4tvkqhF2eqd9O7txNlS0PO3GrBAFIdr3L1ndNwteUbZLYg==
+      integrity: sha512-6OSu9PTIzmn9TCDiovULTnET6BgXtDYL4Gg4szY+cGsc3JP1dQL8qvE8kShTRx1NIw4Q9IBHlwODjkjWEtMUyA==
   /uid-safe/2.1.5:
     dependencies:
       random-bytes: 1.0.0
@@ -4115,7 +4137,7 @@ packages:
 specifiers:
   '@types/compression': ^1.7.0
   '@types/cookie-parser': ^1.4.2
-  '@types/cors': ^2.8.9
+  '@types/cors': ^2.8.10
   '@types/errorhandler': ^1.5.0
   '@types/express': ^4.17.11
   '@types/express-fileupload': ^1.1.6
@@ -4123,10 +4145,10 @@ specifiers:
   '@types/jsonwebtoken': ^8.5.0
   '@types/lodash': ^4.14.168
   '@types/morgan': ^1.9.2
-  '@types/node': ^14.14.22
+  '@types/node': ^14.14.31
   '@types/nodemailer': ^6.4.0
   '@types/nunjucks': ^3.1.4
-  '@types/passport': ^1.0.5
+  '@types/passport': ^1.0.6
   '@types/passport-facebook': ^2.1.10
   '@types/passport-google-oauth20': ^2.0.6
   '@types/passport-local': ^1.0.33
@@ -4135,7 +4157,7 @@ specifiers:
   '@types/swagger-ui-express': ^4.1.2
   '@types/uuid': ^8.3.0
   '@types/validator': ^13.1.3
-  ajv: ^7.0.3
+  ajv: ^7.1.1
   ajv-formats: ^1.5.1
   axios: ^0.21.1
   chalk: ^4.1.0
@@ -4148,29 +4170,29 @@ specifiers:
   errorhandler: ^1.5.1
   express: ^4.17.1
   express-fileupload: ^1.2.1
-  express-rate-limit: ^5.2.3
+  express-rate-limit: ^5.2.6
   express-session: ^1.17.1
-  firebase-admin: ^9.4.2
-  helmet: ^4.3.1
+  firebase-admin: ^9.5.0
+  helmet: ^4.4.1
   jsonwebtoken: ^8.5.1
   lodash: ^4.17.20
   morgan: ^1.10.0
-  nodemailer: ^6.4.17
-  nodemon: ^2.0.6
-  nunjucks: ^3.2.2
+  nodemailer: ^6.4.18
+  nodemon: ^2.0.7
+  nunjucks: ^3.2.3
   passport: ^0.4.1
   passport-facebook: ^3.0.0
   passport-google-oauth20: ^2.0.0
   passport-local: ^1.0.0
   pg: ^8.5.1
   reflect-metadata: ^0.1.13
-  sharp: ^0.27.0
-  swagger-jsdoc: ^6.0.0
+  sharp: ^0.27.1
+  swagger-jsdoc: ^6.0.6
   swagger-ui-express: ^4.1.6
   ts-node: ^9.1.1
   ts-node-dev: ^1.1.1
-  typeorm: ^0.2.30
-  typescript: ^4.1.3
+  typeorm: ^0.2.31
+  typescript: ^4.1.5
   uuid: ^8.3.2
   winston: ^3.3.3
   winston-daily-rotate-file: ^4.5.0

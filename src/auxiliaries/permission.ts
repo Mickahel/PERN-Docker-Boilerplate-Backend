@@ -14,7 +14,7 @@ export default function isAllowed(isSameLevelRolePermitted: boolean, userRole: T
 	else roleChosen = role;
 	const userRoleFromEnum = roles.getRoleByName(userRole);
 	if (userRoleFromEnum !== undefined && roleChosen !== undefined) {
-		let comparisonValue: boolean = isSameLevelRolePermitted === true ? userRoleFromEnum.permissionLevel >= roleChosen.permissionLevel : userRoleFromEnum.permissionLevel > roleChosen.permissionLevel;
+		let comparisonValue: boolean = isSameLevelRolePermitted === true ? userRoleFromEnum.permissionLevel >= roleChosen.permissionLevel : userRoleFromEnum.permissionLevel >= roleChosen.permissionLevel; // TODO userRoleFromEnum.permissionLevel >= roleChosen.permissionLevel; togliere maggiore uguale, solo maggiore
 		return comparisonValue;
 	}
 	return false;

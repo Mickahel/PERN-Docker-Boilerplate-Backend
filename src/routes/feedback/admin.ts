@@ -16,7 +16,9 @@ const feedbackRepository = new FeedbackRepository();
  *          - cookieAuthAdmin: []
  */
 router.get("/all", async (req: Request, res: Response, next: NextFunction) => {
-	const feedbacks = await feedbackRepository.getAll();
+	const feedbacks = await feedbackRepository.getAll({
+		relations: ["user"],
+	});
 	res.send(feedbacks);
 });
 

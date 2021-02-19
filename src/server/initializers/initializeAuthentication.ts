@@ -128,7 +128,7 @@ export default function initializeAuthentication(): void {
 						if (_.isEmpty(emails)) return done("No email found");
 
 						// ? Found, I attach the facebook id
-						user = await userRepository.getUserByEmail(emails);
+						user = await userRepository.getUserByEmails(emails);
 						if (user) return socialLogin(user, done, "facebook", facebookId);
 
 						// ? The user is not in the database, I register it
@@ -169,7 +169,7 @@ export default function initializeAuthentication(): void {
 						if (_.isEmpty(emails)) return done("No email found");
 
 						// ? Found, I attach the facebook id
-						user = await userRepository.getUserByEmail(emails);
+						user = await userRepository.getUserByEmails(emails);
 						if (user) return socialLogin(user, done, "google", googleId);
 
 						// ? The user is not in the database, I register it

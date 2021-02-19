@@ -1,9 +1,9 @@
 import genericEnum from "./genericEnum";
 import rolesEnum from "./rolesEnum";
 const statuses = new genericEnum<string>({
-	ACTIVE: "active",
-	PENDING: "pending",
-	DISABLED: "disabled",
+	ACTIVE: "ACTIVE",
+	PENDING: "PENDING",
+	DISABLED: "DISABLED",
 });
 
 const statusesNames = statuses.names();
@@ -16,8 +16,8 @@ const themesNames = themes.names();
 type Tthemes = typeof themesNames[number];
 
 const feedbackTypes = new genericEnum<string>({
-	BUG: "bug",
-	FEATURE: "feature",
+	BUG: "BUG",
+	FEATURE: "FEATURE",
 });
 const feedbackTypesNames = feedbackTypes.names();
 type TfeedbackTypes = typeof feedbackTypesNames[number];

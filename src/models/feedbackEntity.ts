@@ -1,13 +1,14 @@
 import { v4 as uuid } from "uuid";
 import { feedbackTypes, TfeedbackTypes } from "../enums";
-import { PrimaryGeneratedColumn, ManyToOne, Entity, PrimaryColumn, Column, BaseEntity, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { JoinColumn, PrimaryGeneratedColumn, ManyToOne, Entity, PrimaryColumn, Column, BaseEntity, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import User from "./userEntity";
 
 @Entity("feedbacks")
 export default class Feedback extends BaseEntity {
 	@PrimaryGeneratedColumn("uuid")
 	id!: string;
-	@ManyToOne(() => User, (user) => user.id)
+	@ManyToOne(() => User, (user) => user)
+	@JoinColumn({ name: "createdBy" })
 	user!: User;
 
 	@Column({ nullable: true, type: "text" })

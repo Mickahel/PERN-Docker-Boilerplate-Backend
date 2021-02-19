@@ -1,7 +1,8 @@
-import { getManager, FindConditions, BaseEntity, UpdateResult, getRepository, DeleteResult, DeepPartial, FindOneOptions, FindManyOptions } from "typeorm";
+import { getManager, getConnection, EntityManager, FindConditions, BaseEntity, EntityMetadata, getRepository, DeleteResult, DeepPartial, FindOneOptions, FindManyOptions } from "typeorm";
 import _ from "lodash";
 import { v4 as uuid } from "uuid";
 import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity";
+
 /// https://stackoverflow.com/questions/40820195/creating-generic-repository-using-typeorm
 export type ObjectType<T> = { new (): T } | Function;
 
@@ -9,10 +10,12 @@ export default class BaseRepository<Entity extends BaseEntity> {
 	//private _entityManager : EntityManager | undefined;
 	protected _type: ObjectType<Entity>;
 	private _table: string;
-
 	constructor(type: ObjectType<Entity>, table: string) {
 		this._type = type;
 		this._table = table;
+
+		//	//console.log(connection);
+		//	//const entityManager = connection; //.getMetadata(type);
 	}
 
 	async duplicate(entity: string | Entity | undefined, maySave: boolean = true): Promise<Entity> {
@@ -29,19 +32,22 @@ export default class BaseRepository<Entity extends BaseEntity> {
 	}
 
 	getAll(options: FindManyOptions<Entity> = {}): Promise<Entity[]> {
-		return getRepository(this._type).find(options);
+		return getRepository(this._type).find({
+			//loadRelationIds: true,
+			...options,
+		});
 	}
 
 	getById(id: string, options: FindOneOptions<Entity> = {}): Promise<Entity | undefined> {
 		return getRepository(this._type).findOne(id, {
-			loadRelationIds: false,
+			//loadRelationIds: false,
 			...options,
 		});
 	}
 
 	getBy(options: FindOneOptions<Entity> = {}): Promise<Entity | undefined> {
 		return getRepository(this._type).findOne({
-			loadRelationIds: false,
+			//loadRelationIds: false,
 			...options,
 		});
 	}
@@ -50,8 +56,20 @@ export default class BaseRepository<Entity extends BaseEntity> {
 		return getRepository(this._type).create(data).save();
 	}
 
-	update(id: string | FindConditions<Entity>, data: QueryDeepPartialEntity<Entity>): Promise<UpdateResult> {
-		return getRepository(this._type).update(id, data);
+	update(id: string | FindConditions<Entity>, data: QueryDeepPartialEntity<Entity>) {
+		//let columns = getConnection()
+		//	.getMetadata(this._type)
+		//	.ownColumns.map((column) => column.propertyName);
+		// ? https://github.com/typeorm/typeorm/issues/1663#issuecomment-429457022
+		return getRepository(this._type)
+			.createQueryBuilder()
+			.update(this._type, data)
+			.where(typeof id === "string" ? { id } : id)
+			.returning("*")
+			.updateEntity(true)
+			.execute()
+			.then((result) => result.raw[0]);
+		//return getRepository(this._type).update(id, data);
 	}
 
 	getFields(ids: string[]) {

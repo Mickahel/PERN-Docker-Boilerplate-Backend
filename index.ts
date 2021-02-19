@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import dotenv from "dotenv";
 dotenv.config();
 import Logger from "./src/services/logger";
@@ -17,9 +18,9 @@ import os from "os";
 import createServer from "./src/server";
 const logger = new Logger("Cluster", "#F2FE");
 import { isProduction, publicFolder } from "./src/auxiliaries/server";
-import { initializeDatabase } from "./src/models";
-logger.info("Environement: " + process.env.NODE_ENV);
 
+logger.info("Environement: " + process.env.NODE_ENV);
+import { initializeDatabase } from "./src/models";
 const startCluster = (): void => {
 	// ? Check if current process is master.
 	if (cluster.isMaster) {

@@ -18,10 +18,15 @@ const rotationTransport = new winston.transports.DailyRotateFile({
 });
 
 const consoleFromat = {
-	format: winston.format.combine(winston.format.splat(), winston.format.colorize(), winston.format.simple()),
+	format: winston.format.combine(
+		//winston.format.timestamp(standardTimestampData),
+		winston.format.splat(),
+		winston.format.colorize(),
+		winston.format.simple()
+	),
 };
 
-const fileFormat: object = {
+const fileFormat = {
 	format: winston.format.combine(winston.format.timestamp(standardTimestampData), winston.format.splat(), winston.format.json()),
 };
 
@@ -125,11 +130,12 @@ export default class ModularLogger {
 		if (typeof message === "object" && !arg) {
 			// ? message is an object and is the only param
 			const parsedMessage = message instanceof Error ? message.stack : cj(message);
+			const fileMessage = JSON.stringify(message instanceof Error ? message.stack : message);
 			loggerFunction(moduleText + " - " + parsedMessage, {
 				...this.otherOptions,
 			});
 
-			this.writeLogToFile(fileLoggerFunction, parsedMessage);
+			this.writeLogToFile(fileLoggerFunction, fileMessage);
 		} else if (typeof message !== "object" && !arg) {
 			// ? message is not an object and is the only param
 			loggerFunction(moduleText + " - " + message, {
