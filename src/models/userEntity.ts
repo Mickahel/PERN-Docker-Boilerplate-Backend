@@ -1,4 +1,4 @@
-import * as crypto from "crypto";
+import bcrypt from "bcrypt";
 import { v4 as uuid } from "uuid";
 import _ from "lodash";
 import { statuses, Tstatuses, Tthemes, themes, roles, Troles } from "../enums";
@@ -95,8 +95,8 @@ export default class User extends BaseEntity {
 	}
 
 	setPassword(password: string): void {
-		this.salt = crypto.randomBytes(16).toString("hex");
-		this.hash = crypto.pbkdf2Sync(password, this.salt, 10, 64, "sha512").toString("hex");
+		this.salt = bcrypt.genSaltSync(5);
+		this.hash = bcrypt.hashSync(password, this.salt);
 	}
 
 	setActivationCode(): void {
@@ -104,8 +104,7 @@ export default class User extends BaseEntity {
 	}
 
 	validatePassword(password: string): boolean {
-		const hash = crypto.pbkdf2Sync(password, this.salt as string, 10, 64, "sha512").toString("hex");
-		return this.hash === hash;
+		return bcrypt.compareSync(password, this.hash as string);
 	}
 
 	createPassword(): string {
