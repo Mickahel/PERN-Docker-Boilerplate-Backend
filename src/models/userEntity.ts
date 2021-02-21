@@ -1,4 +1,4 @@
-import * as crypto from "crypto";
+import crypto from "crypto";
 import { v4 as uuid } from "uuid";
 import _ from "lodash";
 import { statuses, Tstatuses, Tthemes, themes, roles, Troles } from "../enums";
