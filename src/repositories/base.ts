@@ -95,7 +95,7 @@ export default class BaseRepository<Entity extends BaseEntity> {
 		return getManager().query(`UPDATE ${this._table} SET ${field} = (?) WHERE id IN (${this.getFields(id)})`, [value, ...id]);
 	}
 
-	deleteLogical(entity: string | string[] | Entity): Promise<any> {
+	/*deleteLogical(entity: string | string[] | Entity): Promise<any> {
 		let finalIds = [];
 		if (entity instanceof BaseEntity) finalIds = [_.get(entity, "id")];
 		// TODO needs refactor
@@ -103,7 +103,7 @@ export default class BaseRepository<Entity extends BaseEntity> {
 		else finalIds = entity;
 
 		return getRepository(this._type).query(`UPDATE ${this._table} SET status = "DELETED" WHERE id IN (${this.getFields(finalIds)})`, finalIds);
-	}
+	}*/
 
 	deletePhysical(entity: string | string[] | Entity | Entity[] | FindConditions<Entity>): Promise<DeleteResult | Entity | Entity[] | undefined> {
 		let finalIds: string[] = [];
