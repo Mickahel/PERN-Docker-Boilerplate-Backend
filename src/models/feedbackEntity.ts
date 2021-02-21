@@ -1,6 +1,5 @@
-import { v4 as uuid } from "uuid";
 import { feedbackTypes, TfeedbackTypes } from "../enums";
-import { JoinColumn, PrimaryGeneratedColumn, ManyToOne, Entity, PrimaryColumn, Column, BaseEntity, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { JoinColumn, PrimaryGeneratedColumn, ManyToOne, Entity, Column, BaseEntity, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import User from "./userEntity";
 
 @Entity("feedbacks")
