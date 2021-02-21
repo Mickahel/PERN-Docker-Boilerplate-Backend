@@ -52,7 +52,6 @@ router.post("/sendNotification", PushNotificationValidator.sendPushNotification,
 		});
 		notificationImageLink = process.env.BACKEND_URL + "/public/uploads/pushNotificationImages/" + notificationImageName;
 	}
-
 	const result = await pushNotificationService.sendNotification(ids, title, body, undefined, notificationImageLink, { click_action: clickAction || undefined });
 	res.send(result);
 });

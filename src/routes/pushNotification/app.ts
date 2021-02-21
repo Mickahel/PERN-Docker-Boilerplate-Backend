@@ -21,7 +21,7 @@ router.post("/registerToken/:token", PushNotificationValidator.setPushNotificati
 	try {
 		let ut = {
 			token: req.params.token,
-			userId: req.user.id,
+			user: req.user,
 		};
 
 		const result = await pushNotificationUserTokenRepository.create(ut);

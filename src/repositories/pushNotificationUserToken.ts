@@ -8,12 +8,12 @@ export default class PushNotificationUserTokenRepository extends BaseRepository<
 		super(PushNotificationUserToken, "pushNotificationUserToken");
 	}
 	async getUsersTokens(users: User[]) {
-		if (!users) return [];
 		const ids = users.map((single) => single.id);
+		console.log(ids);
 		try {
 			const Tokens = await this.getAll({
 				where: {
-					userId: In(ids),
+					user: In(ids),
 				},
 			});
 			/*		let result = await database.models.pushNotificationUserToken.findAll({
