@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import dotenv from "dotenv";
+import * as dotenv from "dotenv";
 dotenv.config();
 import Logger from "./src/services/logger";
 const crashLogger = new Logger("CRASH", "#ff0000");

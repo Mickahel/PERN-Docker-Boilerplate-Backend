@@ -9,7 +9,7 @@
 		"deployWithPM2": "env-cmd -f .env.production pm2 start ecosystem.config.js",
 		"deployWithNode": "env-cmd -f .env.production ts-node ./build/index.js",
 		"deployOnDocker": "env-cmd -f .env.production ts-node ./build/index.js",
-		"start": "ts-node ./build/index.js",
+		"start": "env-cmd -f .env.production ts-node ./build/index.js",
 		"build": "tsc",
 		"tsc": "tsc",
 		"prebuild": "node prebuild.js",
