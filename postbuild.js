@@ -1,4 +1,5 @@
 const fs = require('fs-extra');
+const path = require("path")
 console.log("Moving non TS files")
 
 try {
@@ -17,16 +18,17 @@ try {
   ]
   for (let i = 0; i < files.length; i++) {
     const single = files[i]
-    fs.copySync('./' + single, './build/' + single)
+    if (fs.existsSync(single)) fs.copySync('./' + single, './build/' + single)
   }
 
   if (fs.existsSync("./src/version.json")) {
     fs.copySync('./src/version.json', './build/src/version.json')
   }
-  console.log("Moving Keys");
-  fs.mkdirsSync("./build/src/server/keys");
-  fs.copySync('./src/server/keys', "./build/src/server/keys")
-
+  if (fs.existsSync("./src/server/keys/certificate.crt") && fs.existsSync("./src/server/keys/privatekey.pem")) {
+    console.log("Moving Keys");
+    fs.mkdirsSync("./build/src/server/keys");
+    fs.copySync('./src/server/keys', "./build/src/server/keys")
+  }
   console.log("Moving Resurces");
   fs.mkdirsSync("./build/src/resources");
   fs.copySync('./src/resources', "./build/src/resources")
