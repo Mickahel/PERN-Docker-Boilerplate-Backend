@@ -1,5 +1,5 @@
 dependencies:
-  ajv: 7.1.1
+  ajv: 7.0.4
   ajv-formats: 1.5.1
   axios: 0.21.1
   chalk: 4.1.0
@@ -11,6 +11,7 @@ dependencies:
   env-cmd: 10.1.0
   errorhandler: 1.5.1
   express: 4.17.1
+  express-fileupload: 1.2.1
   express-rate-limit: 5.2.6
   express-session: 1.17.1
   firebase-admin: 9.5.0
@@ -18,6 +19,7 @@ dependencies:
   jsonwebtoken: 8.5.1
   lodash: 4.17.20
   morgan: 1.10.0
+  multer: 1.4.2
   nodemailer: 6.4.18
   nodemon: 2.0.7
   nunjucks: 3.2.3
@@ -57,7 +59,6 @@ devDependencies:
   '@types/swagger-ui-express': 4.1.2
   '@types/uuid': 8.3.0
   '@types/validator': 13.1.3
-  express-fileupload: 1.2.1
   ts-node: 9.1.1_typescript@4.1.5
   ts-node-dev: 1.1.1_typescript@4.1.5
   typescript: 4.1.5
@@ -613,15 +614,6 @@ packages:
     dev: false
     resolution:
       integrity: sha512-xzzzaqgEQfmuhbhAoqjJ8T/1okb6gAzXn/eQRNpAN1AEUoHJTNF9xCDRTtf/s3SKldtZfa+RJeTs+BQq+eZ/sw==
-  /ajv/7.1.1:
-    dependencies:
-      fast-deep-equal: 3.1.3
-      json-schema-traverse: 1.0.0
-      require-from-string: 2.0.2
-      uri-js: 4.4.1
-    dev: false
-    resolution:
-      integrity: sha512-ga/aqDYnUy/o7vbsRTFhhTsNeXiYb5JWDIcRIeZfwRNCefwjNTVYCGdGSUrEmiu3yDK3vFvNbgJxvrQW4JXrYQ==
   /ansi-align/3.0.0:
     dependencies:
       string-width: 3.1.0
@@ -678,6 +670,10 @@ packages:
       node: '>= 6.0.0'
     resolution:
       integrity: sha512-qMcx+Gy2UZynHjOHOIXPNvpf+9cjvk3cWrBBK7zg4gH9+clobJRb9NGzcT7mQTcV/6Gm/1WelUtqxVXnNlrwcw==
+  /append-field/1.0.0:
+    dev: false
+    resolution:
+      integrity: sha1-HjRA6RXwsSA9I3SOeO3XubW0PlY=
   /aproba/1.2.0:
     dev: false
     resolution:
@@ -830,7 +826,6 @@ packages:
     resolution:
       integrity: sha1-+OcRMvf/5uAaXJaXpMbz5I1cyBk=
   /buffer-from/1.1.1:
-    dev: true
     resolution:
       integrity: sha512-MQcXEUbCKtEo7bhqEs6560Hyd4XaovZlO/k9V3hjVUF/zwW7KBVdSK4gIt/bzwS9MbR5qob+F5jusZsb0YQK2A==
   /buffer-writer/2.0.0:
@@ -846,10 +841,19 @@ packages:
     dev: false
     resolution:
       integrity: sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==
+  /busboy/0.2.14:
+    dependencies:
+      dicer: 0.2.5
+      readable-stream: 1.1.14
+    dev: false
+    engines:
+      node: '>=0.8.0'
+    resolution:
+      integrity: sha1-bCpiLvz0fFe7vh4qnDetNseSVFM=
   /busboy/0.3.1:
     dependencies:
       dicer: 0.3.0
-    dev: true
+    dev: false
     engines:
       node: '>=4.5.0'
     resolution:
@@ -967,7 +971,7 @@ packages:
   /cli-highlight/2.1.10:
     dependencies:
       chalk: 4.1.0
-      highlight.js: 10.5.0
+      highlight.js: 10.6.0
       mz: 2.7.0
       parse5: 5.1.1
       parse5-htmlparser2-tree-adapter: 6.0.1
@@ -1107,6 +1111,17 @@ packages:
   /concat-map/0.0.1:
     resolution:
       integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=
+  /concat-stream/1.6.2:
+    dependencies:
+      buffer-from: 1.1.1
+      inherits: 2.0.4
+      readable-stream: 2.3.7
+      typedarray: 0.0.6
+    dev: false
+    engines:
+      '0': node >= 0.8
+    resolution:
+      integrity: sha512-27HBghJxjiZtIk3Ycvn/4kbJk/1uZuJFfuPEns6LaEvpvG1f0hTea8lilrouyo9mVc2GWdcEZ8OLoGmSADlrCw==
   /configstore/5.0.1:
     dependencies:
       dot-prop: 5.3.0
@@ -1303,9 +1318,19 @@ packages:
     hasBin: true
     resolution:
       integrity: sha1-+hN8S9aY7fVc1c0CrFWfkaTEups=
+  /dicer/0.2.5:
+    dependencies:
+      readable-stream: 1.1.14
+      streamsearch: 0.1.2
+    dev: false
+    engines:
+      node: '>=0.8.0'
+    resolution:
+      integrity: sha1-WZbAhrszIYyBLAkL3cCc0S+stw8=
   /dicer/0.3.0:
     dependencies:
       streamsearch: 0.1.2
+    dev: false
     engines:
       node: '>=4.5.0'
     resolution:
@@ -1479,7 +1504,7 @@ packages:
   /express-fileupload/1.2.1:
     dependencies:
       busboy: 0.3.1
-    dev: true
+    dev: false
     engines:
       node: '>=8.0.0'
     resolution:
@@ -1923,10 +1948,10 @@ packages:
       node: '>=10.0.0'
     resolution:
       integrity: sha512-G8tp0wUMI7i8wkMk2xLcEvESg5PiCitFMYgGRc/PwULB0RVhTP5GFdxOwvJwp9XVha8CuS8mnhmE8I/8dx/pbw==
-  /highlight.js/10.5.0:
+  /highlight.js/10.6.0:
     dev: false
     resolution:
-      integrity: sha512-xTmvd9HiIHR6L53TMC7TKolEj65zG1XU+Onr8oi86mYa+nLcIbxTTWkpW7CsEwv/vK7u1zb8alZIMLDqqN6KTw==
+      integrity: sha512-8mlRcn5vk/r4+QcqerapwBYTe+iPL5ih6xrNylxrnBdHQiijDETfXX7VIxC3UiCRiINBJfANBAsPzAvRQj8RpQ==
   /hosted-git-info/2.8.8:
     dev: true
     resolution:
@@ -2168,6 +2193,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-VjSeb/lHmkoyd8ryPVIKvOCn4D1koMqY+vqyjjUfc3xyKtP4dYOxM44sZrnqQSzSds3xyOrUTLTC9LVCVgLngw==
+  /isarray/0.0.1:
+    dev: false
+    resolution:
+      integrity: sha1-ihis/Kmo9Bd+Cav8YDiTmwXR7t8=
   /isarray/1.0.0:
     dev: false
     resolution:
@@ -2485,6 +2514,13 @@ packages:
     dev: false
     resolution:
       integrity: sha512-gKLcREMhtuZRwRAfqP3RFW+TK4JqApVBtOIftVgjuABpAtpxhPGaDcfvbhNvD0B8iD1oUr/txX35NjcaY6Ns/A==
+  /mkdirp/0.5.5:
+    dependencies:
+      minimist: 1.2.5
+    dev: false
+    hasBin: true
+    resolution:
+      integrity: sha512-NKmAlESf6jMGym1++R0Ra7wvhV+wFW63FaSOFPwRahvea0gMUcGUhVeAg/0BC0wiv9ih5NYPB1Wn1UEI1/L+xQ==
   /mkdirp/1.0.4:
     engines:
       node: '>=10'
@@ -2523,6 +2559,21 @@ packages:
     dev: false
     resolution:
       integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
+  /multer/1.4.2:
+    dependencies:
+      append-field: 1.0.0
+      busboy: 0.2.14
+      concat-stream: 1.6.2
+      mkdirp: 0.5.5
+      object-assign: 4.1.1
+      on-finished: 2.3.0
+      type-is: 1.6.18
+      xtend: 4.0.2
+    dev: false
+    engines:
+      node: '>= 0.10.0'
+    resolution:
+      integrity: sha512-xY8pX7V+ybyUpbYMxtjM9KAiD9ixtg5/JkeKUTD6xilfDv0vzzOFcCp4Ljb1UU3tSOM3VTZtKo63OmzOrGi3Cg==
   /mz/2.7.0:
     dependencies:
       any-promise: 1.3.0
@@ -3121,6 +3172,15 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-9f+qXs0pyzHAR0vKfXVra7KePyg=
+  /readable-stream/1.1.14:
+    dependencies:
+      core-util-is: 1.0.2
+      inherits: 2.0.4
+      isarray: 0.0.1
+      string_decoder: 0.10.31
+    dev: false
+    resolution:
+      integrity: sha1-fPTFTvZI44EwhMY23SB54WbAgdk=
   /readable-stream/2.3.7:
     dependencies:
       core-util-is: 1.0.2
@@ -3462,6 +3522,7 @@ packages:
     resolution:
       integrity: sha512-AiisoFqQ0vbGcZgQPY1cdP2I76glaVA/RauYR4G4thNFgkTqr90yXTo4LYX60Jl+sIlPNHHdGSwo01AvbKUSVQ==
   /streamsearch/0.1.2:
+    dev: false
     engines:
       node: '>=0.8.0'
     resolution:
@@ -3496,6 +3557,10 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-zUz5JD+tgqtuDjMhwIg5uFVV3dtqZ9yQJlZVfq4I01/K5Paj5UHj7VyrQOJvzawSVlKpObApbfD0Ed6yJc+1eg==
+  /string_decoder/0.10.31:
+    dev: false
+    resolution:
+      integrity: sha1-YuIDvEF2bGwoyfyEMB2rHFMQ+pQ=
   /string_decoder/1.1.1:
     dependencies:
       safe-buffer: 5.1.2
@@ -3805,6 +3870,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-zdu8XMNEDepKKR+XYOXAVPtWui0ly0NtohUscw+UmaHiAWT8hrV1rr//H6V+0DvJ3OQ19S979M0laLfX8rm82Q==
+  /typedarray/0.0.6:
+    dev: false
+    resolution:
+      integrity: sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
   /typeorm/0.2.31:
     dependencies:
       '@sqltools/formatter': 1.2.2
@@ -4088,12 +4157,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-rHgFmbgXAAzl+1nngqOcwEljqHGG9uUZoPjsdZEs1w5JW9RXYzrSvH/u70C1JE5qFi0qjsdhnUX/dJRpWqitSA==
-  /yargs-parser/20.2.4:
+  /yargs-parser/20.2.5:
     dev: false
     engines:
       node: '>=10'
     resolution:
-      integrity: sha512-WOkpgNhPTlE73h4VFAFsOnomJVaovO8VqLDzy5saChRBFQFBoMYirowyW+Q9HB4HFF4Z7VZTiG3iSzJJA29yRA==
+      integrity: sha512-jYRGS3zWy20NtDtK2kBgo/TlAoy5YUuhD9/LZ7z7W4j1Fdw2cqD0xEEclf8fxc8xjD6X5Qr+qQQwCEsP8iRiYg==
   /yargs/16.2.0:
     dependencies:
       cliui: 7.0.4
@@ -4102,7 +4171,7 @@ packages:
       require-directory: 2.1.1
       string-width: 4.2.0
       y18n: 5.0.5
-      yargs-parser: 20.2.4
+      yargs-parser: 20.2.5
     dev: false
     engines:
       node: '>=10'
@@ -4157,7 +4226,7 @@ specifiers:
   '@types/swagger-ui-express': ^4.1.2
   '@types/uuid': ^8.3.0
   '@types/validator': ^13.1.3
-  ajv: ^7.1.1
+  ajv: ^7.0.3
   ajv-formats: ^1.5.1
   axios: ^0.21.1
   chalk: ^4.1.0
@@ -4169,25 +4238,26 @@ specifiers:
   env-cmd: ^10.1.0
   errorhandler: ^1.5.1
   express: ^4.17.1
-  express-fileupload: ^1.2.1
-  express-rate-limit: ^5.2.6
+  express-fileupload: ^1.2.0
+  express-rate-limit: ^5.2.3
   express-session: ^1.17.1
-  firebase-admin: ^9.5.0
-  helmet: ^4.4.1
+  firebase-admin: ^9.4.2
+  helmet: ^4.3.1
   jsonwebtoken: ^8.5.1
   lodash: ^4.17.20
   morgan: ^1.10.0
-  nodemailer: ^6.4.18
-  nodemon: ^2.0.7
-  nunjucks: ^3.2.3
+  multer: ^1.4.2
+  nodemailer: ^6.4.17
+  nodemon: ^2.0.6
+  nunjucks: ^3.2.2
   passport: ^0.4.1
   passport-facebook: ^3.0.0
   passport-google-oauth20: ^2.0.0
   passport-local: ^1.0.0
   pg: ^8.5.1
   reflect-metadata: ^0.1.13
-  sharp: ^0.27.1
-  swagger-jsdoc: ^6.0.6
+  sharp: ^0.27.0
+  swagger-jsdoc: ^6.0.0
   swagger-ui-express: ^4.1.6
   ts-node: ^9.1.1
   ts-node-dev: ^1.1.1

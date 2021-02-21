@@ -14,11 +14,11 @@ export default class Feedback extends BaseEntity {
 	@Column({ nullable: true, type: "text" })
 	description?: string;
 
-	@Column()
-	path!: string;
+	@Column({ nullable: true })
+	path?: string;
 
-	@Column()
-	screenshotUrl!: string;
+	@Column({ nullable: true })
+	screenshotUrl?: string;
 
 	@Column({ default: false })
 	handled?: boolean;

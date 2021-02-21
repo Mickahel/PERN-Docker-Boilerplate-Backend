@@ -1,5 +1,4 @@
 import express, { Response, Request, NextFunction } from "express";
-import { v4 as uuid } from "uuid";
 import { publicFolder } from "../../auxiliaries/server";
 import FeedbackRepository from "../../repositories/feedback";
 import FeedbackValidator from "../../validators/feedback";

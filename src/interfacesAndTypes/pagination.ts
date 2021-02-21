@@ -1,12 +1,17 @@
+import { BaseEntity, ObjectType } from "typeorm";
+
 export interface IResultPagination {
 	results?: object[];
 	pages?: number;
 	length?: number;
-	previous?: paginatedPreviousNext;
-	next?: paginatedPreviousNext;
+	previous?: IPaginatedPreviousNext;
+	next?: IPaginatedPreviousNext;
 }
-
-interface paginatedPreviousNext {
+export interface Imodel {
+	entity: ObjectType<BaseEntity>;
+	table: string;
+}
+export interface IPaginatedPreviousNext {
 	page: number;
 	limit: number;
 }

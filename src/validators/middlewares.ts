@@ -1,12 +1,13 @@
 import ajv from "./AJVInstance";
 import { Request } from "express";
-// TODO ADD TYPESCRIPT
+import { IPaginatedPreviousNext } from "../interfacesAndTypes/pagination";
 const MiddlewareValidator = {
 	paginatedResults: (req: Request) => {
-		const paginationData = req.query.data;
-		let data;
-		data.page = parseInt(paginationData.page);
-		data.limit = parseInt(paginationData.limit);
+		const paginationData = req.query as { page: string; limit: string };
+		let data: IPaginatedPreviousNext = {
+			page: parseInt(paginationData.page),
+			limit: parseInt(paginationData.limit),
+		};
 		const schema = {
 			type: "object",
 			required: ["page", "limit"],

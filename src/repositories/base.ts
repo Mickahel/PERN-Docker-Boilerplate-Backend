@@ -117,33 +117,4 @@ export default class BaseRepository<Entity extends BaseEntity> {
 			else return getRepository(this._type).delete(entity as string);
 		}
 	}
-
-	// TODO NEEDS REFACTOR
-	/*
-	async getPaginatedResults(limit, offset, excludeFields, options) {
-		let result = await this.repository.findAll({
-			...options,
-			attributes: {
-				exclude: excludeFields,
-				...options?.attributes,
-			},
-			offset,
-			limit,
-			raw: true,
-		});
-
-		let entitiesInModel = await this.repository.findAndCountAll({
-			...options,
-			attributes: {
-				exclude: excludeFields,
-				...options?.attributes,
-			},
-		});
-
-		return {
-			result,
-			length: entitiesInModel.count,
-		};
-	}
-*/
 }

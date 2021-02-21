@@ -30,6 +30,10 @@ const userRepository = new UserRepository();
  *        name: description
  *        description: description of the feedback
  *        required: true
+ *       - in: body
+ *        name: path
+ *        description: url of the page
+ *        required: true
  *      - in: body
  *        name: createdBy
  *        description: id of the user who created the feedback
