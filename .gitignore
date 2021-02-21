@@ -30,3 +30,6 @@ log.log
 *.pem
 *.key
 *.crt
+
+# version
+version.json
