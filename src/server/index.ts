@@ -17,6 +17,7 @@ import initializeRoutes from "./initializers/initializeRoutes";
 import initializeHttp from "./initializers/initializeHttp";
 import Logger from "../services/logger";
 const logger = new Logger("API Error", "#FFFF00");
+
 //const initializeWebSocket = require('./initializers/initializeWebSocket')
 // ? https://itnext.io/make-security-on-your-nodejs-api-the-priority-50da8dc71d68
 

@@ -4,7 +4,6 @@ import authRequired from "../../middlewares/authRequired";
 import { Router } from "express";
 import { Request, Response, NextFunction } from "express";
 import { roles } from "../../enums";
-
 // ? import routes
 import debugRoutes from "../../routes/debug";
 import authRoutes from "../../routes/auth";
@@ -28,7 +27,7 @@ export default function initializeRoutes(router: Router): void {
 		res.send(
 			`
     <h1>${config.longTitle}</h1>
-    <h2><a href=\"${config.apiDocsLink}\">API Documentation</h2>
+    <h2><a href=\"${config.apiDocsLink}\">API Documentation</a></h2>
     `
 		)
 	);

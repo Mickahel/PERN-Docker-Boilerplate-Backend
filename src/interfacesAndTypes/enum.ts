@@ -29,7 +29,7 @@ export interface roleInterface {
 	[key: string]: singleRoleInterface;
 }
 
-export interface rolesEnumInterface extends genericEnumInterface {
+export interface rolesEnumInterface extends IGenericEnumClass {
 	getPermissionLevelByName: (name: string) => number;
 	getRoleByName: (name: Troles) => singleRoleInterface | undefined;
 	getRoleWithMinimumPermissionLevelByUserType: (isAdmin: boolean) => singleRoleInterface;
