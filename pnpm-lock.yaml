@@ -7,6 +7,7 @@ dependencies:
   compression: 1.7.4
   cookie-parser: 1.4.5
   cors: 2.8.5
+  crypto: 1.0.1
   dotenv: 8.2.0
   env-cmd: 10.1.0
   errorhandler: 1.5.1
@@ -1210,6 +1211,11 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==
+  /crypto/1.0.1:
+    deprecated: 'This package is no longer supported. It''s now a built-in Node module. If you''ve depended on crypto, you should switch to the one that''s built-in.'
+    dev: false
+    resolution:
+      integrity: sha512-VxBKmeNcqQdiUQUW2Tzq0t377b54N2bMtXO/qiLa+6eRRmmC4qT3D4OnTGoT/U6O9aklQ/jTwbOtRMTTY8G0Ig==
   /currently-unhandled/0.4.1:
     dependencies:
       array-find-index: 1.0.2
@@ -4262,6 +4268,7 @@ specifiers:
   compression: ^1.7.4
   cookie-parser: ^1.4.5
   cors: ^2.8.5
+  crypto: ^1.0.1
   dotenv: ^8.2.0
   env-cmd: ^10.1.0
   errorhandler: ^1.5.1
