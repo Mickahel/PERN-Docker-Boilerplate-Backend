@@ -14,13 +14,12 @@ jobs:
       - uses: actions/checkout@v2
       - name: Login in the Docker Registry
         run: echo ${{ secrets.PAT }} | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
-        
+
       - name: Pull the Docker image
-        run: docker pull ghcr.io/Mickahel/PERN-Docker-Boilerplate-Backend:latest
+        run: docker pull ghcr.io/Mickahel/pern-docker-boilerplate-backend:latest
 
       - name: Build the Docker image
-        run: docker build -t ghcr.io/Mickahel/PERN-Docker-Boilerplate-Backend:$GITHUB_SHA --cache-from ghcr.io/Mickahel/PERN-Docker-Boilerplate-Backend:latest
+        run: docker build -t ghcr.io/Mickahel/pern-docker-boilerplate-backend:$GITHUB_SHA --cache-from ghcr.io/Mickahel/pern-docker-boilerplate-backend:latest
 
       - name: Push Docker image
-        run: docker push ghcr.io/Mickahel/PERN-Docker-Boilerplate-Backend:$GITHUB_SHA
-
+        run: docker push ghcr.io/Mickahel/pern-docker-boilerplate-backend:$GITHUB_SHA
