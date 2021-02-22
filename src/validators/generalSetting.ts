@@ -33,13 +33,11 @@ const GeneralSettingsValidator = {
 		const data = req.body;
 		const schema = {
 			type: "object",
-			required: ["feature"],
+			required: ["feature", "value"],
 			properties: {
 				feature: { type: "string" },
-				newFeatureName: { type: "string" },
-				newValue: { type: "string" },
+				value: { type: "string" },
 			},
-			anyOf: [{ required: ["newFeatureName"] }, { required: ["newValue"] }],
 			additionalProperties: false,
 		};
 		const valid = ajv.validate(schema, data);

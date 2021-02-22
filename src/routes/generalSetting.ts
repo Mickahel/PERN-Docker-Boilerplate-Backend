@@ -99,9 +99,6 @@ router.post("/", GeneralSettingsValidator.createGeneralSetting, async (req: Requ
  *        description: feature name
  *        required: true
  *      - in: body
- *        name: newFeatureName
- *        description: new name of the feature
- *      - in: body
  *        name: newValue
  *        description: new string of information for the value
  *      responses:
@@ -109,15 +106,17 @@ router.post("/", GeneralSettingsValidator.createGeneralSetting, async (req: Requ
  *          description: Cannot find data
  */
 router.put("/", GeneralSettingsValidator.updateGeneralSetting, async (req: Request, res: Response, next: NextFunction) => {
-	const { feature, newFeatureName, newValue } = req.body;
+	const { feature, value } = req.body;
 	try {
 		const generalSetting = await generalSettingsRepository.getBy({ where: { feature } });
-		if (!generalSetting) next({ message: "Cannot find data", status: 404 });
+		if (!generalSetting) await generalSettingsRepository.create(req.body);
 		else {
-			const newGeneralSetting = await generalSettingsRepository.update(generalSetting.feature, {
-				feature: newFeatureName,
-				value: newValue,
-			});
+			const newGeneralSetting = await generalSettingsRepository.update(
+				{ feature: generalSetting.feature },
+				{
+					value,
+				}
+			);
 			res.send(newGeneralSetting);
 		}
 	} catch (e) {
