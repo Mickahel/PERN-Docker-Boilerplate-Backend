@@ -30,3 +30,7 @@ jobs:
           file: Dockerfile
           tags: ghcr.io/${{ env.REPO }}:latest
           push: true
+      - uses: actions/delete-package-versions@v1
+        with:
+          package-name: ${{ env.REPO }}
+          num-old-versions-to-delete: 3
