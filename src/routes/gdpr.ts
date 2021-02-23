@@ -6,10 +6,10 @@ const generalSettingsRepository = new GeneralSettingsRepository();
 
 /**
  * @swagger
- * /v1/admin/general-settings/:feature:
+ * /v1/admin/gdpr/privacy-policy:
  *    get:
- *      summary: Gets single general setting
- *      tags: [General Settings]
+ *      summary: Gets privacy policy
+ *      tags: [GDPR]
  *      security:
  *          - cookieAuthAdmin: []
  *      responses:
@@ -28,10 +28,10 @@ router.get("/privacy-policy", async (req: Request, res: Response, next: NextFunc
 
 /**
  * @swagger
- * /v1/admin/general-settings/:feature:
+ * /v1/admin/gdpr/terms-and-conditions:
  *    get:
- *      summary: Gets single general setting
- *      tags: [General Settings]
+ *      summary: Gets terms and conditions
+ *      tags: [GDPR]
  *      security:
  *          - cookieAuthAdmin: []
  *      responses:
