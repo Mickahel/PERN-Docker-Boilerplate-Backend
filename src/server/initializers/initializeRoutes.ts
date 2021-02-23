@@ -11,6 +11,7 @@ import serverRoutes from "../../routes/server";
 import logsRoutes from "../../routes/log";
 import databaseRoutes from "../../routes/database";
 import generalSettingRoutes from "../../routes/generalSetting";
+import gdprRoutes from "../../routes/gdpr";
 import userAdminRoutes from "../../routes/user/admin";
 import userAppRoutes from "../../routes/user/app";
 import pushNotificationAdminRoutes from "../../routes/pushNotification/admin";
@@ -55,7 +56,7 @@ export default function initializeRoutes(router: Router): void {
 	router.use("/v1/app/user", userAppRoutes);
 	router.use("/v1/app/feedback", feedbackAppRoutes);
 	router.use("/v1/app/pushNotification", pushNotificationAppRoutes);
-
+	router.use("/v1/app/gdpr", gdprRoutes);
 	// ? Development routes
 	if (!isProduction) router.use("/v1/debug", debugRoutes);
 

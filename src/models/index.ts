@@ -20,7 +20,6 @@ let counterConnection = 0;
 async function initializeDatabase(): Promise<void> {
 	try {
 		logger.info("Connecting to database");
-		console.log(__dirname + "\\*Entity.js");
 		connection = await createConnection(databaseConfig);
 
 		logger.info("Connection to database has been established successfully.");
