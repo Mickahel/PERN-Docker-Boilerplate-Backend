@@ -10,7 +10,7 @@ const databaseConfig: ConnectionOptions = {
 	database: process.env.DB_NAME as string,
 	logging: false,
 	synchronize: true,
-	entities: ["src/models/*Entity.js", "src/models/*Entity.ts"],
+	entities: [__dirname + "/*Entity.js", __dirname + "/*Entity.ts"],
 	poolErrorHandler: (error) => {
 		logger.error("Pool Error", error);
 	},
@@ -20,7 +20,7 @@ let counterConnection = 0;
 async function initializeDatabase(): Promise<void> {
 	try {
 		logger.info("Connecting to database");
-
+		console.log(__dirname + "\\*Entity.js");
 		connection = await createConnection(databaseConfig);
 
 		logger.info("Connection to database has been established successfully.");

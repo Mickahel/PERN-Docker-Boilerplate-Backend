@@ -1,8 +1,6 @@
-const { config } = require("./config")
-
 let app = {
-  name: `API - ${config.longTitle}`,
-  script: './index.js',
+  name: `API - PERN BOILERPLATE`,
+  script: 'ts-node ./build/index.js',
   watch: true,
   ignore_watch: ["node_modules", 'public/uploads'],
   restart_delay: 5000,
