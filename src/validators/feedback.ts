@@ -7,6 +7,7 @@ const FeedbackValidator = {
 			...req.body,
 			...req.files,
 		};
+
 		const schema = {
 			type: "object",
 			required: ["type", "description"],
@@ -40,7 +41,6 @@ const FeedbackValidator = {
 
 	editFeedback: (req: Request, res: Response, next: NextFunction) => {
 		const data = req.body;
-
 		const schema = {
 			type: "object",
 			required: ["id"],
